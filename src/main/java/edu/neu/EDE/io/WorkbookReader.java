@@ -19,6 +19,7 @@ public class WorkbookReader {
     final int SLIDE_METRIC_ROW_START = 2;
     final int STATISTIC_NAME_CELL = 0;
     final int STATISTIC_VALUE_CELL = 5;
+    final String SLIDE_METRIC_SUFFIX = "-SM";
     String subject;
     String media;
 
@@ -73,14 +74,14 @@ public class WorkbookReader {
         int rowIndex = SLIDE_METRIC_ROW_START;
         String statName;
         Double statValue;
-        String stimuli = media + "-SM";
+        String stimulus = media + SLIDE_METRIC_SUFFIX;
         while ((row = sheet.getRow(rowIndex++)) != null) {
             Cell statNameCell = row.getCell(STATISTIC_NAME_CELL);
             Cell statValueCell = row.getCell(STATISTIC_VALUE_CELL);
             statName = statNameCell.getStringCellValue();
             statValue = statValueCell.getNumericCellValue();
             //TODO: set data when integrated with 4d-array
-            // set-the-data(subject, media, stimuli, statName, statValue)
+            // slideMetricData.set(subject, stimulus, statName, statValue);
         }
         return rowIndex;
     }
