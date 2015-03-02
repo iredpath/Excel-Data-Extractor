@@ -9,9 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-/**
- * Created by Ian on 2/26/15.
- */
+
 public class WorkbookReader {
 
     final int SHEET_MEDIA_NAME_ROW = 0;
@@ -31,7 +29,7 @@ public class WorkbookReader {
         extractData(workbook);
     }
 
-    private void extractData(XSSFWorkbook workbook) {
+    void extractData(XSSFWorkbook workbook) {
         int numSheets = workbook.getNumberOfSheets();
         XSSFSheet sheet;
         String sheetName;
@@ -51,7 +49,7 @@ public class WorkbookReader {
         }
     }
 
-    private void extractMediaName(XSSFSheet sheet) {
+    void extractMediaName(XSSFSheet sheet) {
         Row row = sheet.getRow(SHEET_MEDIA_NAME_ROW);
         Cell cell = row.getCell(SHEET_MEDIA_NAME_CELL);
         String uncleanMediaName = cell.getStringCellValue();
@@ -64,12 +62,12 @@ public class WorkbookReader {
         media = cleanName;
     }
 
-    private void extractStimuliFromSheet(XSSFSheet sheet) {
-        int endSlideMetric = extractSlideMetricDataFromSheet(sheet);
-        extractLookZoneDataFromSheet(sheet, endSlideMetric);
+    void extractStimuliFromSheet(XSSFSheet sheet) {
+        int startLookZone = extractSlideMetricDataFromSheet(sheet);
+        extractLookZoneDataFromSheet(sheet, startLookZone);
     }
 
-    private int extractSlideMetricDataFromSheet(XSSFSheet sheet) {
+    int extractSlideMetricDataFromSheet(XSSFSheet sheet) {
         Row row;
         int rowIndex = SLIDE_METRIC_ROW_START;
         String statName;
@@ -86,7 +84,7 @@ public class WorkbookReader {
         return rowIndex;
     }
 
-    private void extractLookZoneDataFromSheet(XSSFSheet sheet, int endSlideMetricData) {
+        void extractLookZoneDataFromSheet(XSSFSheet sheet, int startLookZone) {
         //TODO: add logic to extract look zone data
     }
 
