@@ -79,13 +79,47 @@ public class WorkbookReader {
             statName = statNameCell.getStringCellValue();
             statValue = statValueCell.getNumericCellValue();
             //TODO: set data when integrated with 4d-array
-            // slideMetricData.set(subject, stimulus, statName, statValue);
+            // slideMetricData.set(subject, media, stimulus, statName, statValue);
         }
         return rowIndex;
     }
 
-        void extractLookZoneDataFromSheet(XSSFSheet sheet, int startLookZone) {
-        //TODO: add logic to extract look zone data
+    void extractLookZoneDataFromSheet(XSSFSheet sheet, int startLookZone) {
+        int tempRowCounter = startLookZone;
+        int lookzoneCounter = 1;
+        int numStats = -1;
+        String statName;
+        Double statValue;
+        while (!((sheet.getRow(tempRowCounter) == null) && (sheet.getRow(tempRowCounter + 1) == null))) {
+            tempRowCounter++;
+        }
+        tempRowCounter--;
+        while ((sheet.getRow(tempRowCounter) != null) && (sheet.getRow(tempRowCounter).getCell(0) == null)) {
+            numStats++;
+            tempRowCounter--;
+        }
+        boolean moreSectionsToGo = true;
+        String stimulus = "";
+        tempRowCounter = startLookZone + 2;
+        while (moreSectionsToGo) {
+            if (sheet.getRow(tempRowCounter).getCell(1).equals("OUTSIDE OF ALL LOOKZONES")) {
+                stimulus = media + "-OUT";
+                moreSectionsToGo = false;
+            }
+            else {
+                stimulus = media + "-LZ " + lookzoneCounter++;
+                // Add "LookZone Description" to name if it exists
+            }
+            while (sheet.getRow(tempRowCounter + 1) != null) {
+                tempRowCounter++;
+            }
+            tempRowCounter += numStats;
+            while (sheet.getRow(tempRowCounter + 1) != null) {
+                statName = sheet.getRow(tempRowCounter).getCell(STATISTIC_NAME_CELL).getStringCellValue();
+                statValue = sheet.getRow(tempRowCounter).getCell(STATISTIC_VALUE_CELL).getNumericCellValue();
+                //TODO: set data when integrated with 4d-array
+                // lookZoneData.set(subject, media, stimulus, statName, statValue);
+            }
+        }
     }
-
 }
