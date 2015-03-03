@@ -53,6 +53,7 @@ public class TestWorkbookReader extends Assert {
         valCell.setCellValue(15);
         int smEnd = reader.extractSlideMetricDataFromSheet(sheet);
         assertEquals(smEnd, 4);
+        assertEquals(sheet.getRow(smEnd), null);
     }
 
     @Test

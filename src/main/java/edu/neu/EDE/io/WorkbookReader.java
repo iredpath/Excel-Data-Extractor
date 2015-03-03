@@ -157,6 +157,7 @@ public class WorkbookReader {
     }
 
     String getStimulusName(XSSFSheet sheet, List<Integer> nullIndices, int lookZoneIndex) {
+        // TODO: lookZoneIndex may not be correct; look zones can be out of order
         String stimulus;
         stimulus = media + LOOK_ZONE_SUFFIX + lookZoneIndex;
         Row startRow = sheet.getRow(nullIndices.get(lookZoneIndex - 1) + 2); // row is null, +1 is LZ name, +2 is description
