@@ -1,5 +1,7 @@
 package edu.neu.EDE.io;
 
+import edu.neu.EDE.data_structs.SheetConfiguration;
+import edu.neu.EDE.data_structs.ThreeDimArray;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -25,6 +27,8 @@ public class WorkbookReader {
     final String FILE_EXTENSION = ".xlsx";
     String subject;
     String media;
+    ThreeDimArray slideMetricData;
+    ThreeDimArray lookZoneData;
 
     public void readFile(File f) throws IOException {
         String filenameFull = f.getName();
@@ -78,13 +82,18 @@ public class WorkbookReader {
         String statName;
         Double statValue;
         String stimulus = media + SLIDE_METRIC_SUFFIX;
+        SheetConfiguration config = new SheetConfiguration();
+        config.setSubject(subject);
+        config.setStimulus(stimulus);
         while ((row = sheet.getRow(rowIndex++)) != null) {
             Cell statNameCell = row.getCell(STATISTIC_NAME_CELL);
             Cell statValueCell = row.getCell(STATISTIC_VALUE_CELL);
             statName = statNameCell.getStringCellValue();
             statValue = statValueCell.getNumericCellValue();
-            //TODO: set data when integrated with 4d-array
-            // slideMetricData.set(subject, media, stimulus, statName, statValue);
+
+            config.setStatistic(statName);
+            config.setValue(statValue);
+            slideMetricData.set(config);
         }
         return rowIndex - 1;
     }
@@ -93,7 +102,7 @@ public class WorkbookReader {
     void extractLookZoneDataFromSheet(XSSFSheet sheet, int startLookZone) {
         List<Integer> nullIndices = getNullRowIndices(sheet, startLookZone);
         int numStats = getNumStats(sheet, nullIndices);
-        readLookZoneData(sheet, numStats, nullIndices);
+        addLookZoneData(sheet, numStats, nullIndices);
     }
 
     List<Integer> getNullRowIndices(XSSFSheet sheet, int startIndex) {
@@ -124,35 +133,33 @@ public class WorkbookReader {
         return numStats;
     }
 
-    void readLookZoneData(XSSFSheet sheet, int numStats, List<Integer> nullIndices) {
+    void addLookZoneData(XSSFSheet sheet, int numStats, List<Integer> nullIndices) {
         int numLookZones = nullIndices.size() - 1; // last entry is null line after final lookZone
-        // getting first lookZone (may be out)
         String stimulus, statName;
-        Double statValue;
         Row row;
+        Cell statNameCell, statValueCell;
+        Double statValue;
+        SheetConfiguration config = new SheetConfiguration();
+        config.setSubject(subject);
         for (int lookZoneIndex = 1; lookZoneIndex <= numLookZones; lookZoneIndex++) {
             if (numLookZones > lookZoneIndex) {
                 stimulus = getStimulusName(sheet, nullIndices, lookZoneIndex);
             } else {
                 stimulus = media + LOOK_ZONE_OUT_SUFFIX;
             }
+            config.setStimulus(stimulus);
             int endIndex = nullIndices.get(lookZoneIndex) - 1;
             int startIndex = endIndex - numStats;
-            addLookZoneData(sheet, startIndex, endIndex);
-        }
-    }
-
-    void addLookZoneData(XSSFSheet sheet, int startIndex, int endIndex) {
-        Row row;
-        String statName;
-        Double statValue;
-        for (int i = endIndex; i > startIndex; i--) {
-            row = sheet.getRow(i);
-            Cell statNameCell = row.getCell(STATISTIC_NAME_CELL);
-            statName = statNameCell.getStringCellValue();
-            Cell statValueCell = row.getCell(STATISTIC_VALUE_CELL);
-            statValue = statValueCell == null ? null : statValueCell.getNumericCellValue();
-            // lookZoneData.set(subject, media, stimulus, statName, statValue);
+            for (int i = endIndex; i > startIndex; i--) {
+                row = sheet.getRow(i);
+                statNameCell = row.getCell(STATISTIC_NAME_CELL);
+                statName = statNameCell.getStringCellValue();
+                statValueCell = row.getCell(STATISTIC_VALUE_CELL);
+                statValue = statValueCell == null ? null : statValueCell.getNumericCellValue();
+                config.setStatistic(statName);
+                config.setValue(statValue);
+                lookZoneData.set(config);
+            }
         }
     }
 
@@ -167,4 +174,8 @@ public class WorkbookReader {
         }
         return stimulus;
     }
+
+    public void setSlideMetricData(ThreeDimArray data) { this.slideMetricData = data; }
+
+    public void setLookZoneData(ThreeDimArray data) { this.lookZoneData = data; }
 }
