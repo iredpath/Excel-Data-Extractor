@@ -151,7 +151,7 @@ public class WorkbookReader {
             Cell statNameCell = row.getCell(STATISTIC_NAME_CELL);
             statName = statNameCell.getStringCellValue();
             Cell statValueCell = row.getCell(STATISTIC_VALUE_CELL);
-            statValue = statValueCell.getNumericCellValue();
+            statValue = statValueCell == null ? null : statValueCell.getNumericCellValue();
             // lookZoneData.set(subject, media, stimulus, statName, statValue);
         }
     }

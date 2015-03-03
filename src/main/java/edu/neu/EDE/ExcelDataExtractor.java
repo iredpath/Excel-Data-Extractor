@@ -30,7 +30,7 @@ public class ExcelDataExtractor {
             for (File subFile: files) {
                 readFile(subFile);
             }
-        } else if (f.getName().contains(".xlsx")) {
+        } else if (f.getName().contains(".xlsx") && !f.getName().contains("~$")) {
             reader.readFile(f);
         } else {
             invalidFiles.add(f.getAbsolutePath());
