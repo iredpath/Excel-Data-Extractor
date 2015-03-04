@@ -25,6 +25,8 @@ public class WorkbookReader {
     final String LOOK_ZONE_SUFFIX = "-LZ";
     final String LOOK_ZONE_OUT_SUFFIX = "-OUT";
     final String FILE_EXTENSION = ".xlsx";
+    final String F_SHEET_END = " - F";
+    final String STAT_SHEET_END = " - STAT";
     String subject;
     String media;
     String stimulus;
@@ -48,10 +50,10 @@ public class WorkbookReader {
         for (int i = 0; i < numSheets; i++) {
             sheet = workbook.getSheetAt(i);
             sheetName = sheet.getSheetName();
-            if (sheetName.contains(" - F")) {
+            if (sheetName.endsWith(F_SHEET_END)) {
                 extractMediaName(sheet);
             }
-            else if (sheetName.contains(" - STAT")) {
+            else if (sheetName.endsWith(STAT_SHEET_END)) {
                 extractStimuliFromSheet(sheet);
             }
         }
