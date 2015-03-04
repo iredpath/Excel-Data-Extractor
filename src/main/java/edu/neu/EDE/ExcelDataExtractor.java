@@ -1,5 +1,6 @@
 package edu.neu.EDE;
 
+import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.io.WorkbookReader;
 
 import java.io.File;
@@ -10,10 +11,16 @@ public class ExcelDataExtractor {
 
     private WorkbookReader reader;
     private ArrayList<String> invalidFiles;
+    private FourDimArray slideMetricData;
+    private FourDimArray lookZoneData;
 
     public ExcelDataExtractor() {
         this.reader = new WorkbookReader();
         this.invalidFiles = new ArrayList<String>();
+        this.slideMetricData = new FourDimArray();
+        this.lookZoneData = new FourDimArray();
+        reader.setSlideMetricData(slideMetricData);
+        reader.setLookZoneData(lookZoneData);
     }
 
     public static void main(String[] args) throws IOException {
