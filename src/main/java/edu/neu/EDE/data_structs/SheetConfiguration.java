@@ -3,14 +3,18 @@ package edu.neu.EDE.data_structs;
 public class SheetConfiguration {
 
     private String statistic;
+    private String media;
     private String stimulus;
     private String subject;
     private Double value; // only used for setting
 
     public SheetConfiguration() {}
 
-    /* this set will only be used by the WorkbookWriter code.
-        when we don't know which field we are setting */
+    /* 
+     * this set will only be used by the WorkbookWriter code.
+     * when we don't know which field we are setting 
+     */
+    
     public void set(DataType type, String value) {
         if (type.equals(DataType.STATISTIC)) {
             this.statistic = value;
@@ -25,6 +29,8 @@ public class SheetConfiguration {
 
     public String getStimulus() { return this.stimulus; }
 
+    public String getMedia() { return this.media; }
+
     public String getSubject() { return this.subject; }
 
     public Double getValue() { return this.value; }
@@ -32,6 +38,8 @@ public class SheetConfiguration {
     public void setStatistic(String stat) { this.statistic = stat; }
 
     public void setStimulus(String stim) { this.stimulus = stim; }
+
+    public void setMedia(String med) { this.media = med; }
 
     public void setSubject(String subj) { this.subject = subj; }
 

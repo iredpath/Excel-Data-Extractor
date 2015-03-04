@@ -1,7 +1,7 @@
 package edu.neu.EDE.io;
 
 import edu.neu.EDE.data_structs.SheetConfiguration;
-import edu.neu.EDE.data_structs.ThreeDimArray;
+import edu.neu.EDE.data_structs.FourDimArray;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -17,7 +17,7 @@ import java.util.List;
 public class WorkbookReader {
 
     final int SHEET_MEDIA_NAME_ROW = 0;
-    final int SHEET_MEDIA_NAME_CELL = 5;
+    final int SHEET_MEDIA_NAME_CELL = 0;
     final int SLIDE_METRIC_ROW_START = 2;
     final int STATISTIC_NAME_CELL = 0;
     final int STATISTIC_VALUE_CELL = 5;
@@ -27,8 +27,11 @@ public class WorkbookReader {
     final String FILE_EXTENSION = ".xlsx";
     String subject;
     String media;
-    ThreeDimArray slideMetricData;
-    ThreeDimArray lookZoneData;
+    String stimulus;
+    String statistic;
+    Double value;
+    FourDimArray slideMetricData;
+    FourDimArray lookZoneData;
 
     public void readFile(File f) throws IOException {
         String filenameFull = f.getName();
@@ -42,17 +45,13 @@ public class WorkbookReader {
         int numSheets = workbook.getNumberOfSheets();
         XSSFSheet sheet;
         String sheetName;
-        String[] sheetNamePieces;
         for (int i = 0; i < numSheets; i++) {
             sheet = workbook.getSheetAt(i);
             sheetName = sheet.getSheetName();
-            // valid sheets end in " - F", " - G", or " - STAT"
-            sheetNamePieces = sheetName.split(" - ");
-            if (sheetNamePieces.length < 2) { // bad sheet, ignore it
-                continue;
-            }
-            if (sheetNamePieces[1].equals("STAT")) {
+            if (sheetName.contains(" - F")) {
                 extractMediaName(sheet);
+            }
+            else if (sheetName.contains(" - STAT")) {
                 extractStimuliFromSheet(sheet);
             }
         }
@@ -79,20 +78,18 @@ public class WorkbookReader {
     int extractSlideMetricDataFromSheet(XSSFSheet sheet) {
         Row row;
         int rowIndex = SLIDE_METRIC_ROW_START;
-        String statName;
-        Double statValue;
         String stimulus = media + SLIDE_METRIC_SUFFIX;
         SheetConfiguration config = new SheetConfiguration();
         config.setSubject(subject);
         config.setStimulus(stimulus);
+        config.setMedia(media);
         while ((row = sheet.getRow(rowIndex++)) != null) {
             Cell statNameCell = row.getCell(STATISTIC_NAME_CELL);
             Cell statValueCell = row.getCell(STATISTIC_VALUE_CELL);
-            statName = statNameCell.getStringCellValue();
-            statValue = statValueCell.getNumericCellValue();
-
-            config.setStatistic(statName);
-            config.setValue(statValue);
+            statistic = statNameCell.getStringCellValue();
+            value = statValueCell.getNumericCellValue();
+            config.setStatistic(statistic);
+            config.setValue(value);
             slideMetricData.set(config);
         }
         return rowIndex - 1;
@@ -135,10 +132,8 @@ public class WorkbookReader {
 
     void addLookZoneData(XSSFSheet sheet, int numStats, List<Integer> nullIndices) {
         int numLookZones = nullIndices.size() - 1; // last entry is null line after final lookZone
-        String stimulus, statName;
         Row row;
         Cell statNameCell, statValueCell;
-        Double statValue;
         SheetConfiguration config = new SheetConfiguration();
         config.setSubject(subject);
         for (int lookZoneIndex = 1; lookZoneIndex <= numLookZones; lookZoneIndex++) {
@@ -148,16 +143,17 @@ public class WorkbookReader {
                 stimulus = media + LOOK_ZONE_OUT_SUFFIX;
             }
             config.setStimulus(stimulus);
+            config.setMedia(media);
             int endIndex = nullIndices.get(lookZoneIndex) - 1;
             int startIndex = endIndex - numStats;
-            for (int i = endIndex; i > startIndex; i--) {
+            for (int i = startIndex + 1; i <= endIndex; i++) {
                 row = sheet.getRow(i);
                 statNameCell = row.getCell(STATISTIC_NAME_CELL);
-                statName = statNameCell.getStringCellValue();
+                statistic = statNameCell.getStringCellValue();
                 statValueCell = row.getCell(STATISTIC_VALUE_CELL);
-                statValue = statValueCell == null ? null : statValueCell.getNumericCellValue();
-                config.setStatistic(statName);
-                config.setValue(statValue);
+                value = statValueCell == null ? null : statValueCell.getNumericCellValue();
+                config.setStatistic(statistic);
+                config.setValue(value);
                 lookZoneData.set(config);
             }
         }
@@ -175,7 +171,7 @@ public class WorkbookReader {
         return stimulus;
     }
 
-    public void setSlideMetricData(ThreeDimArray data) { this.slideMetricData = data; }
+    public void setSlideMetricData(FourDimArray data) { this.slideMetricData = data; }
 
-    public void setLookZoneData(ThreeDimArray data) { this.lookZoneData = data; }
+    public void setLookZoneData(FourDimArray data) { this.lookZoneData = data; }
 }
