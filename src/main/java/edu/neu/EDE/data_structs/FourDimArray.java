@@ -56,8 +56,8 @@ public class FourDimArray {
     public void set(SheetConfiguration config) { // for use with setting values or null(blank)
         String subject = config.getSubject();
         String media = config.getMedia();
-        String stimulus = config.getSubject();
-        String statistic = config.getSubject();
+        String stimulus = config.getStimulus();
+        String statistic = config.getStatistic();
         Double value = config.getValue();
         int subjectIndex = subjects.indexOf(subject);
         if (subjectIndex == -1) {
@@ -108,16 +108,16 @@ public class FourDimArray {
             return null;
         }
         boolean found = false;
-        for (ArrayList<String> media: stimuli) {
-            for (String stim: media) {
-                if (stim == stimulus) {
+        for (ArrayList<String> listOfStim: stimuli) {
+            for (String stim: listOfStim) {
+                if (stim.equals(stimulus)) {
                     found = true;
-                    mediaIndex = stimuli.indexOf(media);
-                    stimuliIndex = media.indexOf(stimulus);
+                    mediaIndex = stimuli.indexOf(listOfStim);
+                    stimuliIndex = listOfStim.indexOf(stimulus);
                 }
             }
         }
-        if (!found) {
+        if (!found || (data.get(subjectIndex).size() <= mediaIndex) || (data.get(subjectIndex).get(mediaIndex).size() <= stimuliIndex)) {
             return null;
         }
         statisticIndex = statistics.indexOf(statistic);

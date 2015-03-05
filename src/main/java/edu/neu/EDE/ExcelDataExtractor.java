@@ -1,11 +1,14 @@
 package edu.neu.EDE;
 
+import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.io.WorkbookReader;
+import edu.neu.EDE.io.WorkbookWriter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExcelDataExtractor {
 
@@ -29,6 +32,7 @@ public class ExcelDataExtractor {
             File f = new File(s);
             extractor.readFile(f);
         }
+        extractor.writeFiles();
     }
 
     private void readFile(File f) throws IOException {
@@ -42,5 +46,23 @@ public class ExcelDataExtractor {
         } else {
             invalidFiles.add(f.getAbsolutePath());
         }
+    }
+
+    private void writeFiles() {
+        WorkbookWriter writer = new WorkbookWriter();
+        writer.setSheetType(DataType.STATISTIC);
+        writer.setColumnType(DataType.STIMULUS);
+        writer.setRowType(DataType.SUBJECT);
+        writer.setData(slideMetricData);
+        List<String> statistics = slideMetricData.getStatistics();
+        List<String> stimuli = slideMetricData.getStimuli();
+        List<String> subjects = slideMetricData.getSubjects();
+        writer.write(statistics, stimuli, subjects, "slideMetricOutput");
+        writer.setData(lookZoneData);
+        writer.reset();
+        statistics = lookZoneData.getStatistics();
+        stimuli = lookZoneData.getStimuli();
+        subjects = lookZoneData.getSubjects();
+        writer.write(statistics, stimuli, subjects, "lookZoneOutput");
     }
 }
