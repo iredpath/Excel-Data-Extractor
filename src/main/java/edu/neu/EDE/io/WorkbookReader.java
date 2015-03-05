@@ -52,6 +52,8 @@ public class WorkbookReader {
             sheetName = sheet.getSheetName();
             if (sheetName.endsWith(F_SHEET_END)) {
                 extractMediaName(sheet);
+                lookZoneData.setBlankSheet(subject, media);
+                slideMetricData.setBlankSheet(subject, media);
             }
             else if (sheetName.endsWith(STAT_SHEET_END)) {
                 extractStimuliFromSheet(sheet);
@@ -67,7 +69,7 @@ public class WorkbookReader {
         if (uncleanMediaName.contains(";")) { // name from video study.  cut all after ";"
             cleanName = uncleanMediaName.split(";")[0];
         } else { // name from image study.  remove " DATA" at the end
-            cleanName = uncleanMediaName.replace(" DATA", "");
+            cleanName = uncleanMediaName.replace(F_SHEET_END, "");
         }
         media = cleanName;
     }
