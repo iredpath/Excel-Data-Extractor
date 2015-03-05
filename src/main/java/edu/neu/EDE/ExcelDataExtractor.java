@@ -28,10 +28,12 @@ public class ExcelDataExtractor {
 
     public static void main(String[] args) throws IOException {
         ExcelDataExtractor extractor = new ExcelDataExtractor();
+        System.out.println("reading files");
         for (String s: args) {
             File f = new File(s);
             extractor.readFile(f);
         }
+        System.out.println("files read");
         extractor.writeFiles();
     }
 
@@ -49,6 +51,7 @@ public class ExcelDataExtractor {
     }
 
     private void writeFiles() {
+        System.out.println("writing files...");
         WorkbookWriter writer = new WorkbookWriter();
         writer.setSheetType(DataType.STATISTIC);
         writer.setColumnType(DataType.STIMULUS);
@@ -64,5 +67,6 @@ public class ExcelDataExtractor {
         stimuli = lookZoneData.getStimuli();
         subjects = lookZoneData.getSubjects();
         writer.write(statistics, stimuli, subjects, "lookZoneOutput");
+        System.out.println("files written to output directory");
     }
 }
