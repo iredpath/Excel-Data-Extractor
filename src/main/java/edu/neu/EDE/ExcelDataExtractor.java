@@ -8,6 +8,7 @@ import edu.neu.EDE.io.WorkbookWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExcelDataExtractor {
 
@@ -53,9 +54,15 @@ public class ExcelDataExtractor {
         writer.setColumnType(DataType.STIMULUS);
         writer.setRowType(DataType.SUBJECT);
         writer.setData(slideMetricData);
-        writer.write(slideMetricData.getStatistics(), slideMetricData.getStimuli(), slideMetricData.getSubjects(), "slideMetricOutput");
+        List<String> statistics = slideMetricData.getStatistics();
+        List<String> stimuli = slideMetricData.getStimuli();
+        List<String> subjects = slideMetricData.getSubjects();
+        writer.write(statistics, stimuli, subjects, "slideMetricOutput");
         writer.setData(lookZoneData);
         writer.reset();
-        writer.write(lookZoneData.getStatistics(), lookZoneData.getStimuli(), lookZoneData.getSubjects(), "lookZoneOutput");
+        statistics = lookZoneData.getStatistics();
+        stimuli = lookZoneData.getStimuli();
+        subjects = lookZoneData.getSubjects();
+        writer.write(statistics, stimuli, subjects, "lookZoneOutput");
     }
 }
