@@ -13,12 +13,36 @@ import java.util.ArrayList;
  */
 public class FourDimArray {
     
-    private ArrayList<String> subjects = new ArrayList<String>();
-    private ArrayList<String> medias = new ArrayList<String>();
-    private ArrayList<ArrayList<String>> stimuli = new ArrayList<ArrayList<String>>();
-    private ArrayList<String> statistics = new ArrayList<String>();
-    private ArrayList<ArrayList<ArrayList<ArrayList<Double>>>> data = new ArrayList<ArrayList<ArrayList<ArrayList<Double>>>>();
-
+    private ArrayList<String> subjects;
+    private ArrayList<String> medias;
+    private ArrayList<ArrayList<String>> stimuli;
+    private ArrayList<String> statistics;
+    private ArrayList<ArrayList<ArrayList<ArrayList<Double>>>> data;
+    
+    
+    /**
+     * Constructor for the FourDimArray
+     * Initializes Subjects, Medias, Stimuli, Statistics, and Data
+     */
+    public FourDimArray() {
+        subjects = new ArrayList<String>();
+        medias = new ArrayList<String>();
+        stimuli = new ArrayList<ArrayList<String>>();
+        statistics = new ArrayList<String>();
+        data = new ArrayList<ArrayList<ArrayList<ArrayList<Double>>>>();
+    }
+    
+    /**
+     * Used clear the data structure
+     */
+    public void reset() {
+        subjects.clear();
+        medias.clear();
+        stimuli.clear();
+        statistics.clear();
+        data.clear();
+    }
+    
     /**
      * Used to get the list of subjects
      * @return ArrayList<String> an ArrayList of subjects (the order they were added)
