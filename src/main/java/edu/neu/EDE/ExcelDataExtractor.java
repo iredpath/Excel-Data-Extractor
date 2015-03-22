@@ -10,6 +10,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Used to mock commands that the UI will invoke
+ * Not complete comments because most code will be heavily modified or removed
+ * @author Ian Redpath
+ * @version 3/22/2015
+ */
 public class ExcelDataExtractor {
 
     private WorkbookReader reader;
