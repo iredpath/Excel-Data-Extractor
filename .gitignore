@@ -3,4 +3,6 @@ target/*
 *.iml
 *.class
 **/dependency-reduced-pom.xml
-
+.classpath
+.project
+.settings/*
