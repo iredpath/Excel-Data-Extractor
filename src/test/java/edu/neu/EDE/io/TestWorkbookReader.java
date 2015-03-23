@@ -1,5 +1,6 @@
 package edu.neu.EDE.io;
 
+import edu.neu.EDE.data_structs.FourDimArray;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -36,7 +37,6 @@ public class TestWorkbookReader extends Assert {
         assertEquals(reader.media, "sample image name.jpg");
     }
 
-    /* TODO: rewrite this test to check for data setting
     @Test
     public void testExtractSlideMetricDataFromSheet() {
         WorkbookReader reader = new WorkbookReader();
@@ -52,10 +52,13 @@ public class TestWorkbookReader extends Assert {
         statCell.setCellValue("test2");
         valCell = row2.createCell(5);
         valCell.setCellValue(15);
+        reader.subject = "foo";
+        reader.media = "bar";
+        reader.slideMetricData = new FourDimArray();
         int smEnd = reader.extractSlideMetricDataFromSheet(sheet);
         assertEquals(smEnd, 4);
         assertEquals(sheet.getRow(smEnd), null);
-    }*/
+    }
 
     @Test
     public void testGetNullRowIndices() {
