@@ -1,5 +1,10 @@
 package edu.neu.EDE.io;
 
+/**
+ * WorkbookReader - class to read in excel files
+ * and add their data to internal structure
+**/
+
 import edu.neu.EDE.data_structs.SheetConfiguration;
 import edu.neu.EDE.data_structs.FourDimArray;
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class WorkbookReader {
 
@@ -35,14 +39,25 @@ public class WorkbookReader {
     FourDimArray slideMetricData;
     FourDimArray lookZoneData;
 
+    /**
+     * create POI workbook from file to later extract data
+     * @param f the excel file to read (already validated as excel)
+     * @throws IOException
+     */
     public void readFile(File f) throws IOException {
         String filenameFull = f.getName();
         subject = filenameFull.replace(FILE_EXTENSION, "");
         FileInputStream fis = new FileInputStream(f);
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
         extractData(workbook);
+        fis.close();
     }
 
+    /**
+     * loops through each sheet in the workbook
+     * extracts data from data sheets, adds placeholders for missing sheets
+     * @param workbook the workbook to extract from
+     */
     void extractData(XSSFWorkbook workbook) {
         int numSheets = workbook.getNumberOfSheets();
         XSSFSheet sheet;
@@ -61,6 +76,11 @@ public class WorkbookReader {
         }
     }
 
+    /**
+     * gets meadia (image/video) name from sheet
+     * maintained as a field in the reader object
+     * @param sheet the sheet to extract the name from (F)
+     */
     void extractMediaName(XSSFSheet sheet) {
         Row row = sheet.getRow(SHEET_MEDIA_NAME_ROW);
         Cell cell = row.getCell(SHEET_MEDIA_NAME_CELL);
@@ -74,11 +94,20 @@ public class WorkbookReader {
         media = cleanName;
     }
 
+    /**
+     * delegate to lower functions to extract out relevant data
+     * @param sheet sheet to get data from
+     */
     void extractStimuliFromSheet(XSSFSheet sheet) {
         int startLookZone = extractSlideMetricDataFromSheet(sheet);
         extractLookZoneDataFromSheet(sheet, startLookZone);
     }
 
+    /**
+     * get all slide metric data from sheet, add to slide metric data struct
+     * @param sheet the sheet to get data from
+     * @return the row index directly before the first look zone section
+     */
     int extractSlideMetricDataFromSheet(XSSFSheet sheet) {
         Row row;
         int rowIndex = SLIDE_METRIC_ROW_START;
@@ -99,13 +128,23 @@ public class WorkbookReader {
         return rowIndex - 1;
     }
 
-
+    /**
+     * get relevant look zone information from sheet
+     * @param sheet the sheet to get data from
+     * @param startLookZone the row before the first look zone row
+     */
     void extractLookZoneDataFromSheet(XSSFSheet sheet, int startLookZone) {
         List<Integer> nullIndices = getNullRowIndices(sheet, startLookZone);
         int numStats = getNumStats(sheet, nullIndices);
         addLookZoneData(sheet, numStats, nullIndices);
     }
 
+    /**
+     * gets the list of indices of null rows (separating look zones
+     * @param sheet the sheet to get indices from
+     * @param startIndex the first null row index
+     * @return a list of integers representing indices of null rows
+     */
     List<Integer> getNullRowIndices(XSSFSheet sheet, int startIndex) {
         List<Integer> nullIndices = new ArrayList<Integer>();
         int rowCounter = startIndex;
@@ -124,6 +163,12 @@ public class WorkbookReader {
         return nullIndices;
     }
 
+    /**
+     * gets the count for number of look zone stats
+     * @param sheet the sheet to analyze
+     * @param nullIndices the boundaries of each look zone
+     * @return the number of look zone stats to extract
+     */
     int getNumStats(XSSFSheet sheet, List<Integer> nullIndices) {
         // get the last not null row
         int rowIndex = nullIndices.get(nullIndices.size() - 1) - 1;
@@ -134,6 +179,12 @@ public class WorkbookReader {
         return numStats;
     }
 
+    /**
+     * adds the look zone data to the data structure
+     * @param sheet sheet with data to extract
+     * @param numStats number of stats to extract
+     * @param nullIndices boundaries of each look zone
+     */
     void addLookZoneData(XSSFSheet sheet, int numStats, List<Integer> nullIndices) {
         int numLookZones = nullIndices.size() - 1; // last entry is null line after final lookZone
         Row row;
@@ -163,6 +214,14 @@ public class WorkbookReader {
         }
     }
 
+    /**
+     * gets a description for a look zone if present
+     * @param sheet sheet to get info from
+     * @param nullIndices bounds of each look zone
+     * @param lookZoneIndex index of look zone we're working with
+     * @return the description of the look zone added to its name,
+     *  or just the name if no description exists
+     */
     String getStimulusName(XSSFSheet sheet, List<Integer> nullIndices, int lookZoneIndex) {
         // TODO: lookZoneIndex may not be correct; look zones can be out of order
         String stimulus;
@@ -175,7 +234,15 @@ public class WorkbookReader {
         return stimulus;
     }
 
+    /**
+     * initialize slide metric data struct
+     * @param data the data struct for slide metric data
+     */
     public void setSlideMetricData(FourDimArray data) { this.slideMetricData = data; }
 
+    /**
+     * initialize look zone metric data struct
+     * @param data the data struct for look zone data
+     */
     public void setLookZoneData(FourDimArray data) { this.lookZoneData = data; }
 }

@@ -30,24 +30,53 @@ public class WorkbookWriter {
     private FourDimArray data;
     int sheetIndex;
 
+    /**
+     * public constructor
+     */
     public WorkbookWriter() {
         workbook = new XSSFWorkbook();
         sheetIndex = 0;
     }
 
+    /**
+     * resets writer to write a new file
+     */
     public void reset() {
         sheetIndex = 0;
         workbook = new XSSFWorkbook();
     }
-    
+
+    /**
+     * sets which data type is being used for sheets
+     * @param type the data type for sheets
+     */
     public void setSheetType(DataType type) { sheetType = type; }
 
+    /**
+     * sets which data type is being used for rows
+     * @param type the data type for rows
+     */
     public void setRowType(DataType type) { rowType = type; }
 
+    /**
+     * sets which data type is being used for columns
+     * @param type the data type for columns
+     */
     public void setColumnType(DataType type) { columnType = type; }
 
+    /**
+     * set the data struct to be used in writing
+     * @param d the data
+     */
     public void setData(FourDimArray d) { data = d;}
-    
+
+    /**
+     * write the file
+     * @param sheetNames the list of sheet names
+     * @param columnHeaders the list of column headers for each sheet
+     * @param rowHeaders the list of row headers for each sheet
+     * @param name the name of the output file
+     */
     public void write(List<String> sheetNames, List<String> columnHeaders, List<String> rowHeaders, String name) {
         for (String sheetName: sheetNames) {
             addSheet(sheetName, columnHeaders, rowHeaders);
@@ -70,6 +99,12 @@ public class WorkbookWriter {
         }
     }
 
+    /**
+     * add a sheet to the workbook
+     * @param sheetName the name of the sheet
+     * @param columnHeaders the headers for columns
+     * @param rowHeaders the headers for rows
+     */
     private void addSheet(String sheetName, List<String> columnHeaders, List<String> rowHeaders) {
         XSSFSheet sheet = workbook.createSheet(sheetIndex + " - " + WorkbookUtil.createSafeSheetName(sheetName));
         createHeaderRow(sheet, sheetName, columnHeaders);
@@ -77,6 +112,12 @@ public class WorkbookWriter {
         sheetIndex++;
     }
 
+    /**
+     * create the first row of the sheet
+     * @param sheet the sheet
+     * @param sheetName the name of the sheet
+     * @param columnHeaders the name of each column
+     */
     private void createHeaderRow(XSSFSheet sheet, String sheetName, List<String> columnHeaders) {
         Cell cell;
         int cellIndex = 0;
@@ -89,6 +130,13 @@ public class WorkbookWriter {
         }
     }
 
+    /**
+     * write the data rows to the sheet
+     * @param sheet the sheet
+     * @param sheetName the name of the sheet
+     * @param columnHeaders the name of each column
+     * @param rowHeaders the name of each row
+     */
     private void addData2Sheet(XSSFSheet sheet, String sheetName, List<String> columnHeaders, List<String> rowHeaders) {
         int rowIndex = DATA_ROW_START_INDEX;
         int cellIndex = 0;
@@ -109,6 +157,14 @@ public class WorkbookWriter {
         }
     }
 
+    /**
+     * get the value for a specific cell
+     * params represent statistic, stimuli, and subject in some order
+     * @param sheetName the name of the sheet
+     * @param rowName the name of the row
+     * @param columnName the name of the column
+     * @return the value specified from the data struct
+     */
     private Double getValue(String sheetName, String rowName, String columnName) {
         SheetConfiguration config = new SheetConfiguration();
         config.set(sheetType, sheetName);
