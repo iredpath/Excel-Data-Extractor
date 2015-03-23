@@ -26,7 +26,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import net.miginfocom.swing.MigLayout;
 import java.awt.CardLayout;
 import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
