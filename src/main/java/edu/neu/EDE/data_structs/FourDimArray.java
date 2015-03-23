@@ -45,7 +45,7 @@ public class FourDimArray {
     
     /**
      * Used to get the list of subjects
-     * @return ArrayList<String> an ArrayList of subjects (the order they were added)
+     * @return an ArrayList of subjects (the order they were added)
      */
     public ArrayList<String> getSubjects() {
         return subjects;
@@ -53,7 +53,7 @@ public class FourDimArray {
     
     /**
      * Used to get the list of media
-     * @return ArrayList<String> an ArrayList of medias (the order they were added)
+     * @return an ArrayList of medias (the order they were added)
      */
     public ArrayList<String> getMedias() {
         return medias;
@@ -61,7 +61,7 @@ public class FourDimArray {
     
     /**
      * Used to get the list of stimuli
-     * @return ArrayList<String> an ArrayList of stimuli (the order they were added)
+     * @return an ArrayList of stimuli (the order they were added)
      */
     public ArrayList<String> getStimuli() {
         ArrayList<String> tempStimuliArray = new ArrayList<String>();
@@ -73,7 +73,7 @@ public class FourDimArray {
 
     /**
      * Used to get the list of statistics
-     * @return ArrayList<String> an ArrayList of statistics (the order they were added)
+     * @return an ArrayList of statistics (the order they were added)
      */
     public ArrayList<String> getStatistics() {
         return statistics;
@@ -83,7 +83,6 @@ public class FourDimArray {
      * Used when a sheet is blank to leave a placeholder so later sheets are in the correct order
      * @param subject String that is the name of the subject
      * @param media String that is the name of the media source
-     * @return ArrayList<String> an ArrayList of stimuli (the order they were added)
      */
     public void setBlankSheet(String subject, String media) {
         int subjectIndex, mediaIndex;

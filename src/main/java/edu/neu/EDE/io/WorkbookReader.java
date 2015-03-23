@@ -42,7 +42,7 @@ public class WorkbookReader {
     /**
      * create POI workbook from file to later extract data
      * @param f the excel file to read (already validated as excel)
-     * @throws IOException
+     * @throws IOException throws IOException
      */
     public void readFile(File f) throws IOException {
         String filenameFull = f.getName();

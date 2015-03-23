@@ -83,7 +83,7 @@ public class SheetConfiguration {
     
     /**
      * Used for setting the stimulus stored in the SheetConfiguration
-     * @param stat String that we are setting the stimulus to in the SheetConfiguration
+     * @param stim String that we are setting the stimulus to in the SheetConfiguration
      */
     public void setStimulus(String stim) {
         this.stimulus = stim;
@@ -91,7 +91,7 @@ public class SheetConfiguration {
 
     /**
      * Used for setting the media stored in the SheetConfiguration
-     * @param stat String that we are setting the media to in the SheetConfiguration
+     * @param med String that we are setting the media to in the SheetConfiguration
      */
     public void setMedia(String med) {
         this.media = med;
@@ -99,7 +99,7 @@ public class SheetConfiguration {
 
     /**
      * Used for setting the subject stored in the SheetConfiguration
-     * @param stat String that we are setting the subject to in the SheetConfiguration
+     * @param subj String that we are setting the subject to in the SheetConfiguration
      */
     public void setSubject(String subj) {
         this.subject = subj;
@@ -107,7 +107,7 @@ public class SheetConfiguration {
 
     /**
      * Used for setting the value stored in the SheetConfiguration
-     * @param stat String that we are setting the value to in the SheetConfiguration
+     * @param val String that we are setting the value to in the SheetConfiguration
      */
     public void setValue(Double val) {
         this.value = val;
