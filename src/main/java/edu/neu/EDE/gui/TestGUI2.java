@@ -98,89 +98,89 @@ public class TestGUI2 {
         JPanel FileListContent = new JPanel();
         FileList.setViewportView(FileListContent);
         
-        JPanel File = new JPanel();
+        JPanel File_1 = new JPanel();
         
-        JPanel panel = new JPanel();
+        JPanel File_0 = new JPanel();
         
-        JLabel label = new JLabel("File Name Goes Here");
+        JLabel FileNameText_0 = new JLabel("File Name Goes Here");
         
-        JButton button = new JButton("Remove");
-        GroupLayout gl_panel = new GroupLayout(panel);
-        gl_panel.setHorizontalGroup(
-            gl_panel.createParallelGroup(Alignment.TRAILING)
+        JButton RemoveFileButton_0 = new JButton("Remove");
+        GroupLayout gl_File_0 = new GroupLayout(File_0);
+        gl_File_0.setHorizontalGroup(
+            gl_File_0.createParallelGroup(Alignment.TRAILING)
                 .addGap(0, 280, Short.MAX_VALUE)
-                .addGroup(gl_panel.createSequentialGroup()
+                .addGroup(gl_File_0.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(label, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(FileNameText_0, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                     .addPreferredGap(ComponentPlacement.UNRELATED)
-                    .addComponent(button)
+                    .addComponent(RemoveFileButton_0)
                     .addContainerGap())
         );
-        gl_panel.setVerticalGroup(
-            gl_panel.createParallelGroup(Alignment.LEADING)
+        gl_File_0.setVerticalGroup(
+            gl_File_0.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 45, Short.MAX_VALUE)
-                .addGroup(gl_panel.createSequentialGroup()
+                .addGroup(gl_File_0.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-                        .addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(label, GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                    .addGroup(gl_File_0.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(RemoveFileButton_0, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(FileNameText_0, GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                     .addGap(149))
         );
-        panel.setLayout(gl_panel);
+        File_0.setLayout(gl_File_0);
         GroupLayout gl_FileListContent = new GroupLayout(FileListContent);
         gl_FileListContent.setHorizontalGroup(
             gl_FileListContent.createParallelGroup(Alignment.TRAILING)
                 .addGroup(gl_FileListContent.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(gl_FileListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(File, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                        .addComponent(panel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(File_1, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                        .addComponent(File_0, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
                     .addContainerGap())
         );
         gl_FileListContent.setVerticalGroup(
             gl_FileListContent.createParallelGroup(Alignment.LEADING)
                 .addGroup(gl_FileListContent.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(File, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(File_1, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(panel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(File_0, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(527, Short.MAX_VALUE))
         );
         
-        JLabel FileNameText = new JLabel("File Name Goes Here");
+        JLabel FileNameText_1 = new JLabel("File Name Goes Here");
         
-        JButton RemoveFileButton = new JButton("Remove");
-        GroupLayout gl_File = new GroupLayout(File);
-        gl_File.setHorizontalGroup(
-            gl_File.createParallelGroup(Alignment.TRAILING)
-                .addGroup(gl_File.createSequentialGroup()
+        JButton RemoveFileButton_1 = new JButton("Remove");
+        GroupLayout gl_File_1 = new GroupLayout(File_1);
+        gl_File_1.setHorizontalGroup(
+            gl_File_1.createParallelGroup(Alignment.TRAILING)
+                .addGroup(gl_File_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(FileNameText, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                    .addComponent(FileNameText_1, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                     .addPreferredGap(ComponentPlacement.UNRELATED)
-                    .addComponent(RemoveFileButton)
+                    .addComponent(RemoveFileButton_1)
                     .addContainerGap())
         );
-        gl_File.setVerticalGroup(
-            gl_File.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_File.createSequentialGroup()
+        gl_File_1.setVerticalGroup(
+            gl_File_1.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_File_1.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(gl_File.createParallelGroup(Alignment.BASELINE)
-                        .addComponent(RemoveFileButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(FileNameText, GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                    .addGroup(gl_File_1.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(RemoveFileButton_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(FileNameText_1, GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                     .addGap(149))
         );
-        File.setLayout(gl_File);
+        File_1.setLayout(gl_File_1);
         FileListContent.setLayout(gl_FileListContent);
         
         JPanel FileFooter = new JPanel();
         FilePanel.add(FileFooter, BorderLayout.SOUTH);
         FileFooter.setLayout(new BorderLayout(0, 0));
         
-        JPanel panel_6 = new JPanel();
-        FileFooter.add(panel_6, BorderLayout.CENTER);
+        JPanel FileFooterContainer = new JPanel();
+        FileFooter.add(FileFooterContainer, BorderLayout.CENTER);
         
         JButton AddFilesButton = new JButton("Add Files");
-        panel_6.add(AddFilesButton);
+        FileFooterContainer.add(AddFilesButton);
         
         JPanel AxisMemberPanel = new JPanel();
         frame.getContentPane().add(AxisMemberPanel);
@@ -209,74 +209,76 @@ public class TestGUI2 {
         StatisticsList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         StatisticsTab.add(StatisticsList, BorderLayout.CENTER);
         
-        JPanel StatisticListContent = new JPanel();
-        StatisticsList.setViewportView(StatisticListContent);
+        JPanel StatisticsListContent = new JPanel();
+        StatisticsList.setViewportView(StatisticsListContent);
         
-        JPanel Statistic = new JPanel();
+        JPanel Statistic_0 = new JPanel();
         
-        JCheckBox StatisticCheckBox = new JCheckBox("Statistic Name");
-        GroupLayout gl_Statistic = new GroupLayout(Statistic);
-        gl_Statistic.setHorizontalGroup(
-            gl_Statistic.createParallelGroup(Alignment.LEADING)
+        JCheckBox StatisticName_0 = new JCheckBox("Statistic Name");
+        StatisticName_0.setSelected(true);
+        GroupLayout gl_Statistic_0 = new GroupLayout(Statistic_0);
+        gl_Statistic_0.setHorizontalGroup(
+            gl_Statistic_0.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Statistic.createSequentialGroup()
+                .addGroup(gl_Statistic_0.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(StatisticCheckBox, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(StatisticName_0, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addContainerGap())
         );
-        gl_Statistic.setVerticalGroup(
-            gl_Statistic.createParallelGroup(Alignment.LEADING)
+        gl_Statistic_0.setVerticalGroup(
+            gl_Statistic_0.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Statistic.createSequentialGroup()
+                .addGroup(gl_Statistic_0.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(StatisticCheckBox, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(StatisticName_0, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addGap(40))
         );
-        Statistic.setLayout(gl_Statistic);
+        Statistic_0.setLayout(gl_Statistic_0);
         
-        JPanel panel_1 = new JPanel();
+        JPanel Statistic_1 = new JPanel();
         
-        JCheckBox checkBox = new JCheckBox("Statistic Name");
-        GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-        gl_panel_1.setHorizontalGroup(
-            gl_panel_1.createParallelGroup(Alignment.LEADING)
+        JCheckBox StatisticName_1 = new JCheckBox("Statistic Name");
+        StatisticName_1.setSelected(true);
+        GroupLayout gl_Statistic_1 = new GroupLayout(Statistic_1);
+        gl_Statistic_1.setHorizontalGroup(
+            gl_Statistic_1.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 285, Short.MAX_VALUE)
                 .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_panel_1.createSequentialGroup()
+                .addGroup(gl_Statistic_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(checkBox, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(StatisticName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addContainerGap())
         );
-        gl_panel_1.setVerticalGroup(
-            gl_panel_1.createParallelGroup(Alignment.LEADING)
+        gl_Statistic_1.setVerticalGroup(
+            gl_Statistic_1.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 36, Short.MAX_VALUE)
                 .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_panel_1.createSequentialGroup()
+                .addGroup(gl_Statistic_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(checkBox, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(StatisticName_1, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addGap(40))
         );
-        panel_1.setLayout(gl_panel_1);
-        GroupLayout gl_StatisticListContent = new GroupLayout(StatisticListContent);
-        gl_StatisticListContent.setHorizontalGroup(
-            gl_StatisticListContent.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_StatisticListContent.createSequentialGroup()
+        Statistic_1.setLayout(gl_Statistic_1);
+        GroupLayout gl_StatisticsListContent = new GroupLayout(StatisticsListContent);
+        gl_StatisticsListContent.setHorizontalGroup(
+            gl_StatisticsListContent.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_StatisticsListContent.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(gl_StatisticListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Statistic, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gl_StatisticsListContent.createParallelGroup(Alignment.LEADING)
+                        .addComponent(Statistic_0, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Statistic_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        gl_StatisticListContent.setVerticalGroup(
-            gl_StatisticListContent.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_StatisticListContent.createSequentialGroup()
+        gl_StatisticsListContent.setVerticalGroup(
+            gl_StatisticsListContent.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_StatisticsListContent.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(Statistic, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Statistic_0, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Statistic_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(529, Short.MAX_VALUE))
         );
-        StatisticListContent.setLayout(gl_StatisticListContent);
+        StatisticsListContent.setLayout(gl_StatisticsListContent);
         
         JPanel Stimuli = new JPanel();
         AxisTabs.addTab("Stimuli", null, Stimuli, null);
@@ -291,51 +293,53 @@ public class TestGUI2 {
         JPanel StimuliListContent = new JPanel();
         StimuliList.setViewportView(StimuliListContent);
         
-        JPanel Stimuli_1 = new JPanel();
+        JPanel Stimulus_0 = new JPanel();
         
-        JCheckBox chckbxStimulusName = new JCheckBox("Stimulus Name");
-        GroupLayout gl_Stimuli_1 = new GroupLayout(Stimuli_1);
-        gl_Stimuli_1.setHorizontalGroup(
-            gl_Stimuli_1.createParallelGroup(Alignment.LEADING)
+        JCheckBox StimulusName_0 = new JCheckBox("Stimulus Name");
+        StimulusName_0.setSelected(true);
+        GroupLayout gl_Stimulus_0 = new GroupLayout(Stimulus_0);
+        gl_Stimulus_0.setHorizontalGroup(
+            gl_Stimulus_0.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Stimuli_1.createSequentialGroup()
+                .addGroup(gl_Stimulus_0.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(chckbxStimulusName, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(StimulusName_0, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addContainerGap())
         );
-        gl_Stimuli_1.setVerticalGroup(
-            gl_Stimuli_1.createParallelGroup(Alignment.LEADING)
+        gl_Stimulus_0.setVerticalGroup(
+            gl_Stimulus_0.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Stimuli_1.createSequentialGroup()
+                .addGroup(gl_Stimulus_0.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(chckbxStimulusName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(StimulusName_0, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(40))
         );
-        Stimuli_1.setLayout(gl_Stimuli_1);
+        Stimulus_0.setLayout(gl_Stimulus_0);
         
-        JPanel Stimuli_2 = new JPanel();
+        JPanel Stimulus_1 = new JPanel();
         
-        JCheckBox chckbxStimulusName_1 = new JCheckBox("Stimulus Name");
-        GroupLayout gl_Stimuli_2 = new GroupLayout(Stimuli_2);
-        gl_Stimuli_2.setHorizontalGroup(
-            gl_Stimuli_2.createParallelGroup(Alignment.LEADING)
+        JCheckBox StimulusName_1 = new JCheckBox("Stimulus Name");
+        StimulusName_1.setSelected(true);
+        GroupLayout gl_Stimulus_1 = new GroupLayout(Stimulus_1);
+        gl_Stimulus_1.setHorizontalGroup(
+            gl_Stimulus_1.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 285, Short.MAX_VALUE)
                 .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Stimuli_2.createSequentialGroup()
+                .addGroup(gl_Stimulus_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(chckbxStimulusName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(StimulusName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addContainerGap())
         );
-        gl_Stimuli_2.setVerticalGroup(
-            gl_Stimuli_2.createParallelGroup(Alignment.LEADING)
+        gl_Stimulus_1.setVerticalGroup(
+            gl_Stimulus_1.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 36, Short.MAX_VALUE)
                 .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Stimuli_2.createSequentialGroup()
+                .addGroup(gl_Stimulus_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(chckbxStimulusName_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(StimulusName_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(40))
         );
-        Stimuli_2.setLayout(gl_Stimuli_2);
+        Stimulus_1.setLayout(gl_Stimulus_1);
         GroupLayout gl_StimuliListContent = new GroupLayout(StimuliListContent);
         gl_StimuliListContent.setHorizontalGroup(
             gl_StimuliListContent.createParallelGroup(Alignment.LEADING)
@@ -343,8 +347,8 @@ public class TestGUI2 {
                 .addGroup(gl_StimuliListContent.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(gl_StimuliListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Stimuli_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Stimuli_2, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Stimulus_0, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Stimulus_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         gl_StimuliListContent.setVerticalGroup(
@@ -352,9 +356,9 @@ public class TestGUI2 {
                 .addGap(0, 618, Short.MAX_VALUE)
                 .addGroup(gl_StimuliListContent.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(Stimuli_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Stimulus_0, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(Stimuli_2, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Stimulus_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(529, Short.MAX_VALUE))
         );
         StimuliListContent.setLayout(gl_StimuliListContent);
@@ -372,51 +376,53 @@ public class TestGUI2 {
         JPanel SubjectListContent = new JPanel();
         SubjectList.setViewportView(SubjectListContent);
         
+        JPanel Subject_0 = new JPanel();
+        
+        JCheckBox SubjectName_0 = new JCheckBox("Subject Name");
+        SubjectName_0.setSelected(true);
+        GroupLayout gl_Subject_0 = new GroupLayout(Subject_0);
+        gl_Subject_0.setHorizontalGroup(
+            gl_Subject_0.createParallelGroup(Alignment.LEADING)
+                .addGap(0, 285, Short.MAX_VALUE)
+                .addGroup(gl_Subject_0.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(SubjectName_0, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addContainerGap())
+        );
+        gl_Subject_0.setVerticalGroup(
+            gl_Subject_0.createParallelGroup(Alignment.LEADING)
+                .addGap(0, 36, Short.MAX_VALUE)
+                .addGroup(gl_Subject_0.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(SubjectName_0, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(40))
+        );
+        Subject_0.setLayout(gl_Subject_0);
+        
         JPanel Subject_1 = new JPanel();
         
-        JCheckBox chckbxSubjectName = new JCheckBox("Subject Name");
+        JCheckBox SubjectName_1 = new JCheckBox("Subject Name");
+        SubjectName_1.setSelected(true);
         GroupLayout gl_Subject_1 = new GroupLayout(Subject_1);
         gl_Subject_1.setHorizontalGroup(
             gl_Subject_1.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 285, Short.MAX_VALUE)
+                .addGap(0, 285, Short.MAX_VALUE)
                 .addGroup(gl_Subject_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(chckbxSubjectName, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(SubjectName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addContainerGap())
         );
         gl_Subject_1.setVerticalGroup(
             gl_Subject_1.createParallelGroup(Alignment.LEADING)
                 .addGap(0, 36, Short.MAX_VALUE)
+                .addGap(0, 36, Short.MAX_VALUE)
                 .addGroup(gl_Subject_1.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(chckbxSubjectName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(SubjectName_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(40))
         );
         Subject_1.setLayout(gl_Subject_1);
-        
-        JPanel Subject_2 = new JPanel();
-        
-        JCheckBox chckbxSubjectName_1 = new JCheckBox("Subject Name");
-        GroupLayout gl_Subject_2 = new GroupLayout(Subject_2);
-        gl_Subject_2.setHorizontalGroup(
-            gl_Subject_2.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Subject_2.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(chckbxSubjectName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Subject_2.setVerticalGroup(
-            gl_Subject_2.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Subject_2.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(chckbxSubjectName_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Subject_2.setLayout(gl_Subject_2);
         GroupLayout gl_SubjectListContent = new GroupLayout(SubjectListContent);
         gl_SubjectListContent.setHorizontalGroup(
             gl_SubjectListContent.createParallelGroup(Alignment.LEADING)
@@ -424,8 +430,8 @@ public class TestGUI2 {
                 .addGroup(gl_SubjectListContent.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(gl_SubjectListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Subject_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Subject_2, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Subject_0, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Subject_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         gl_SubjectListContent.setVerticalGroup(
@@ -433,9 +439,9 @@ public class TestGUI2 {
                 .addGap(0, 618, Short.MAX_VALUE)
                 .addGroup(gl_SubjectListContent.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(Subject_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Subject_0, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(Subject_2, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Subject_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(529, Short.MAX_VALUE))
         );
         SubjectListContent.setLayout(gl_SubjectListContent);
@@ -502,11 +508,13 @@ public class TestGUI2 {
         gl_AxisConfigurationWrapper.setHorizontalGroup(
             gl_AxisConfigurationWrapper.createParallelGroup(Alignment.LEADING)
                 .addGroup(Alignment.TRAILING, gl_AxisConfigurationWrapper.createSequentialGroup()
-                    .addContainerGap(102, Short.MAX_VALUE)
-                    .addGroup(gl_AxisConfigurationWrapper.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Tab, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(MockTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addGap(102)
+                    .addComponent(MockTable, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(89))
+                .addGroup(Alignment.TRAILING, gl_AxisConfigurationWrapper.createSequentialGroup()
+                    .addGap(129)
+                    .addComponent(Tab, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(117))
         );
         gl_AxisConfigurationWrapper.setVerticalGroup(
             gl_AxisConfigurationWrapper.createParallelGroup(Alignment.LEADING)
@@ -515,7 +523,7 @@ public class TestGUI2 {
                     .addComponent(MockTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(ComponentPlacement.RELATED)
                     .addComponent(Tab, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(351, Short.MAX_VALUE))
+                    .addContainerGap(521, Short.MAX_VALUE))
         );
         AxisConfigurationWrapper.setLayout(gl_AxisConfigurationWrapper);
         
