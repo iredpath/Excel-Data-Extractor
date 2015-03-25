@@ -41,7 +41,8 @@ public class GuiView {
     private JPanel statisticListContent;
     private JRadioButton lookZoneButton;
     private JRadioButton slideMetricButton;
-    private JProgressBar progressBar;
+    private JProgressBar addFileProgressBar;
+    private JProgressBar exportProgressBar;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -86,7 +87,7 @@ public class GuiView {
         JButton addFilesButton = new JButton("Add Files");
         addFilesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                progressBar.setVisible(true);
+                addFileProgressBar.setVisible(true);
                 JFileChooser fc = new JFileChooser();
                 fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 fc.setMultiSelectionEnabled(true);
@@ -97,11 +98,11 @@ public class GuiView {
         });
 
         fileFooter.add(addFilesButton, BorderLayout.WEST);
-        progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true);
-        progressBar.setVisible(false);
-        progressBar.setStringPainted(true);
-        fileFooter.add(progressBar, BorderLayout.EAST);
+        addFileProgressBar = new JProgressBar();
+        addFileProgressBar.setIndeterminate(true);
+        addFileProgressBar.setVisible(false);
+        addFileProgressBar.setStringPainted(true);
+        fileFooter.add(addFileProgressBar, BorderLayout.EAST);
 
 
 
@@ -161,7 +162,7 @@ public class GuiView {
         StatisticsTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane StatisticsList = new JScrollPane();
-        StatisticsList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        //StatisticsList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         StatisticsList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         StatisticsTab.add(StatisticsList, BorderLayout.CENTER);
 
@@ -175,7 +176,7 @@ public class GuiView {
 
         JScrollPane StimuliList = new JScrollPane();
         StimuliList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        StimuliList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        //StimuliList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         Stimuli.add(StimuliList, BorderLayout.CENTER);
 
         stimulusListContent = new JPanel();
@@ -188,7 +189,7 @@ public class GuiView {
 
         JScrollPane SubjectList = new JScrollPane();
         SubjectList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        SubjectList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        //SubjectList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         Subjects.add(SubjectList, BorderLayout.CENTER);
 
         subjectListContent = new JPanel();
@@ -274,15 +275,24 @@ public class GuiView {
         AxisConfigurationWrapper.setLayout(gl_AxisConfigurationWrapper);
 
         JPanel OutputFooter = new JPanel();
+        OutputFooter.setLayout(new BorderLayout(0, 0));
         OutputPanel.add(OutputFooter, BorderLayout.SOUTH);
 
         JButton btnExport = new JButton("Export");
         btnExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                model.export(lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
+                exportProgressBar.setVisible(true);
+                ExportWorker exportWorker = new ExportWorker();
+                exportWorker.execute();
             }
         });
-        OutputFooter.add(btnExport);
+        OutputFooter.add(btnExport, BorderLayout.EAST);
+
+        exportProgressBar = new JProgressBar();
+        exportProgressBar.setIndeterminate(true);
+        exportProgressBar.setVisible(false);
+        exportProgressBar.setStringPainted(true);
+        OutputFooter.add(exportProgressBar, BorderLayout.WEST);
 
         JPanel RightSpacer = new JPanel();
         OutputPanel.add(RightSpacer, BorderLayout.EAST);
@@ -308,10 +318,13 @@ public class GuiView {
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //TODO: consider putting this work in separate thread, add loading bar
+                //TODO: actually support this on backend
+                /*
                 model.remove(filename, subject);
                 update();
                 frame.revalidate();
                 frame.repaint();
+                */
             }
         });
         panel.add(deleteButton, BorderLayout.EAST);
@@ -373,8 +386,8 @@ public class GuiView {
             this.fc = fc;
             this.retVal = retVal;
         }
-        protected Object doInBackground() {
 
+        protected Object doInBackground() {
             if (retVal == fc.APPROVE_OPTION) {
                 File[] files = fc.getSelectedFiles();
                 try {
@@ -382,7 +395,6 @@ public class GuiView {
                     update();
                     frame.revalidate();
                     frame.repaint();
-
                 } catch (IOException ex) {
                     // TODO: is this the right way to do it?
                     System.out.println(ex);
@@ -395,7 +407,21 @@ public class GuiView {
         protected void done() {
             //TODO: THIS IS BAD BAD BAD BAD BAD.  PLEASE FIND A WAY TO DO IT RIGHT
             // turn off progress bar
-            progressBar.setVisible(false);
+            addFileProgressBar.setVisible(false);
+        }
+    }
+
+    class ExportWorker extends SwingWorker {
+
+        protected Object doInBackground() {
+            model.export(lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
+            return null;
+        }
+
+        protected void done() {
+            //TODO: THIS IS BAD BAD BAD BAD BAD.  PLEASE FIND A WAY TO DO IT RIGHT
+            // turn off progress bar
+            exportProgressBar.setVisible(false);
         }
     }
 }
