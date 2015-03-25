@@ -67,13 +67,13 @@ public class ExcelDataExtractor {
         List<String> statistics = slideMetricData.getStatistics();
         List<String> stimuli = slideMetricData.getStimuli();
         List<String> subjects = slideMetricData.getSubjects();
-        writer.write(statistics, stimuli, subjects, "slideMetricOutput");
+        //writer.write(statistics, stimuli, subjects, "slideMetricOutput");
         writer.setData(lookZoneData);
         writer.reset();
         statistics = lookZoneData.getStatistics();
         stimuli = lookZoneData.getStimuli();
         subjects = lookZoneData.getSubjects();
-        writer.write(statistics, stimuli, subjects, "lookZoneOutput");
+        //writer.write(statistics, stimuli, subjects, "lookZoneOutput");
         System.out.println("files written to output directory");
     }
 }

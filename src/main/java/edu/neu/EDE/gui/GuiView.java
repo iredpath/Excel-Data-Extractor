@@ -334,7 +334,7 @@ public class GuiView {
         JLabel label = new JLabel(name);
         panel.add(label, BorderLayout.WEST);
         JCheckBox checkbox = new JCheckBox();
-        if (model.getDataFor(lookZoneButton.isSelected() ? "lookZone" : "slideMetric").get(type).get(name)) {
+        if (!model.getDataFor(lookZoneButton.isSelected() ? "lookZone" : "slideMetric").get(type).contains(name)) {
             checkbox.setSelected(true);
         }
         checkbox.addActionListener(new ActionListener() {
