@@ -75,39 +75,6 @@ public class GuiModel {
         String subjectName = reader.getSubject();
         validFiles.put(f.getName(), subjectName);
     }
-/*
-    void update() {
-        for (String subject: slideMetricData.getSubjects()) {
-            if (slideMetricDataType2Status.get(DataType.SUBJECT).get(subject) == null) {
-                slideMetricDataType2Status.get(DataType.SUBJECT).put(subject, true);
-            }
-        }
-        for (String stimulus: slideMetricData.getStimuli()) {
-            if (slideMetricDataType2Status.get(DataType.STIMULUS).get(stimulus) == null) {
-                slideMetricDataType2Status.get(DataType.STIMULUS).put(stimulus, true);
-            }
-        }
-        for (String statistic: slideMetricData.getStatistics()) {
-            if (slideMetricDataType2Status.get(DataType.STATISTIC).get(statistic) == null) {
-                slideMetricDataType2Status.get(DataType.STATISTIC).put(statistic, true);
-            }
-        }
-        for (String subject: lookZoneData.getSubjects()) {
-            if (lookZoneDataType2Status.get(DataType.SUBJECT).get(subject) == null) {
-                lookZoneDataType2Status.get(DataType.SUBJECT).put(subject, true);
-            }
-        }
-        for (String stimulus: lookZoneData.getStimuli()) {
-            if (lookZoneDataType2Status.get(DataType.STIMULUS).get(stimulus) == null) {
-                lookZoneDataType2Status.get(DataType.STIMULUS).put(stimulus, true);
-            }
-        }
-        for (String statistic: lookZoneData.getStatistics()) {
-            if (lookZoneDataType2Status.get(DataType.STATISTIC).get(statistic) == null) {
-                lookZoneDataType2Status.get(DataType.STATISTIC).put(statistic, true);
-            }
-        }
-    }*/
 
     Map<String, String> getFiles() {
         return validFiles;

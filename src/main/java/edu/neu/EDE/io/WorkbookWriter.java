@@ -75,7 +75,7 @@ public class WorkbookWriter {
      * write the file
      * @param name the name of the output file
      */
-    public void write(OutputConfiguration config, /*List<String> sheetNames, List<String> columnHeaders, List<String> rowHeaders,*/ String name) {
+    public void write(OutputConfiguration config, String name) {
         List<String> sheetNames = config.getTabs();
         List<String> columnHeaders = config.getColumns();
         List<String> rowHeaders = config.getRows();
