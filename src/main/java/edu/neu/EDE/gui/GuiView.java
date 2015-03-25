@@ -1,5 +1,7 @@
 package edu.neu.EDE.gui;
 
+import edu.neu.EDE.data_structs.DataType;
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -11,12 +13,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +43,7 @@ public class GuiView {
     private JPanel statisticListContent;
     private JRadioButton lookZoneButton;
     private JRadioButton slideMetricButton;
+    private JProgressBar progressBar;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -81,29 +88,22 @@ public class GuiView {
         JButton addFilesButton = new JButton("Add Files");
         addFilesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                progressBar.setVisible(true);
                 JFileChooser fc = new JFileChooser();
                 fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 fc.setMultiSelectionEnabled(true);
-                int retVal = fc.showOpenDialog(new JFrame());
-                if (retVal == fc.APPROVE_OPTION) {
-                    File[] files = fc.getSelectedFiles();
-                    try {
-                        model.addFiles(files);
-                        //GuiModel model = controller.addFiles(files);
-                        update(model);
-                        frame.revalidate();
-                        frame.repaint();
-
-                    } catch (IOException ex) {
-                        System.out.println(ex);
-                        System.exit(1);
-                    }
-                }
+                int retVal = fc.showOpenDialog(frame);
+                FileAdder adder = new FileAdder(fc, retVal);
+                adder.execute();
             }
         });
 
-        fileFooter.add(addFilesButton);
+        fileFooter.add(addFilesButton, BorderLayout.WEST);
+        progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setVisible(false);
+        progressBar.setStringPainted(true);
+        fileFooter.add(progressBar, BorderLayout.EAST);
 
 
 
@@ -306,7 +306,6 @@ public class GuiView {
             public void actionPerformed(ActionEvent e) {
                 model.removeFile(filename);
                 model.removeSubject(subject);
-                // GuiModel model = controller.remove(filename, subject);
                 update(model);
                 frame.revalidate();
                 frame.repaint();
@@ -322,34 +321,22 @@ public class GuiView {
             fileListContent.add(makeNewFilePanel(pair), BorderLayout.NORTH);
         }
         String which = lookZoneButton.isSelected() ? "lookZone" : "slideMetric";
-        subjectListContent.removeAll();
-        for (String subject: model.getSubjects(which)) {
-            subjectListContent.add(makeNewDataTypePanel(subject), BorderLayout.NORTH);
-        }
-        stimulusListContent.removeAll();
-        for (String stimulus: model.getStimuli(which)) {
-            stimulusListContent.add(makeNewDataTypePanel(stimulus), BorderLayout.NORTH);
-        }
-        statisticListContent.removeAll();
-        for (String statistic: model.getStatistics(which)) {
-            statisticListContent.add(makeNewDataTypePanel(statistic), BorderLayout.NORTH);
-        }
+        updateData(which);
     }
 
-    JPanel makeNewDataTypePanel(String name) {
+    JPanel makeNewDataTypePanel(final String name, final DataType type) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel(name);
         panel.add(label, BorderLayout.WEST);
         JCheckBox checkbox = new JCheckBox();
         checkbox.setSelected(true);
-        final String nameForCallback = name;
         checkbox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    //controller.setAsSelected(nameForCallback);
+                    model.setAsSelected(name, type);
                 } else {
-                    //controller.setAsDeselected(nameForCallback);
+                    model.setAsDeselected(name, type);
                 }
             }
         });
@@ -360,15 +347,78 @@ public class GuiView {
     void updateData(String whichData) {
         subjectListContent.removeAll();
         for (String subject: model.getSubjects(whichData)) {
-            subjectListContent.add(makeNewDataTypePanel(subject), BorderLayout.NORTH);
+            subjectListContent.add(makeNewDataTypePanel(subject, DataType.SUBJECT), BorderLayout.NORTH);
         }
         stimulusListContent.removeAll();
         for (String stimulus: model.getStimuli(whichData)) {
-            stimulusListContent.add(makeNewDataTypePanel(stimulus), BorderLayout.NORTH);
+            stimulusListContent.add(makeNewDataTypePanel(stimulus, DataType.STIMULUS), BorderLayout.NORTH);
         }
         statisticListContent.removeAll();
         for (String statistic: model.getStatistics(whichData)) {
-            statisticListContent.add(makeNewDataTypePanel(statistic), BorderLayout.NORTH);
+            statisticListContent.add(makeNewDataTypePanel(statistic, DataType.STATISTIC), BorderLayout.NORTH);
+        }
+    }
+
+    /*void addFiles() {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                System.out.println(javax.swing.SwingUtilities.isEventDispatchThread());
+                JFileChooser fc = new JFileChooser();
+                fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fc.setMultiSelectionEnabled(true);
+                System.out.println(javax.swing.SwingUtilities.isEventDispatchThread());
+                int retVal = fc.showOpenDialog(new JFrame());
+                if (retVal == fc.APPROVE_OPTION) {
+                    File[] files = fc.getSelectedFiles();
+                    try {
+                        model.addFiles(files);
+                        update(model);
+                        frame.revalidate();
+                        frame.repaint();
+
+                    } catch (IOException ex) {
+                        // TODO: is this the right way to do it?
+                        System.out.println(ex);
+                        System.exit(1);
+                    }
+                }
+                //progressBar.setVisible(false);
+            }
+        });
+    }
+        */
+
+    class FileAdder extends SwingWorker {
+        final JFileChooser fc;
+        final int retVal;
+
+        FileAdder(JFileChooser fc, int retVal) {
+            this.fc = fc;
+            this.retVal = retVal;
+        }
+        protected Object doInBackground() {
+
+            if (retVal == fc.APPROVE_OPTION) {
+                File[] files = fc.getSelectedFiles();
+                try {
+                    model.addFiles(files);
+                    update(model);
+                    frame.revalidate();
+                    frame.repaint();
+
+                } catch (IOException ex) {
+                    // TODO: is this the right way to do it?
+                    System.out.println(ex);
+                    System.exit(1);
+                }
+            }
+            return null;
+        }
+
+        protected void done() {
+            //TODO: THIS IS BAD BAD BAD BAD BAD.  PLEASE FIND A WAY TO DO IT RIGHT
+            // turn off progress bar
+            progressBar.setVisible(false);
         }
     }
 }

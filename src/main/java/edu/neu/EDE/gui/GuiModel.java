@@ -1,5 +1,6 @@
 package edu.neu.EDE.gui;
 
+import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.io.WorkbookReader;
 
@@ -21,6 +22,7 @@ public class GuiModel {
     private FourDimArray slideMetricData;
     private Set<String> invalidFiles;
     private Map<String, String> validFiles;
+    private Map<DataType, Set<String>> includedData;
 
     public GuiModel() {
         this.reader = new WorkbookReader();
@@ -28,6 +30,11 @@ public class GuiModel {
         this.slideMetricData = new FourDimArray();
         this.validFiles = new HashMap<String, String>();
         this.invalidFiles = new HashSet<String>();
+
+        this.includedData = new HashMap<DataType, Set<String>>();
+        includedData.put(DataType.SUBJECT, new HashSet<String>());
+        includedData.put(DataType.STIMULUS, new HashSet<String>());
+        includedData.put(DataType.STATISTIC, new HashSet<String>());
         reader.setLookZoneData(lookZoneData);
         reader.setSlideMetricData(slideMetricData);
     }
@@ -85,5 +92,13 @@ public class GuiModel {
         } else {
             return lookZoneData.getStatistics();
         }
+    }
+
+    void setAsSelected(String name, DataType type) {
+        includedData.get(type).add(name);
+    }
+
+    void setAsDeselected(String name, DataType type) {
+        includedData.get(type).remove(name);
     }
 }
