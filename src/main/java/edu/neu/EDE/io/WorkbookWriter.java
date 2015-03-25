@@ -73,6 +73,7 @@ public class WorkbookWriter {
 
     /**
      * write the file
+     * @param config the configuration object (contains sheet/column/row names)
      * @param name the name of the output file
      */
     public void write(OutputConfiguration config, String name) {

@@ -246,5 +246,9 @@ public class WorkbookReader {
      */
     public void setLookZoneData(FourDimArray data) { this.lookZoneData = data; }
 
+    /**
+     * gets the current subject
+     * @return the current subject
+     */
     public String getSubject() { return this.subject; }
 }
