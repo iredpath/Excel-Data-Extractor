@@ -2,6 +2,7 @@ package edu.neu.EDE.io;
 
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
+import edu.neu.EDE.data_structs.OutputConfiguration;
 import edu.neu.EDE.data_structs.SheetConfiguration;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -72,12 +73,12 @@ public class WorkbookWriter {
 
     /**
      * write the file
-     * @param sheetNames the list of sheet names
-     * @param columnHeaders the list of column headers for each sheet
-     * @param rowHeaders the list of row headers for each sheet
      * @param name the name of the output file
      */
-    public void write(List<String> sheetNames, List<String> columnHeaders, List<String> rowHeaders, String name) {
+    public void write(OutputConfiguration config, /*List<String> sheetNames, List<String> columnHeaders, List<String> rowHeaders,*/ String name) {
+        List<String> sheetNames = config.getTabs();
+        List<String> columnHeaders = config.getColumns();
+        List<String> rowHeaders = config.getRows();
         for (String sheetName: sheetNames) {
             addSheet(sheetName, columnHeaders, rowHeaders);
         }

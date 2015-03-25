@@ -2,10 +2,13 @@ package edu.neu.EDE.gui;
 
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
+import edu.neu.EDE.data_structs.OutputConfiguration;
 import edu.neu.EDE.io.WorkbookReader;
+import edu.neu.EDE.io.WorkbookWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -167,7 +170,36 @@ public class GuiModel {
     }
 
     void export(String which) {
+        WorkbookWriter writer = new WorkbookWriter();
+        writer.setColumnType(columnType);
+        writer.setData(which.equals("lookZone") ? lookZoneData : slideMetricData);
+        writer.setRowType(rowType);
+        writer.setSheetType(tabType);
+        // FUCK.  This may get ugly.  we have lists of stats/subjects/stimuli, not tabs/rows/columns
+        // Have I mentioned I hate how swing isn't even remotely backed by real data?
+        List<String> statistics = getSelectedData(which, DataType.STATISTIC);
+        List<String> stimuli = getSelectedData(which, DataType.STIMULUS);
+        List<String> subjects = getSelectedData(which, DataType.SUBJECT);
+        OutputConfiguration config = new OutputConfiguration();
+        config.setStatistics(statistics);
+        config.setSubjects(subjects);
+        config.setStimuli(stimuli);
+        config.setRow(rowType);
+        config.setColumn(columnType);
+        config.setTab(tabType);
+        writer.write(config, "test-output");
 
+    }
+
+    List<String> getSelectedData(String which, DataType type) {
+        Map<String, Boolean> map = which.equals("lookZone") ? lookZoneDataType2Status.get(type) : slideMetricDataType2Status.get(type);
+        List<String> result = new ArrayList<String>();
+        for (Map.Entry<String, Boolean> e: map.entrySet()) {
+            if (e.getValue()) {
+                result.add(e.getKey());
+            }
+        }
+        return result;
     }
 
 }
