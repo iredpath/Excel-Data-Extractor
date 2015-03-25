@@ -1,5 +1,6 @@
 package edu.neu.EDE.gui;
 
+import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
 
 import javax.swing.AbstractButton;
@@ -43,6 +44,7 @@ public class GuiView {
     private JRadioButton slideMetricButton;
     private JProgressBar addFileProgressBar;
     private JProgressBar exportProgressBar;
+    private DataGroupType dataGroupType;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -123,7 +125,8 @@ public class GuiView {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    updateData("lookZone");
+                    dataGroupType = DataGroupType.LOOKZONE;
+                    updateData();
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -134,7 +137,8 @@ public class GuiView {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    updateData("slideMetric");
+                    dataGroupType = DataGroupType.SLIDEMETRIC;
+                    updateData();
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -143,8 +147,10 @@ public class GuiView {
         slideMetricButton.setSelected(true);
         lookZoneOrSlideMetric.add(lookZoneButton);
         lookZoneOrSlideMetric.add(slideMetricButton);
-        AxisHeader.add(slideMetricButton);
-        AxisHeader.add(lookZoneButton);
+        AxisHeader.add(slideMetricButton, BorderLayout.CENTER);
+        AxisHeader.add(lookZoneButton, BorderLayout.CENTER);
+        // set default value;
+        this.dataGroupType = DataGroupType.SLIDEMETRIC;
 
         JLabel AxisHeaderText = new JLabel("Axis Members");
         AxisHeader.add(AxisHeaderText);
@@ -336,8 +342,7 @@ public class GuiView {
         for (Map.Entry<String, String> pair: model.getFiles().entrySet()) {
             fileListContent.add(makeNewFilePanel(pair), BorderLayout.NORTH);
         }
-        String which = lookZoneButton.isSelected() ? "lookZone" : "slideMetric";
-        updateData(which);
+        updateData();
     }
 
     JPanel makeNewDataTypePanel(final String name, final DataType type) {
@@ -345,16 +350,16 @@ public class GuiView {
         JLabel label = new JLabel(name);
         panel.add(label, BorderLayout.WEST);
         JCheckBox checkbox = new JCheckBox();
-        if (!model.getDataFor(lookZoneButton.isSelected() ? "lookZone" : "slideMetric").get(type).contains(name)) {
+        if (!model.getDataFor(dataGroupType).get(type).contains(name)) {
             checkbox.setSelected(true);
         }
         checkbox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    model.setAsSelected(name, type, lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
+                    model.setAsSelected(name, type, dataGroupType);
                 } else {
-                    model.setAsDeselected(name, type, lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
+                    model.setAsDeselected(name, type, dataGroupType);
                 }
             }
         });
@@ -362,18 +367,18 @@ public class GuiView {
         return panel;
     }
 
-    void updateData(String whichData) {
+    void updateData() {
         subjectListContent.removeAll();
-        for (String subject: model.getSubjects(whichData)) {
-            subjectListContent.add(makeNewDataTypePanel(subject, DataType.SUBJECT), BorderLayout.NORTH);
+        for (String subject: model.getSubjects(dataGroupType)) {
+            subjectListContent.add(makeNewDataTypePanel(subject, DataType.SUBJECT), BorderLayout.WEST);
         }
         stimulusListContent.removeAll();
-        for (String stimulus: model.getStimuli(whichData)) {
-            stimulusListContent.add(makeNewDataTypePanel(stimulus, DataType.STIMULUS), BorderLayout.NORTH);
+        for (String stimulus: model.getStimuli(dataGroupType)) {
+            stimulusListContent.add(makeNewDataTypePanel(stimulus, DataType.STIMULUS), BorderLayout.WEST);
         }
         statisticListContent.removeAll();
-        for (String statistic: model.getStatistics(whichData)) {
-            statisticListContent.add(makeNewDataTypePanel(statistic, DataType.STATISTIC), BorderLayout.NORTH);
+        for (String statistic: model.getStatistics(dataGroupType)) {
+            statisticListContent.add(makeNewDataTypePanel(statistic, DataType.STATISTIC), BorderLayout.WEST);
         }
     }
 
@@ -414,7 +419,7 @@ public class GuiView {
     class ExportWorker extends SwingWorker {
 
         protected Object doInBackground() {
-            model.export(lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
+            model.export(dataGroupType);
             return null;
         }
 

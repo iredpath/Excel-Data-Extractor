@@ -1,5 +1,6 @@
 package edu.neu.EDE.gui;
 
+import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.data_structs.OutputConfiguration;
@@ -91,66 +92,66 @@ public class GuiModel {
         validFiles.remove(filename);
     }
 
-    List<String> getSubjects(String which) {
-        if (which.equals("slideMetric")) {
+    List<String> getSubjects(DataGroupType groupType) {
+        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
             return slideMetricData.getSubjects();
         } else {
             return lookZoneData.getSubjects();
         }
     }
 
-    List<String> getStimuli(String which) {
-        if (which.equals("slideMetric")) {
+    List<String> getStimuli(DataGroupType groupType) {
+        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
             return slideMetricData.getStimuli();
         } else {
             return lookZoneData.getStimuli();
         }
     }
 
-    List<String> getStatistics(String which) {
-        if (which.equals("slideMetric")) {
+    List<String> getStatistics(DataGroupType groupType) {
+        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
             return slideMetricData.getStatistics();
         } else {
             return lookZoneData.getStatistics();
         }
     }
 
-    Map<DataType, Set<String>> getDataFor(String which) {
-        if (which.equals("lookZone")) {
-            return this.lookZoneDataType2Excluded;
-        } else {
+    Map<DataType, Set<String>> getDataFor(DataGroupType groupType) {
+        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
             return this.slideMetricDataType2Excluded;
+        } else {
+            return this.lookZoneDataType2Excluded;
         }
     }
 
-    void setAsDeselected(String name, DataType type, String which) {
-        if (which.equals("lookZone")) {
+    void setAsDeselected(String name, DataType type, DataGroupType groupType) {
+        if (groupType.equals(DataGroupType.LOOKZONE)) {
             this.lookZoneDataType2Excluded.get(type).add(name);
         } else {
             this.slideMetricDataType2Excluded.get(type).add(name);
         }
     }
 
-    void setAsSelected(String name, DataType type, String which) {
-        if (which.equals("lookZone")) {
+    void setAsSelected(String name, DataType type, DataGroupType groupType) {
+        if (groupType.equals(DataGroupType.LOOKZONE)) {
             this.lookZoneDataType2Excluded.get(type).remove(name);
         } else {
             this.slideMetricDataType2Excluded.get(type).remove(name);
         }
     }
 
-    void export(String which) {
+    void export(DataGroupType groupType) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
-        FourDimArray data = which.equals("lookZone") ? lookZoneData : slideMetricData;
+        FourDimArray data = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
         writer.setData(data);
         writer.setRowType(rowType);
         writer.setSheetType(tabType);
         // FUCK.  This may get ugly.  we have lists of stats/subjects/stimuli, not tabs/rows/columns
         // Have I mentioned I hate how swing isn't even remotely backed by real data?
-        List<String> statistics = getSelectedData(which, DataType.STATISTIC, data.getStatistics());
-        List<String> stimuli = getSelectedData(which, DataType.STIMULUS, data.getStimuli());
-        List<String> subjects = getSelectedData(which, DataType.SUBJECT, data.getSubjects());
+        List<String> statistics = getSelectedData(groupType, DataType.STATISTIC, data.getStatistics());
+        List<String> stimuli = getSelectedData(groupType, DataType.STIMULUS, data.getStimuli());
+        List<String> subjects = getSelectedData(groupType, DataType.SUBJECT, data.getSubjects());
         OutputConfiguration config = new OutputConfiguration();
         config.setStatistics(statistics);
         config.setSubjects(subjects);
@@ -162,8 +163,8 @@ public class GuiModel {
     }
 
     // How too slow is this?
-    List<String> getSelectedData(String which, DataType type, List<String> all) {
-        Set<String> excluded = which.equals("lookZone") ? lookZoneDataType2Excluded.get(type) : slideMetricDataType2Excluded.get(type);
+    List<String> getSelectedData(DataGroupType groupType, DataType type, List<String> all) {
+        Set<String> excluded = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneDataType2Excluded.get(type) : slideMetricDataType2Excluded.get(type);
         List<String> result = new ArrayList<String>();
         for (String s: all) {
             if (!excluded.contains(s)) {
