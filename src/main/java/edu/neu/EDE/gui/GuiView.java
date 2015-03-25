@@ -250,7 +250,7 @@ public class GuiView {
         JPanel Tab = new JPanel();
 
         JComboBox comboBox = new JComboBox();
-        comboBox.setModel(new DefaultComboBoxModel(new String[] {"Statistic", "Stimuli", "Subject"}));
+        comboBox.setModel(new DefaultComboBoxModel(new String[]{"Statistic", "Stimuli", "Subject"}));
         comboBox.setSelectedIndex(0);
         comboBox.setMaximumRowCount(3);
         Tab.add(comboBox);
@@ -279,6 +279,11 @@ public class GuiView {
         OutputPanel.add(OutputFooter, BorderLayout.SOUTH);
 
         JButton btnExport = new JButton("Export");
+        btnExport.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                model.export(lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
+            }
+        });
         OutputFooter.add(btnExport);
 
         JPanel RightSpacer = new JPanel();
@@ -329,14 +334,16 @@ public class GuiView {
         JLabel label = new JLabel(name);
         panel.add(label, BorderLayout.WEST);
         JCheckBox checkbox = new JCheckBox();
-        checkbox.setSelected(true);
+        if (model.getDataFor(lookZoneButton.isSelected() ? "lookZone" : "slideMetric").get(type).get(name)) {
+            checkbox.setSelected(true);
+        }
         checkbox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    model.setAsSelected(name, type);
+                    model.setAsSelected(name, type, lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
                 } else {
-                    model.setAsDeselected(name, type);
+                    model.setAsDeselected(name, type, lookZoneButton.isSelected() ? "lookZone" : "slideMetric");
                 }
             }
         });
@@ -358,35 +365,6 @@ public class GuiView {
             statisticListContent.add(makeNewDataTypePanel(statistic, DataType.STATISTIC), BorderLayout.NORTH);
         }
     }
-
-    /*void addFiles() {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                System.out.println(javax.swing.SwingUtilities.isEventDispatchThread());
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                fc.setMultiSelectionEnabled(true);
-                System.out.println(javax.swing.SwingUtilities.isEventDispatchThread());
-                int retVal = fc.showOpenDialog(new JFrame());
-                if (retVal == fc.APPROVE_OPTION) {
-                    File[] files = fc.getSelectedFiles();
-                    try {
-                        model.addFiles(files);
-                        update(model);
-                        frame.revalidate();
-                        frame.repaint();
-
-                    } catch (IOException ex) {
-                        // TODO: is this the right way to do it?
-                        System.out.println(ex);
-                        System.exit(1);
-                    }
-                }
-                //progressBar.setVisible(false);
-            }
-        });
-    }
-        */
 
     class FileAdder extends SwingWorker {
         final JFileChooser fc;
