@@ -307,9 +307,9 @@ public class GuiView {
         deleteButton.setText("x");
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                model.removeFile(filename);
-                model.removeSubject(subject);
-                update(model);
+                //TODO: consider putting this work in separate thread, add loading bar
+                model.remove(filename, subject);
+                update();
                 frame.revalidate();
                 frame.repaint();
             }
@@ -318,7 +318,7 @@ public class GuiView {
         return panel;
     }
 
-    void update(GuiModel model) {
+    void update() {
         fileListContent.removeAll();
         for (Map.Entry<String, String> pair: model.getFiles().entrySet()) {
             fileListContent.add(makeNewFilePanel(pair), BorderLayout.NORTH);
@@ -364,6 +364,7 @@ public class GuiView {
         }
     }
 
+    // this may have to be abstracted to also handle model.remove(), or we just make another class
     class FileAdder extends SwingWorker {
         final JFileChooser fc;
         final int retVal;
@@ -378,7 +379,7 @@ public class GuiView {
                 File[] files = fc.getSelectedFiles();
                 try {
                     model.addFiles(files);
-                    update(model);
+                    update();
                     frame.revalidate();
                     frame.repaint();
 

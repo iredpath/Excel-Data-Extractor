@@ -67,7 +67,6 @@ public class GuiModel {
                 invalidFiles.add(f.getAbsolutePath());
             }
         }
-        //update();
     }
 
     void addFile(File f) throws IOException {
@@ -80,6 +79,10 @@ public class GuiModel {
         return validFiles;
     }
 
+    void remove(String filename, String subject) {
+        removeFile(filename);
+        removeSubject(subject);
+    }
     void removeSubject(String subject) {
         //TODO: remove subject data
     }
