@@ -245,4 +245,6 @@ public class WorkbookReader {
      * @param data the data struct for look zone data
      */
     public void setLookZoneData(FourDimArray data) { this.lookZoneData = data; }
+
+    public String getSubject() { return this.subject; }
 }
