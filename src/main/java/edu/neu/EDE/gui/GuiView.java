@@ -58,6 +58,7 @@ public class GuiView {
     private JComboBox dataGroupDropdown;
     private JButton removeSelectedFilesButton;
     private JButton addFilesButton;
+    private JButton exportDataButton;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -258,10 +259,15 @@ public class GuiView {
         JPanel axisFooter = new JPanel();
         axisFooter.setLayout(new BorderLayout(0, 0));
 
-        JButton btnExport = new JButton("Export");
-        btnExport.addActionListener(new ActionListener() {
+        //axisFooter.add(new JPanel(), BorderLayout.NORTH);
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new FlowLayout());
+        axisFooter.add(contentPanel, BorderLayout.CENTER);
+        exportDataButton = new JButton("Export");
+        exportDataButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 exportProgressBar.setVisible(true);
+                exportDataButton.setVisible(false);
                 JFileChooser saveDialog = new JFileChooser();
                 int retVal = saveDialog.showSaveDialog(new JFrame());
                 if (retVal == JFileChooser.APPROVE_OPTION) {
@@ -269,16 +275,17 @@ public class GuiView {
                     exportWorker.execute();
                 } else {
                     exportProgressBar.setVisible(false);
+                    exportDataButton.setVisible(true);
                 }
             }
         });
-        axisFooter.add(btnExport, BorderLayout.EAST);
+        contentPanel.add(exportDataButton);
 
         exportProgressBar = new JProgressBar();
         exportProgressBar.setIndeterminate(true);
         exportProgressBar.setVisible(false);
         exportProgressBar.setStringPainted(true);
-        axisFooter.add(exportProgressBar, BorderLayout.WEST);
+        contentPanel.add(exportProgressBar);
 
         return axisFooter;
     }
