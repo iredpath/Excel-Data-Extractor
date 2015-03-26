@@ -4,8 +4,6 @@ import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.data_structs.OutputConfiguration;
-import edu.neu.EDE.gui.buttonList.ButtonListItem;
-import edu.neu.EDE.gui.buttonList.ButtonListModel;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItem;
 import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
 import edu.neu.EDE.io.WorkbookReader;
@@ -30,7 +28,7 @@ public class GuiModel {
     private FourDimArray lookZoneData;
     private FourDimArray slideMetricData;
     private Set<String> invalidFiles;
-    private ButtonListModel fileListModel;
+    private CheckboxListModel fileListModel;
     private Map<DataType, CheckboxListModel> lookZoneDataType2Excluded;
     private Map<DataType, CheckboxListModel> slideMetricDataType2Excluded;
     private DataType tabType;
@@ -54,7 +52,7 @@ public class GuiModel {
         this.slideMetricDataType2Excluded.put(DataType.STIMULUS, new CheckboxListModel());
         this.slideMetricDataType2Excluded.put(DataType.STATISTIC, new CheckboxListModel());
 
-        this.fileListModel = new ButtonListModel();
+        this.fileListModel = new CheckboxListModel();
 
         this.tabType = DataType.STATISTIC;
         this.columnType = DataType.STIMULUS;
@@ -99,10 +97,26 @@ public class GuiModel {
         }
     }
 
-    void addToFileListModel(String filename, String subject) {
-        if (!fileListModel.contains(filename)) {
-            fileListModel.addElement(new ButtonListItem(filename, subject));
+    void addToFileListModel(File f, String subject) {
+        if (!fileListModel.contains(f.getName())) {
+            CheckboxListItem i = new CheckboxListItem(f.getName());
+            i.setSubject(subject);
+            i.setFile(f);
+            fileListModel.addElement(i);
         }
+    }
+
+    void removeSelectedFiles() throws IOException {
+        CheckboxListItem[] allFiles = new CheckboxListItem[fileListModel.getSize()];
+        fileListModel.copyInto(allFiles);
+        fileListModel.removeAllElements();
+        for (CheckboxListItem item: allFiles) {
+           if (!item.isSelected()) {
+               addFile(item.getFile());
+           }
+        }
+        clearModels();
+        updateJListModels();
     }
 
     void addNewItemsToModel(List<String> items, CheckboxListModel model) {
@@ -112,6 +126,15 @@ public class GuiModel {
                 item.setSelected(true);
                 model.addElement(item);
             }
+        }
+    }
+
+    void clearModels() {
+        for (CheckboxListModel m: slideMetricDataType2Excluded.values()) {
+            m.removeAllElements();
+        }
+        for (CheckboxListModel m: lookZoneDataType2Excluded.values()) {
+            m.removeAllElements();
         }
     }
     
@@ -152,10 +175,10 @@ public class GuiModel {
     void addFile(File f) throws IOException {
         reader.readFile(f);
         String subjectName = reader.getSubject();
-        addToFileListModel(f.getName(), subjectName);
+        addToFileListModel(f, subjectName);
     }
 
-    ButtonListModel getFileListModel() {
+    CheckboxListModel getFileListModel() {
         return fileListModel;
     }
 

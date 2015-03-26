@@ -2,15 +2,10 @@ package edu.neu.EDE.gui;
 
 import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
-import edu.neu.EDE.gui.buttonList.ButtonListItem;
-import edu.neu.EDE.gui.buttonList.ButtonListItemClickHandler;
-import edu.neu.EDE.gui.buttonList.ButtonListRenderer;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemClickHandler;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemMoveHandler;
 import edu.neu.EDE.gui.checkboxList.CheckboxListRenderer;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -21,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
@@ -56,14 +50,12 @@ public class GuiView {
     private JList subjectListContent;
     private JList stimulusListContent;
     private JList statisticListContent;
-    private JRadioButton lookZoneButton;
-    private JRadioButton slideMetricButton;
     private JProgressBar addFileProgressBar;
     private JProgressBar exportProgressBar;
     private MouseAdapter checkboxListItemClickHandler;
     private List<JPanel> columnHeads;
     private List<JPanel> rowHeads;
-    private ButtonGroup dataGroupButtonGroup;
+    private JComboBox dataGroupDropdown;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -92,6 +84,9 @@ public class GuiView {
 
         JPanel axisMemberPanel = initializeAxisMemberPanel();
         GridBagConstraints gbc_AxisMemberPanel = new GridBagConstraints();
+        gbc_AxisMemberPanel.weighty = 1.0;
+        gbc_AxisMemberPanel.weightx = 0.6;
+        gbc_AxisMemberPanel.anchor = GridBagConstraints.EAST;
         gbc_AxisMemberPanel.insets = new Insets(0, 0, 5, 0);
         gbc_AxisMemberPanel.fill = GridBagConstraints.BOTH;
         gbc_AxisMemberPanel.gridx = 1;
@@ -100,6 +95,9 @@ public class GuiView {
 
         JPanel filePanel = initializeFilePanel();
         GridBagConstraints gbc_filePanel = new GridBagConstraints();
+        gbc_filePanel.weighty = 1.0;
+        gbc_filePanel.weightx = 0.4;
+        gbc_filePanel.anchor = GridBagConstraints.WEST;
         gbc_filePanel.fill = GridBagConstraints.BOTH;
         gbc_filePanel.gridx = 0;
         gbc_filePanel.gridy = 0;
@@ -149,13 +147,11 @@ public class GuiView {
         axisMemberPanel.add(axisList, BorderLayout.CENTER);
         axisList.setLayout(new BorderLayout(0, 0));
 
-        initializeDataGroupButtonGroup();
-        axisHeader.add(slideMetricButton, BorderLayout.CENTER);
-        axisHeader.add(lookZoneButton, BorderLayout.CENTER);
+        initializeDataGroupDropdown();
+        axisHeader.add(dataGroupDropdown);
 
         JTabbedPane axisTabs = initializeTabPane();
         axisList.add(axisTabs, BorderLayout.CENTER);
-
 
         JPanel axisFooter = initializeAxisFooter();
         axisMemberPanel.add(axisFooter, BorderLayout.SOUTH);
@@ -165,26 +161,22 @@ public class GuiView {
         return axisMemberPanel;
     }
 
-    void initializeDataGroupButtonGroup() {
-        dataGroupButtonGroup = new ButtonGroup();
-        ActionListener dataGroupButtonActionHandler = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                DataGroupButton b = (DataGroupButton) e.getSource();
-                model.updateDataGroupType(b.getDataGroupType());
-                update();
-                frame.revalidate();
-                frame.repaint();
+    void initializeDataGroupDropdown() {
+        dataGroupDropdown = new JComboBox();
+        dataGroupDropdown.setModel(new DefaultComboBoxModel(new DataGroupType[]{DataGroupType.SLIDEMETRIC, DataGroupType.LOOKZONE}));
+        dataGroupDropdown.setSelectedIndex(0);
+        dataGroupDropdown.setMaximumRowCount(2);
+        dataGroupDropdown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    DataGroupType d = (DataGroupType) e.getItem();
+                    model.updateDataGroupType(d);
+                    update();
+                    frame.revalidate();
+                    frame.repaint();
+                }
             }
-        };
-        lookZoneButton = new DataGroupButton("Look zone data", DataGroupType.LOOKZONE);
-        lookZoneButton.addActionListener(dataGroupButtonActionHandler);
-
-        slideMetricButton = new DataGroupButton("Slide metric data", DataGroupType.SLIDEMETRIC);
-        slideMetricButton.addActionListener(dataGroupButtonActionHandler);
-
-        slideMetricButton.setSelected(true);
-        dataGroupButtonGroup.add(lookZoneButton);
-        dataGroupButtonGroup.add(slideMetricButton);
+        });
     }
 
     JTabbedPane initializeTabPane() {
@@ -295,11 +287,14 @@ public class GuiView {
         filePanel.add(fileHeader, BorderLayout.NORTH);
 
         fileHeader.add(initializeAddFileButton(), BorderLayout.WEST);
+
         addFileProgressBar = new JProgressBar();
         addFileProgressBar.setIndeterminate(true);
         addFileProgressBar.setVisible(false);
         addFileProgressBar.setStringPainted(true);
-        fileHeader.add(addFileProgressBar, BorderLayout.EAST);
+        fileHeader.add(addFileProgressBar, BorderLayout.CENTER);
+
+        fileHeader.add(initializeRemoveSelectedFilesButton(), BorderLayout.EAST);
 
         JPanel fileListWrapper = initializeFileListWrapper();
         filePanel.add(fileListWrapper, BorderLayout.CENTER);
@@ -308,6 +303,18 @@ public class GuiView {
         filePanel.add(outputWrapper, BorderLayout.SOUTH);
 
         return filePanel;
+    }
+
+    JButton initializeRemoveSelectedFilesButton() {
+        JButton remove = new JButton("Remove Selected Files");
+        remove.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addFileProgressBar.setVisible(true);
+                FileDeleter deleter = new FileDeleter();
+                deleter.execute();
+            }
+        });
+        return remove;
     }
 
     JButton initializeAddFileButton() {
@@ -334,9 +341,9 @@ public class GuiView {
         fileList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         fileListWrapper.add(fileList);
         fileListContent = new JList();
-        fileListContent.setCellRenderer(new ButtonListRenderer());
+        fileListContent.setCellRenderer(new CheckboxListRenderer());
         fileListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        fileListContent.addMouseListener(new ButtonListItemClickHandler(this));
+        fileListContent.addMouseListener(new CheckboxListItemClickHandler());
         fileListContent.setModel(model.getFileListModel());
         fileList.setViewportView(fileListContent);
 
@@ -422,11 +429,6 @@ public class GuiView {
      */
 
 
-    public void remove(ButtonListItem b) {
-        FileDeleter fileDeleter = new FileDeleter(b);
-        fileDeleter.execute();
-    }
-
     void update() {
         //TODO: Maybe find a way around this
         // there should be a way to edit the model instead of constantly setting
@@ -511,17 +513,19 @@ public class GuiView {
     }
 
     class FileDeleter extends SwingWorker {
-        final ButtonListItem buttonListItem;
 
-        FileDeleter(ButtonListItem b) {
-            buttonListItem = b;
-        }
         protected Object doInBackground() {
             //TODO: support remove on back end
+            try {
+                model.removeSelectedFiles();
+            } catch(IOException e) {
+
+            }
             //model.remove(buttonListItem.getFilename(), buttonListItem.getSubject());
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     update();
+                    addFileProgressBar.setVisible(false);
                     frame.revalidate();
                     frame.repaint();
                     frame.requestFocus();

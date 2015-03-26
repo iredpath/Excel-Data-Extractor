@@ -16,7 +16,7 @@ public class CheckboxListRenderer extends JCheckBox implements ListCellRenderer 
             boolean isSelected, boolean hasFocus) {
 
         if (hasFocus) {
-            setBackground(Color.CYAN);
+            setBackground(Color.LIGHT_GRAY);
         } else {
             setBackground(list.getBackground());
         }

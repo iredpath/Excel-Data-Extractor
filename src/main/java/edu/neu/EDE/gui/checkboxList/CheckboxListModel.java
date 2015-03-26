@@ -16,4 +16,13 @@ public class CheckboxListModel extends DefaultListModel<CheckboxListItem> {
         }
         return false;
     }
+
+    public void remove(String s) {
+        for (int i = 0; i < getSize(); i++) {
+            CheckboxListItem item = get(i);
+            if (item.toString().equals(s)) {
+                remove(i);
+            }
+        }
+    }
 }

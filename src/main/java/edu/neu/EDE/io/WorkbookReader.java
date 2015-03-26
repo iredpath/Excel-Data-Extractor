@@ -25,6 +25,7 @@ public class WorkbookReader {
     final int SLIDE_METRIC_ROW_START = 2;
     final int STATISTIC_NAME_CELL = 0;
     final int STATISTIC_VALUE_CELL = 5;
+    final int LOOKZONE_NAME_CELL = 1;
     final String SLIDE_METRIC_SUFFIX = "-SM";
     final String LOOK_ZONE_SUFFIX = "-LZ";
     final String LOOK_ZONE_OUT_SUFFIX = "-OUT";
@@ -224,9 +225,14 @@ public class WorkbookReader {
      */
     String getStimulusName(XSSFSheet sheet, List<Integer> nullIndices, int lookZoneIndex) {
         // TODO: lookZoneIndex may not be correct; look zones can be out of order
-        String stimulus;
-        stimulus = media + LOOK_ZONE_SUFFIX + lookZoneIndex;
-        Row startRow = sheet.getRow(nullIndices.get(lookZoneIndex - 1) + 2); // row is null, +1 is LZ name, +2 is description
+        String stimulus = media;
+
+        Row startRow = sheet.getRow(nullIndices.get(lookZoneIndex - 1) + 1); // row is null, +1 is LZ name
+        Cell nameCell = startRow.getCell(LOOKZONE_NAME_CELL);
+        if (nameCell != null) {
+            stimulus += "-" + nameCell.getStringCellValue();
+        }
+        startRow = sheet.getRow(nullIndices.get(lookZoneIndex - 1) + 2); // row is null, +2 is description
         Cell descCell = startRow.getCell(STATISTIC_VALUE_CELL);
         if (descCell != null) {
             stimulus += " (" + descCell.getStringCellValue() + ")";
