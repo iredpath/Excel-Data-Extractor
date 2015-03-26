@@ -40,7 +40,6 @@ public class CheckboxListItemMoveHandler extends MouseAdapter {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        //mouseReleased(e);
         checkForReorder(e);
         pressIndex = releaseIndex;
     }

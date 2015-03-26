@@ -90,66 +90,39 @@ public class GuiModel {
         updateJListModels();
     }
 
+    void addNewItemsToModel(List<String> items, CheckboxListModel model) {
+        for (String s: items) {
+            if (!model.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                model.addElement(item);
+            }
+        }
+    }
     void updateJListModels() {
         CheckboxListModel listModel = slideMetricDataType2Excluded.get(DataType.SUBJECT);
         List<String> list = slideMetricData.getSubjects();
-        for (String s: list) {
-            if (!listModel.contains(s)) {
-                CheckboxListItem item = new CheckboxListItem(s);
-                item.setSelected(true);
-                listModel.addElement(item);
-            }
-        }
+        addNewItemsToModel(list, listModel);
 
         listModel = slideMetricDataType2Excluded.get(DataType.STIMULUS);
         list = slideMetricData.getStimuli();
-        for (String s: list) {
-            if (!listModel.contains(s)) {
-                CheckboxListItem item = new CheckboxListItem(s);
-                item.setSelected(true);
-                listModel.addElement(item);
-            }
-        }
+        addNewItemsToModel(list, listModel);
 
         listModel = slideMetricDataType2Excluded.get(DataType.STATISTIC);
         list = slideMetricData.getStatistics();
-        for (String s: list) {
-            if (!listModel.contains(s)) {
-                CheckboxListItem item = new CheckboxListItem(s);
-                item.setSelected(true);
-                listModel.addElement(item);
-            }
-        }
+        addNewItemsToModel(list, listModel);
 
         listModel = lookZoneDataType2Excluded.get(DataType.SUBJECT);
         list = lookZoneData.getSubjects();
-        for (String s: list) {
-            if (!listModel.contains(s)) {
-                CheckboxListItem item = new CheckboxListItem(s);
-                item.setSelected(true);
-                listModel.addElement(item);
-            }
-        }
+        addNewItemsToModel(list, listModel);
 
         listModel = lookZoneDataType2Excluded.get(DataType.STIMULUS);
         list = lookZoneData.getStimuli();
-        for (String s: list) {
-            if (!listModel.contains(s)) {
-                CheckboxListItem item = new CheckboxListItem(s);
-                item.setSelected(true);
-                listModel.addElement(item);
-            }
-        }
+        addNewItemsToModel(list, listModel);
 
         listModel = lookZoneDataType2Excluded.get(DataType.STATISTIC);
         list = lookZoneData.getStatistics();
-        for (String s: list) {
-            if (!listModel.contains(s)) {
-                CheckboxListItem item = new CheckboxListItem(s);
-                item.setSelected(true);
-                listModel.addElement(item);
-            }
-        }
+        addNewItemsToModel(list, listModel);
     }
 
     DefaultListModel<CheckboxListItem> getListModel(DataGroupType groupType, DataType dataType) {
