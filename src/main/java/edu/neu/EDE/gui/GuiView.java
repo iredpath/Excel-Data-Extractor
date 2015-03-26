@@ -81,40 +81,91 @@ public class GuiView {
         }
     }
 
+    /**
+     * START OF INITIALIZATION
+     */
     void initialize() {
 
-        frame = new JFrame();
-        frame.setBounds(0, 0, 1024, 720);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(new BorderLayout(0, 0));
-        JPanel header = new JPanel();
-        frame.getContentPane().add(header, BorderLayout.NORTH);
-        JPanel center = new JPanel();
+        frame = initializeFrame();
+        JPanel center = initializeCentralPanel();
         frame.getContentPane().add(center, BorderLayout.CENTER);
-        GridBagLayout gbl_Center = new GridBagLayout();
-        gbl_Center.columnWidths = new int[] {400, 600};
-        gbl_Center.rowHeights = new int[] {0};
-        gbl_Center.columnWeights = new double[]{1.0, 0.0};
-        gbl_Center.rowWeights = new double[]{1.0};
-        center.setLayout(gbl_Center);
-        JPanel axisMemberPanel = new JPanel();
+
+        JPanel axisMemberPanel = initializeAxisMemberPanel();
         GridBagConstraints gbc_AxisMemberPanel = new GridBagConstraints();
         gbc_AxisMemberPanel.insets = new Insets(0, 0, 5, 0);
         gbc_AxisMemberPanel.fill = GridBagConstraints.BOTH;
         gbc_AxisMemberPanel.gridx = 1;
         gbc_AxisMemberPanel.gridy = 0;
         center.add(axisMemberPanel, gbc_AxisMemberPanel);
+
+        JPanel filePanel = initializeFilePanel();
+        GridBagConstraints gbc_filePanel = new GridBagConstraints();
+        gbc_filePanel.fill = GridBagConstraints.BOTH;
+        gbc_filePanel.gridx = 0;
+        gbc_filePanel.gridy = 0;
+        center.add(filePanel, gbc_filePanel);
+
+        JPanel footer = new JPanel();
+        frame.getContentPane().add(footer, BorderLayout.SOUTH);
+        JPanel leftSpacer = new JPanel();
+        frame.getContentPane().add(leftSpacer, BorderLayout.WEST);
+        JPanel rightSpacer = new JPanel();
+        frame.getContentPane().add(rightSpacer, BorderLayout.EAST);
+
+        frame.requestFocus();
+        frame.setVisible(true);
+    }
+
+    JFrame initializeFrame() {
+        JFrame frame = new JFrame();
+        frame.setBounds(0, 0, 1024, 720);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        JPanel header = new JPanel();
+        frame.getContentPane().add(header, BorderLayout.NORTH);
+        return frame;
+    }
+
+    JPanel initializeCentralPanel() {
+        JPanel center = new JPanel();
+        GridBagLayout gbl_Center = new GridBagLayout();
+        gbl_Center.columnWidths = new int[] {400, 600};
+        gbl_Center.rowHeights = new int[] {0};
+        gbl_Center.columnWeights = new double[]{1.0, 0.0};
+        gbl_Center.rowWeights = new double[]{1.0};
+        center.setLayout(gbl_Center);
+        return center;
+    }
+
+    JPanel initializeAxisMemberPanel() {
+        JPanel axisMemberPanel = new JPanel();
         axisMemberPanel.setLayout(new BorderLayout(0, 0));
-        
-        
+
         JPanel axisHeader = new JPanel();
         axisMemberPanel.add(axisHeader, BorderLayout.NORTH);
         axisHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        
+
         JPanel axisList = new JPanel();
         axisMemberPanel.add(axisList, BorderLayout.CENTER);
         axisList.setLayout(new BorderLayout(0, 0));
 
+        initializeDataGroupButtonGroup();
+        axisHeader.add(slideMetricButton, BorderLayout.CENTER);
+        axisHeader.add(lookZoneButton, BorderLayout.CENTER);
+
+        JTabbedPane axisTabs = initializeTabPane();
+        axisList.add(axisTabs, BorderLayout.CENTER);
+
+
+        JPanel axisFooter = initializeAxisFooter();
+        axisMemberPanel.add(axisFooter, BorderLayout.SOUTH);
+
+        JPanel separator = new JPanel();
+        axisMemberPanel.add(separator, BorderLayout.WEST);
+        return axisMemberPanel;
+    }
+
+    void initializeDataGroupButtonGroup() {
         dataGroupButtonGroup = new ButtonGroup();
         ActionListener dataGroupButtonActionHandler = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -134,11 +185,10 @@ public class GuiView {
         slideMetricButton.setSelected(true);
         dataGroupButtonGroup.add(lookZoneButton);
         dataGroupButtonGroup.add(slideMetricButton);
-        axisHeader.add(slideMetricButton, BorderLayout.CENTER);
-        axisHeader.add(lookZoneButton, BorderLayout.CENTER);
+    }
 
+    JTabbedPane initializeTabPane() {
         JTabbedPane axisTabs = new JTabbedPane(JTabbedPane.TOP);
-        axisList.add(axisTabs, BorderLayout.CENTER);
 
         JPanel statisticsTab = new JPanel();
         axisTabs.addTab("Statistics", null, statisticsTab, null);
@@ -149,14 +199,7 @@ public class GuiView {
         statisticsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         statisticsTab.add(statisticsScrollPane, BorderLayout.CENTER);
 
-        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        statisticListContent = new JList(new DefaultListModel());
-        statisticListContent.setCellRenderer(new CheckboxListRenderer());
-        statisticListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        statisticListContent.addMouseListener(checkboxListItemClickHandler);
-        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(statisticListContent);
-        statisticListContent.addMouseListener(statisticMoveHandler);
-        statisticListContent.addMouseMotionListener(statisticMoveHandler);
+        initializeStatisticListContent();
         statisticsScrollPane.setViewportView(statisticListContent);
 
         JPanel stimuliTab = new JPanel();
@@ -168,13 +211,7 @@ public class GuiView {
         stimuliScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         stimuliTab.add(stimuliScrollPane, BorderLayout.CENTER);
 
-        stimulusListContent = new JList(new DefaultListModel());
-        stimulusListContent.setCellRenderer(new CheckboxListRenderer());
-        stimulusListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        stimulusListContent.addMouseListener(checkboxListItemClickHandler);
-        CheckboxListItemMoveHandler stimulusMoveHandler = new CheckboxListItemMoveHandler(stimulusListContent);
-        stimulusListContent.addMouseListener(stimulusMoveHandler);
-        stimulusListContent.addMouseMotionListener(stimulusMoveHandler);
+        initializeStimulusListContent();
         stimuliScrollPane.setViewportView(stimulusListContent);
 
         JPanel subjectsTab = new JPanel();
@@ -186,26 +223,54 @@ public class GuiView {
         subjectScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         subjectsTab.add(subjectScrollPane, BorderLayout.CENTER);
 
+        initializeSubjectListContent();
+        subjectScrollPane.setViewportView(subjectListContent);
+
+        return axisTabs;
+    }
+
+    void initializeSubjectListContent() {
+        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
         subjectListContent = new JList(new DefaultListModel());
         subjectListContent.setCellRenderer(new CheckboxListRenderer());
         subjectListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         subjectListContent.addMouseListener(checkboxListItemClickHandler);
-        CheckboxListItemMoveHandler subjectMoveHandler = new CheckboxListItemMoveHandler(subjectListContent);
-        subjectListContent.addMouseListener(subjectMoveHandler);
-        subjectListContent.addMouseMotionListener(subjectMoveHandler);
-        subjectScrollPane.setViewportView(subjectListContent);
-        
+        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(subjectListContent);
+        subjectListContent.addMouseListener(statisticMoveHandler);
+        subjectListContent.addMouseMotionListener(statisticMoveHandler);
+    }
+    void initializeStimulusListContent() {
+        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
+        stimulusListContent = new JList(new DefaultListModel());
+        stimulusListContent.setCellRenderer(new CheckboxListRenderer());
+        stimulusListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        stimulusListContent.addMouseListener(checkboxListItemClickHandler);
+        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(stimulusListContent);
+        stimulusListContent.addMouseListener(statisticMoveHandler);
+        stimulusListContent.addMouseMotionListener(statisticMoveHandler);
+    }
+    void initializeStatisticListContent() {
+        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
+        statisticListContent = new JList(new DefaultListModel());
+        statisticListContent.setCellRenderer(new CheckboxListRenderer());
+        statisticListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        statisticListContent.addMouseListener(checkboxListItemClickHandler);
+        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(statisticListContent);
+        statisticListContent.addMouseListener(statisticMoveHandler);
+        statisticListContent.addMouseMotionListener(statisticMoveHandler);
+    }
+
+    JPanel initializeAxisFooter() {
         JPanel axisFooter = new JPanel();
         axisFooter.setLayout(new BorderLayout(0, 0));
-        axisMemberPanel.add(axisFooter, BorderLayout.SOUTH);
 
         JButton btnExport = new JButton("Export");
         btnExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 exportProgressBar.setVisible(true);
                 JFileChooser saveDialog = new JFileChooser();
-                int retval = saveDialog.showSaveDialog(new JFrame());
-                if (retval == JFileChooser.APPROVE_OPTION) {
+                int retVal = saveDialog.showSaveDialog(new JFrame());
+                if (retVal == JFileChooser.APPROVE_OPTION) {
                     ExportWorker exportWorker = new ExportWorker(saveDialog);
                     exportWorker.execute();
                 }
@@ -218,20 +283,34 @@ public class GuiView {
         exportProgressBar.setVisible(false);
         exportProgressBar.setStringPainted(true);
         axisFooter.add(exportProgressBar, BorderLayout.WEST);
-        
-        JPanel separator = new JPanel();
-        axisMemberPanel.add(separator, BorderLayout.WEST);
+
+        return axisFooter;
+    }
+
+    JPanel initializeFilePanel() {
         JPanel filePanel = new JPanel();
-        GridBagConstraints gbc_filePanel = new GridBagConstraints();
-        gbc_filePanel.fill = GridBagConstraints.BOTH;
-        gbc_filePanel.gridx = 0;
-        gbc_filePanel.gridy = 0;
-        center.add(filePanel, gbc_filePanel);
         filePanel.setLayout(new BorderLayout(0, 0));
         JPanel fileHeader = new JPanel();
         fileHeader.setLayout(new BorderLayout(0, 0));
         filePanel.add(fileHeader, BorderLayout.NORTH);
-        
+
+        fileHeader.add(initializeAddFileButton(), BorderLayout.WEST);
+        addFileProgressBar = new JProgressBar();
+        addFileProgressBar.setIndeterminate(true);
+        addFileProgressBar.setVisible(false);
+        addFileProgressBar.setStringPainted(true);
+        fileHeader.add(addFileProgressBar, BorderLayout.EAST);
+
+        JPanel fileListWrapper = initializeFileListWrapper();
+        filePanel.add(fileListWrapper, BorderLayout.CENTER);
+
+        JPanel outputWrapper = initializeOutputWrapper();
+        filePanel.add(outputWrapper, BorderLayout.SOUTH);
+
+        return filePanel;
+    }
+
+    JButton initializeAddFileButton() {
         JButton addFilesButton = new JButton("Add Files");
         addFilesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -244,16 +323,11 @@ public class GuiView {
                 adder.execute();
             }
         });
+        return addFilesButton;
+    }
 
-        fileHeader.add(addFilesButton, BorderLayout.WEST);
-        addFileProgressBar = new JProgressBar();
-        addFileProgressBar.setIndeterminate(true);
-        addFileProgressBar.setVisible(false);
-        addFileProgressBar.setStringPainted(true);
-        fileHeader.add(addFileProgressBar, BorderLayout.EAST);
-        
+    JPanel initializeFileListWrapper() {
         JPanel fileListWrapper = new JPanel();
-        filePanel.add(fileListWrapper, BorderLayout.CENTER);
         fileListWrapper.setLayout(new GridLayout(0, 1, 0, 0));
         JScrollPane fileList = new JScrollPane();
         fileList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -264,10 +338,13 @@ public class GuiView {
         fileListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileListContent.addMouseListener(new ButtonListItemClickHandler(this));
         fileListContent.setModel(model.getFileListModel());
-        //fileListContent.setLayout(new GridLayout(0, 1, 0, 0));
         fileList.setViewportView(fileListContent);
+
+        return fileListWrapper;
+    }
+
+    JPanel initializeOutputWrapper() {
         JPanel outputWrapper = new JPanel();
-        filePanel.add(outputWrapper, BorderLayout.SOUTH);
         outputWrapper.setLayout(new BorderLayout(0, 0));
         JPanel outputSpacer = new JPanel();
         outputWrapper.add(outputSpacer, BorderLayout.CENTER);
@@ -280,9 +357,21 @@ public class GuiView {
         outputFormat.add(outputHeaderText);
         JPanel tableContainer = new JPanel();
         outputContainer.add(tableContainer, BorderLayout.CENTER);
+
+        JPanel mockTable = initializeMockTable();
+        tableContainer.add(mockTable);
+
+        JPanel tabContainer = new JPanel();
+        outputContainer.add(tabContainer, BorderLayout.SOUTH);
+        JComboBox comboBox = initializeDataTypeComboBox();
+        tabContainer.add(comboBox);
+
+        return outputWrapper;
+    }
+
+    JPanel initializeMockTable() {
         JPanel mockTable = new JPanel();
         mockTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        tableContainer.add(mockTable);
         mockTable.setLayout(new GridLayout(4, 4, 0, 0));
         JPanel swapContainer = new JPanel();
         mockTable.add(swapContainer);
@@ -307,10 +396,11 @@ public class GuiView {
             mockTable.add(new JPanel());
         }
 
-        JPanel tabContainer = new JPanel();
-        outputContainer.add(tabContainer, BorderLayout.SOUTH);
+        return mockTable;
+    }
+
+    JComboBox initializeDataTypeComboBox() {
         JComboBox comboBox = new JComboBox();
-        tabContainer.add(comboBox);
         comboBox.setModel(new DefaultComboBoxModel(new DataType[]{DataType.STATISTIC, DataType.STIMULUS, DataType.SUBJECT}));
         comboBox.setSelectedIndex(0);
         comboBox.setMaximumRowCount(3);
@@ -325,16 +415,12 @@ public class GuiView {
                 }
             }
         });
-        JPanel footer = new JPanel();
-        frame.getContentPane().add(footer, BorderLayout.SOUTH);
-        JPanel leftSpacer = new JPanel();
-        frame.getContentPane().add(leftSpacer, BorderLayout.WEST);
-        JPanel rightSpacer = new JPanel();
-        frame.getContentPane().add(rightSpacer, BorderLayout.EAST);
-
-        frame.requestFocus();
-        frame.setVisible(true);
+        return comboBox;
     }
+    /**
+     * END OF INITIALIZATION
+     */
+
 
     public void remove(ButtonListItem b) {
         FileDeleter fileDeleter = new FileDeleter(b);
@@ -357,7 +443,6 @@ public class GuiView {
         if (model.getListModel(DataType.STATISTIC).size() > 0 || statisticListContent.getModel().getSize() > 0) {
             statisticListContent.setModel(model.getListModel(DataType.STATISTIC));
         }
-
     }
 
     void updateOutputTable() {
@@ -432,6 +517,7 @@ public class GuiView {
             buttonListItem = b;
         }
         protected Object doInBackground() {
+            //TODO: support remove on back end
             //model.remove(buttonListItem.getFilename(), buttonListItem.getSubject());
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
