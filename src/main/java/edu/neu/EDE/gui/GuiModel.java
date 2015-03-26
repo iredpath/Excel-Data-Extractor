@@ -7,6 +7,7 @@ import edu.neu.EDE.data_structs.OutputConfiguration;
 import edu.neu.EDE.io.WorkbookReader;
 import edu.neu.EDE.io.WorkbookWriter;
 
+import javax.swing.DefaultListModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class GuiModel {
     private FourDimArray slideMetricData;
     private Set<String> invalidFiles;
     private Map<String, String> validFiles;
-    private Map<DataType, Set<String>> lookZoneDataType2Excluded;
-    private Map<DataType, Set<String>> slideMetricDataType2Excluded;
+    private Map<DataType, CheckboxListModel> lookZoneDataType2Excluded;
+    private Map<DataType, CheckboxListModel> slideMetricDataType2Excluded;
     private DataType tabType;
     private DataType columnType;
     private DataType rowType;
@@ -39,15 +40,15 @@ public class GuiModel {
         this.validFiles = new HashMap<String, String>();
         this.invalidFiles = new HashSet<String>();
 
-        this.lookZoneDataType2Excluded = new HashMap<DataType, Set<String>>();
-        this.lookZoneDataType2Excluded.put(DataType.SUBJECT, new HashSet<String>());
-        this.lookZoneDataType2Excluded.put(DataType.STIMULUS, new HashSet<String>());
-        this.lookZoneDataType2Excluded.put(DataType.STATISTIC, new HashSet<String>());
+        this.lookZoneDataType2Excluded = new HashMap<DataType, CheckboxListModel>();
+        this.lookZoneDataType2Excluded.put(DataType.SUBJECT, new CheckboxListModel());
+        this.lookZoneDataType2Excluded.put(DataType.STIMULUS, new CheckboxListModel());
+        this.lookZoneDataType2Excluded.put(DataType.STATISTIC, new CheckboxListModel());
 
-        this.slideMetricDataType2Excluded = new HashMap<DataType, Set<String>>();
-        this.slideMetricDataType2Excluded.put(DataType.SUBJECT, new HashSet<String>());
-        this.slideMetricDataType2Excluded.put(DataType.STIMULUS, new HashSet<String>());
-        this.slideMetricDataType2Excluded.put(DataType.STATISTIC, new HashSet<String>());
+        this.slideMetricDataType2Excluded = new HashMap<DataType, CheckboxListModel>();
+        this.slideMetricDataType2Excluded.put(DataType.SUBJECT, new CheckboxListModel());
+        this.slideMetricDataType2Excluded.put(DataType.STIMULUS, new CheckboxListModel());
+        this.slideMetricDataType2Excluded.put(DataType.STATISTIC, new CheckboxListModel());
 
         this.tabType = DataType.STATISTIC;
         this.columnType = DataType.STIMULUS;
@@ -67,6 +68,77 @@ public class GuiModel {
             } else {
                 invalidFiles.add(f.getAbsolutePath());
             }
+        }
+        updateJListModels();
+    }
+
+    void updateJListModels() {
+        CheckboxListModel listModel = slideMetricDataType2Excluded.get(DataType.SUBJECT);
+        List<String> list = slideMetricData.getSubjects();
+        for (String s: list) {
+            if (!listModel.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                listModel.addElement(item);
+            }
+        }
+
+        listModel = slideMetricDataType2Excluded.get(DataType.STIMULUS);
+        list = slideMetricData.getStimuli();
+        for (String s: list) {
+            if (!listModel.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                listModel.addElement(item);
+            }
+        }
+
+        listModel = slideMetricDataType2Excluded.get(DataType.STATISTIC);
+        list = slideMetricData.getStatistics();
+        for (String s: list) {
+            if (!listModel.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                listModel.addElement(item);
+            }
+        }
+
+        listModel = lookZoneDataType2Excluded.get(DataType.SUBJECT);
+        list = lookZoneData.getSubjects();
+        for (String s: list) {
+            if (!listModel.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                listModel.addElement(item);
+            }
+        }
+
+        listModel = lookZoneDataType2Excluded.get(DataType.STIMULUS);
+        list = lookZoneData.getStimuli();
+        for (String s: list) {
+            if (!listModel.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                listModel.addElement(item);
+            }
+        }
+
+        listModel = lookZoneDataType2Excluded.get(DataType.STATISTIC);
+        list = lookZoneData.getStatistics();
+        for (String s: list) {
+            if (!listModel.contains(s)) {
+                CheckboxListItem item = new CheckboxListItem(s);
+                item.setSelected(true);
+                listModel.addElement(item);
+            }
+        }
+    }
+
+    DefaultListModel<CheckboxListItem> getListModel(DataGroupType groupType, DataType dataType) {
+        if (groupType.equals(DataGroupType.LOOKZONE)) {
+            return lookZoneDataType2Excluded.get(dataType);
+        } else {
+            return slideMetricDataType2Excluded.get(dataType);
         }
     }
 
@@ -92,66 +164,18 @@ public class GuiModel {
         validFiles.remove(filename);
     }
 
-    List<String> getSubjects(DataGroupType groupType) {
-        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
-            return slideMetricData.getSubjects();
-        } else {
-            return lookZoneData.getSubjects();
-        }
-    }
-
-    List<String> getStimuli(DataGroupType groupType) {
-        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
-            return slideMetricData.getStimuli();
-        } else {
-            return lookZoneData.getStimuli();
-        }
-    }
-
-    List<String> getStatistics(DataGroupType groupType) {
-        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
-            return slideMetricData.getStatistics();
-        } else {
-            return lookZoneData.getStatistics();
-        }
-    }
-
-    Map<DataType, Set<String>> getDataFor(DataGroupType groupType) {
-        if (groupType.equals(DataGroupType.SLIDEMETRIC)) {
-            return this.slideMetricDataType2Excluded;
-        } else {
-            return this.lookZoneDataType2Excluded;
-        }
-    }
-
-    void setAsDeselected(String name, DataType type, DataGroupType groupType) {
-        if (groupType.equals(DataGroupType.LOOKZONE)) {
-            this.lookZoneDataType2Excluded.get(type).add(name);
-        } else {
-            this.slideMetricDataType2Excluded.get(type).add(name);
-        }
-    }
-
-    void setAsSelected(String name, DataType type, DataGroupType groupType) {
-        if (groupType.equals(DataGroupType.LOOKZONE)) {
-            this.lookZoneDataType2Excluded.get(type).remove(name);
-        } else {
-            this.slideMetricDataType2Excluded.get(type).remove(name);
-        }
-    }
-
     void export(DataGroupType groupType, File outputFile) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
+        Map<DataType, CheckboxListModel> map = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneDataType2Excluded : slideMetricDataType2Excluded;
+        List<String> statistics = getSelectedData(map.get(DataType.STATISTIC));
+        List<String> stimuli = getSelectedData(map.get(DataType.STIMULUS));
+        List<String> subjects = getSelectedData(map.get(DataType.SUBJECT));
         FourDimArray data = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
         writer.setData(data);
         writer.setRowType(rowType);
         writer.setSheetType(tabType);
-        // FUCK.  This may get ugly.  we have lists of stats/subjects/stimuli, not tabs/rows/columns
-        // Have I mentioned I hate how swing isn't even remotely backed by real data?
-        List<String> statistics = getSelectedData(groupType, DataType.STATISTIC, data.getStatistics());
-        List<String> stimuli = getSelectedData(groupType, DataType.STIMULUS, data.getStimuli());
-        List<String> subjects = getSelectedData(groupType, DataType.SUBJECT, data.getSubjects());
+        writer.setColumnType(columnType);
         OutputConfiguration config = new OutputConfiguration();
         config.setStatistics(statistics);
         config.setSubjects(subjects);
@@ -163,15 +187,15 @@ public class GuiModel {
     }
 
     // How too slow is this?
-    List<String> getSelectedData(DataGroupType groupType, DataType type, List<String> all) {
-        Set<String> excluded = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneDataType2Excluded.get(type) : slideMetricDataType2Excluded.get(type);
-        List<String> result = new ArrayList<String>();
-        for (String s: all) {
-            if (!excluded.contains(s)) {
-                result.add(s);
+    List<String> getSelectedData(DefaultListModel<CheckboxListItem> model) {
+        List<String> retVal = new ArrayList<String>();
+        for (int i = 0; i < model.getSize(); i++) {
+            CheckboxListItem item = model.get(i);
+            if (item.isSelected()) {
+                retVal.add(item.toString());
             }
         }
-        return result;
+        return retVal;
     }
 
 }

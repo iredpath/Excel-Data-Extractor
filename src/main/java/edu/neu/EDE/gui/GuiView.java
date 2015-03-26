@@ -2,31 +2,19 @@ package edu.neu.EDE.gui;
 
 import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
+import javafx.scene.control.CheckBox;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.LayoutStyle;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,17 +25,30 @@ public class GuiView {
     private GuiModel model;
     private JFrame frame;
     private JPanel fileListContent;
-    private JPanel subjectListContent;
-    private JPanel stimulusListContent;
-    private JPanel statisticListContent;
+    private JList subjectListContent;
+    private JList stimulusListContent;
+    private JList statisticListContent;
     private JRadioButton lookZoneButton;
     private JRadioButton slideMetricButton;
     private JProgressBar addFileProgressBar;
     private JProgressBar exportProgressBar;
     private DataGroupType dataGroupType;
+    private MouseAdapter checkboxListItemClickHandler;
 
     public GuiView(GuiModel m) {
         this.model = m;
+        this.checkboxListItemClickHandler = new MouseAdapter() {
+            public void mouseClicked(MouseEvent event) {
+                JList list = (JList) event.getSource();
+                // Get index of item clicked
+                int index = list.locationToIndex(event.getPoint());
+                CheckboxListItem item = (CheckboxListItem) list.getModel().getElementAt(index);
+                // Toggle selected state
+                item.setSelected(!item.isSelected());
+                // Repaint cell
+                list.repaint(list.getCellBounds(index, index));
+            }
+        };
     }
 
     void initialize() {
@@ -88,16 +89,16 @@ public class GuiView {
 
         JButton addFilesButton = new JButton("Add Files");
         addFilesButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addFileProgressBar.setVisible(true);
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                fc.setMultiSelectionEnabled(true);
-                int retVal = fc.showOpenDialog(frame);
-                FileAdder adder = new FileAdder(fc, retVal);
-                adder.execute();
-            }
-        });
+             public void actionPerformed(ActionEvent e) {
+                 addFileProgressBar.setVisible(true);
+                 JFileChooser fc = new JFileChooser();
+                 fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                 fc.setMultiSelectionEnabled(true);
+                 int retVal = fc.showOpenDialog(frame);
+                 FileAdder adder = new FileAdder(fc, retVal);
+                 adder.execute();
+             }
+         });
 
         fileFooter.add(addFilesButton, BorderLayout.WEST);
         addFileProgressBar = new JProgressBar();
@@ -168,11 +169,13 @@ public class GuiView {
         StatisticsTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane StatisticsList = new JScrollPane();
-        //StatisticsList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         StatisticsList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         StatisticsTab.add(StatisticsList, BorderLayout.CENTER);
 
-        statisticListContent = new JPanel();
+        statisticListContent = new JList();
+        statisticListContent.setCellRenderer(new CheckboxListRenderer());
+        statisticListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        statisticListContent.addMouseListener(checkboxListItemClickHandler);
         StatisticsList.setViewportView(statisticListContent);
 
         JPanel Stimuli = new JPanel();
@@ -182,10 +185,12 @@ public class GuiView {
 
         JScrollPane StimuliList = new JScrollPane();
         StimuliList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        //StimuliList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         Stimuli.add(StimuliList, BorderLayout.CENTER);
 
-        stimulusListContent = new JPanel();
+        stimulusListContent = new JList();
+        stimulusListContent.setCellRenderer(new CheckboxListRenderer());
+        stimulusListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        stimulusListContent.addMouseListener(checkboxListItemClickHandler);
         StimuliList.setViewportView(stimulusListContent);
 
         JPanel Subjects = new JPanel();
@@ -195,10 +200,12 @@ public class GuiView {
 
         JScrollPane SubjectList = new JScrollPane();
         SubjectList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        //SubjectList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         Subjects.add(SubjectList, BorderLayout.CENTER);
 
-        subjectListContent = new JPanel();
+        subjectListContent = new JList();
+        subjectListContent.setCellRenderer(new CheckboxListRenderer());
+        subjectListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        subjectListContent.addMouseListener(checkboxListItemClickHandler);
         SubjectList.setViewportView(subjectListContent);
 
         JPanel AxisFooter = new JPanel();
@@ -349,41 +356,10 @@ public class GuiView {
         updateData();
     }
 
-    JPanel makeNewDataTypePanel(final String name, final DataType type) {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel(name);
-        panel.add(label, BorderLayout.WEST);
-        JCheckBox checkbox = new JCheckBox();
-        if (!model.getDataFor(dataGroupType).get(type).contains(name)) {
-            checkbox.setSelected(true);
-        }
-        checkbox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
-                if (b.isSelected()) {
-                    model.setAsSelected(name, type, dataGroupType);
-                } else {
-                    model.setAsDeselected(name, type, dataGroupType);
-                }
-            }
-        });
-        panel.add(checkbox, BorderLayout.EAST);
-        return panel;
-    }
-
     void updateData() {
-        subjectListContent.removeAll();
-        for (String subject: model.getSubjects(dataGroupType)) {
-            subjectListContent.add(makeNewDataTypePanel(subject, DataType.SUBJECT), BorderLayout.WEST);
-        }
-        stimulusListContent.removeAll();
-        for (String stimulus: model.getStimuli(dataGroupType)) {
-            stimulusListContent.add(makeNewDataTypePanel(stimulus, DataType.STIMULUS), BorderLayout.WEST);
-        }
-        statisticListContent.removeAll();
-        for (String statistic: model.getStatistics(dataGroupType)) {
-            statisticListContent.add(makeNewDataTypePanel(statistic, DataType.STATISTIC), BorderLayout.WEST);
-        }
+        subjectListContent.setModel(model.getListModel(dataGroupType, DataType.SUBJECT));
+        stimulusListContent.setModel(model.getListModel(dataGroupType, DataType.STIMULUS));
+        statisticListContent.setModel(model.getListModel(dataGroupType, DataType.STATISTIC));
     }
 
     // this may have to be abstracted to also handle model.remove(), or we just make another class
