@@ -114,6 +114,7 @@ public class GuiModel {
             }
         }
     }
+    
     void updateJListModels() {
         CheckboxListModel listModel = slideMetricDataType2Excluded.get(DataType.SUBJECT);
         List<String> list = slideMetricData.getSubjects();

@@ -63,6 +63,7 @@ public class GuiView {
     private MouseAdapter checkboxListItemClickHandler;
     private List<JPanel> columnHeads;
     private List<JPanel> rowHeads;
+    private ButtonGroup dataGroupButtonGroup;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -110,49 +111,38 @@ public class GuiView {
         axisMemberPanel.add(axisHeader, BorderLayout.NORTH);
         axisHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         
-        JPanel axislist = new JPanel();
-        axisMemberPanel.add(axislist, BorderLayout.CENTER);
-        axislist.setLayout(new BorderLayout(0, 0));
+        JPanel axisList = new JPanel();
+        axisMemberPanel.add(axisList, BorderLayout.CENTER);
+        axisList.setLayout(new BorderLayout(0, 0));
 
+        dataGroupButtonGroup = new ButtonGroup();
+        ActionListener dataGroupButtonActionHandler = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                DataGroupButton b = (DataGroupButton) e.getSource();
+                model.updateDataGroupType(b.getDataGroupType());
+                update();
+                frame.revalidate();
+                frame.repaint();
+            }
+        };
+        lookZoneButton = new DataGroupButton("Look zone data", DataGroupType.LOOKZONE);
+        lookZoneButton.addActionListener(dataGroupButtonActionHandler);
 
-        ButtonGroup lookZoneOrSlideMetric = new ButtonGroup();
-        lookZoneButton = new JRadioButton("Look zone data");
-        lookZoneButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
-                if (b.isSelected()) {
-                    model.updateDataGroupType(DataGroupType.LOOKZONE);
-                    update();
-                    frame.revalidate();
-                    frame.repaint();
-                }
-            }
-        });
-        slideMetricButton = new JRadioButton("Slide metric data");
-        slideMetricButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AbstractButton b = (AbstractButton) e.getSource();
-                if (b.isSelected()) {
-                    model.updateDataGroupType(DataGroupType.SLIDEMETRIC);
-                    update();
-                    frame.revalidate();
-                    frame.repaint();
-                }
-            }
-        });
+        slideMetricButton = new DataGroupButton("Slide metric data", DataGroupType.SLIDEMETRIC);
+        slideMetricButton.addActionListener(dataGroupButtonActionHandler);
+
         slideMetricButton.setSelected(true);
-        lookZoneOrSlideMetric.add(lookZoneButton);
-        lookZoneOrSlideMetric.add(slideMetricButton);
+        dataGroupButtonGroup.add(lookZoneButton);
+        dataGroupButtonGroup.add(slideMetricButton);
         axisHeader.add(slideMetricButton, BorderLayout.CENTER);
         axisHeader.add(lookZoneButton, BorderLayout.CENTER);
-        // set default value;
 
-        JTabbedPane axistabs = new JTabbedPane(JTabbedPane.TOP);
-        axislist.add(axistabs, BorderLayout.CENTER);
+        JTabbedPane axisTabs = new JTabbedPane(JTabbedPane.TOP);
+        axisList.add(axisTabs, BorderLayout.CENTER);
 
         JPanel statisticsTab = new JPanel();
-        axistabs.addTab("Statistics", null, statisticsTab, null);
-        axistabs.setEnabledAt(0, true);
+        axisTabs.addTab("Statistics", null, statisticsTab, null);
+        axisTabs.setEnabledAt(0, true);
         statisticsTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane statisticsScrollPane = new JScrollPane();
@@ -170,8 +160,8 @@ public class GuiView {
         statisticsScrollPane.setViewportView(statisticListContent);
 
         JPanel stimuliTab = new JPanel();
-        axistabs.addTab("Stimuli", null, stimuliTab, null);
-        axistabs.setEnabledAt(1, true);
+        axisTabs.addTab("Stimuli", null, stimuliTab, null);
+        axisTabs.setEnabledAt(1, true);
         stimuliTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane stimuliScrollPane = new JScrollPane();
@@ -188,8 +178,8 @@ public class GuiView {
         stimuliScrollPane.setViewportView(stimulusListContent);
 
         JPanel subjectsTab = new JPanel();
-        axistabs.addTab("Subjects", null, subjectsTab, null);
-        axistabs.setEnabledAt(2, true);
+        axisTabs.addTab("Subjects", null, subjectsTab, null);
+        axisTabs.setEnabledAt(2, true);
         subjectsTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane subjectScrollPane = new JScrollPane();
@@ -353,9 +343,21 @@ public class GuiView {
 
     void update() {
         //TODO: Maybe find a way around this
-        subjectListContent.setModel(model.getListModel(DataType.SUBJECT));
-        stimulusListContent.setModel(model.getListModel(DataType.STIMULUS));
-        statisticListContent.setModel(model.getListModel(DataType.STATISTIC));
+        // there should be a way to edit the model instead of constantly setting
+        // but since each list is essentially backed by two models,
+        // may not be possible
+
+        //CHECKS TEMPORARY FIX FOR AWFUL BUG
+        if (model.getListModel(DataType.SUBJECT).size() > 0 || subjectListContent.getModel().getSize() > 0) {
+            subjectListContent.setModel(model.getListModel(DataType.SUBJECT));
+        }
+        if (model.getListModel(DataType.STIMULUS).size() > 0 || stimulusListContent.getModel().getSize() > 0) {
+            stimulusListContent.setModel(model.getListModel(DataType.STIMULUS));
+        }
+        if (model.getListModel(DataType.STATISTIC).size() > 0 || statisticListContent.getModel().getSize() > 0) {
+            statisticListContent.setModel(model.getListModel(DataType.STATISTIC));
+        }
+
     }
 
     void updateOutputTable() {
