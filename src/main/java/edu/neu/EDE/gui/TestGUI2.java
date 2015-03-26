@@ -36,6 +36,10 @@ import javax.swing.JEditorPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
+import javax.swing.AbstractListModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.BevelBorder;
 
 public class TestGUI2 {
 
@@ -71,20 +75,114 @@ public class TestGUI2 {
         frame = new JFrame();
         frame.setBounds(0, 0, 1024, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(new GridLayout(1, 3, 10, 10));
+        frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        
+        JPanel Header = new JPanel();
+        frame.getContentPane().add(Header, BorderLayout.NORTH);
+        
+        JPanel Center = new JPanel();
+        frame.getContentPane().add(Center, BorderLayout.CENTER);
+        GridBagLayout gbl_Center = new GridBagLayout();
+        gbl_Center.columnWidths = new int[] {400, 600};
+        gbl_Center.rowHeights = new int[] {0};
+        gbl_Center.columnWeights = new double[]{1.0, 0.0};
+        gbl_Center.rowWeights = new double[]{1.0};
+        Center.setLayout(gbl_Center);
+        
+        JPanel AxisMemberPanel = new JPanel();
+        GridBagConstraints gbc_AxisMemberPanel = new GridBagConstraints();
+        gbc_AxisMemberPanel.insets = new Insets(0, 0, 5, 0);
+        gbc_AxisMemberPanel.fill = GridBagConstraints.BOTH;
+        gbc_AxisMemberPanel.gridx = 1;
+        gbc_AxisMemberPanel.gridy = 0;
+        Center.add(AxisMemberPanel, gbc_AxisMemberPanel);
+        AxisMemberPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel AxisHeader = new JPanel();
+        AxisMemberPanel.add(AxisHeader, BorderLayout.NORTH);
+        AxisHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        
+        JComboBox comboBox_1 = new JComboBox();
+        AxisHeader.add(comboBox_1);
+        comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Slide Metric Data", "Lookzone Data"}));
+        
+        JPanel AxisList = new JPanel();
+        AxisMemberPanel.add(AxisList, BorderLayout.CENTER);
+        AxisList.setLayout(new BorderLayout(0, 0));
+        
+        JTabbedPane AxisTabs = new JTabbedPane(JTabbedPane.TOP);
+        AxisList.add(AxisTabs, BorderLayout.CENTER);
+        
+        JPanel Statistics = new JPanel();
+        AxisTabs.addTab("Statistics", null, Statistics, null);
+        AxisTabs.setEnabledAt(0, true);
+        Statistics.setLayout(new BorderLayout(0, 0));
+        
+        JScrollPane StatisticScrollPane = new JScrollPane();
+        StatisticScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        Statistics.add(StatisticScrollPane, BorderLayout.CENTER);
+        
+        JList StatisticList = new JList();
+        StatisticList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        StatisticList.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Statistic_1", "Statistic_2"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        StatisticScrollPane.setViewportView(StatisticList);
+        
+        JPanel Stimuli = new JPanel();
+        AxisTabs.addTab("Stimuli", null, Stimuli, null);
+        AxisTabs.setEnabledAt(1, true);
+        Stimuli.setLayout(new BorderLayout(0, 0));
+        
+        JScrollPane StimuliScrollPane = new JScrollPane();
+        StimuliScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        Stimuli.add(StimuliScrollPane, BorderLayout.CENTER);
+        
+        JList list = new JList();
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        StimuliScrollPane.setViewportView(list);
+        
+        JPanel Subjects = new JPanel();
+        AxisTabs.addTab("Subjects", null, Subjects, null);
+        AxisTabs.setEnabledAt(2, true);
+        Subjects.setLayout(new BorderLayout(0, 0));
+        
+        JScrollPane SubjectList = new JScrollPane();
+        SubjectList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        Subjects.add(SubjectList, BorderLayout.CENTER);
+        
+        JList list_1 = new JList();
+        list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        SubjectList.setViewportView(list_1);
+        
+        JPanel AxisFooter = new JPanel();
+        AxisMemberPanel.add(AxisFooter, BorderLayout.SOUTH);
+        
+        JButton btnExport = new JButton("Export");
+        AxisFooter.add(btnExport);
+        
+        JPanel Separator = new JPanel();
+        AxisMemberPanel.add(Separator, BorderLayout.WEST);
         
         JPanel FilePanel = new JPanel();
-        frame.getContentPane().add(FilePanel);
+        GridBagConstraints gbc_FilePanel = new GridBagConstraints();
+        gbc_FilePanel.fill = GridBagConstraints.BOTH;
+        gbc_FilePanel.gridx = 0;
+        gbc_FilePanel.gridy = 0;
+        Center.add(FilePanel, gbc_FilePanel);
         FilePanel.setLayout(new BorderLayout(0, 0));
         
         JPanel FileHeader = new JPanel();
         FilePanel.add(FileHeader, BorderLayout.NORTH);
         
-        JLabel FileHeaderText = new JLabel("Files");
-        FileHeader.add(FileHeaderText);
-        
-        JPanel LeftSpacer = new JPanel();
-        FilePanel.add(LeftSpacer, BorderLayout.WEST);
+        JButton button = new JButton("Add Files");
+        FileHeader.add(button);
         
         JPanel FileListWrapper = new JPanel();
         FilePanel.add(FileListWrapper, BorderLayout.CENTER);
@@ -172,368 +270,143 @@ public class TestGUI2 {
         File_1.setLayout(gl_File_1);
         FileListContent.setLayout(gl_FileListContent);
         
-        JPanel FileFooter = new JPanel();
-        FilePanel.add(FileFooter, BorderLayout.SOUTH);
-        FileFooter.setLayout(new BorderLayout(0, 0));
-        
-        JPanel FileFooterContainer = new JPanel();
-        FileFooter.add(FileFooterContainer, BorderLayout.CENTER);
-        
-        JButton AddFilesButton = new JButton("Add Files");
-        FileFooterContainer.add(AddFilesButton);
-        
-        JPanel AxisMemberPanel = new JPanel();
-        frame.getContentPane().add(AxisMemberPanel);
-        AxisMemberPanel.setLayout(new BorderLayout(0, 0));
-        
-        JPanel AxisHeader = new JPanel();
-        AxisMemberPanel.add(AxisHeader, BorderLayout.NORTH);
-        
-        JLabel AxisHeaderText = new JLabel("Axis Members");
-        AxisHeader.add(AxisHeaderText);
-        
-        JPanel AxisList = new JPanel();
-        AxisMemberPanel.add(AxisList, BorderLayout.CENTER);
-        AxisList.setLayout(new BorderLayout(0, 0));
-        
-        JTabbedPane AxisTabs = new JTabbedPane(JTabbedPane.TOP);
-        AxisList.add(AxisTabs, BorderLayout.CENTER);
-        
-        JPanel StatisticsTab = new JPanel();
-        AxisTabs.addTab("Statistics", null, StatisticsTab, null);
-        AxisTabs.setEnabledAt(0, true);
-        StatisticsTab.setLayout(new BorderLayout(0, 0));
-        
-        JScrollPane StatisticsList = new JScrollPane();
-        StatisticsList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        StatisticsList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        StatisticsTab.add(StatisticsList, BorderLayout.CENTER);
-        
-        JPanel StatisticsListContent = new JPanel();
-        StatisticsList.setViewportView(StatisticsListContent);
-        
-        JPanel Statistic_0 = new JPanel();
-        
-        JCheckBox StatisticName_0 = new JCheckBox("Statistic Name");
-        StatisticName_0.setSelected(true);
-        GroupLayout gl_Statistic_0 = new GroupLayout(Statistic_0);
-        gl_Statistic_0.setHorizontalGroup(
-            gl_Statistic_0.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Statistic_0.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StatisticName_0, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Statistic_0.setVerticalGroup(
-            gl_Statistic_0.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Statistic_0.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StatisticName_0, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Statistic_0.setLayout(gl_Statistic_0);
-        
-        JPanel Statistic_1 = new JPanel();
-        
-        JCheckBox StatisticName_1 = new JCheckBox("Statistic Name");
-        StatisticName_1.setSelected(true);
-        GroupLayout gl_Statistic_1 = new GroupLayout(Statistic_1);
-        gl_Statistic_1.setHorizontalGroup(
-            gl_Statistic_1.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Statistic_1.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StatisticName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Statistic_1.setVerticalGroup(
-            gl_Statistic_1.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Statistic_1.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StatisticName_1, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Statistic_1.setLayout(gl_Statistic_1);
-        GroupLayout gl_StatisticsListContent = new GroupLayout(StatisticsListContent);
-        gl_StatisticsListContent.setHorizontalGroup(
-            gl_StatisticsListContent.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_StatisticsListContent.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(gl_StatisticsListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Statistic_0, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Statistic_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        gl_StatisticsListContent.setVerticalGroup(
-            gl_StatisticsListContent.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_StatisticsListContent.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(Statistic_0, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(Statistic_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(529, Short.MAX_VALUE))
-        );
-        StatisticsListContent.setLayout(gl_StatisticsListContent);
-        
-        JPanel Stimuli = new JPanel();
-        AxisTabs.addTab("Stimuli", null, Stimuli, null);
-        AxisTabs.setEnabledAt(1, true);
-        Stimuli.setLayout(new BorderLayout(0, 0));
-        
-        JScrollPane StimuliList = new JScrollPane();
-        StimuliList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        StimuliList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        Stimuli.add(StimuliList, BorderLayout.CENTER);
-        
-        JPanel StimuliListContent = new JPanel();
-        StimuliList.setViewportView(StimuliListContent);
-        
-        JPanel Stimulus_0 = new JPanel();
-        
-        JCheckBox StimulusName_0 = new JCheckBox("Stimulus Name");
-        StimulusName_0.setSelected(true);
-        GroupLayout gl_Stimulus_0 = new GroupLayout(Stimulus_0);
-        gl_Stimulus_0.setHorizontalGroup(
-            gl_Stimulus_0.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Stimulus_0.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StimulusName_0, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Stimulus_0.setVerticalGroup(
-            gl_Stimulus_0.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Stimulus_0.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StimulusName_0, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Stimulus_0.setLayout(gl_Stimulus_0);
-        
-        JPanel Stimulus_1 = new JPanel();
-        
-        JCheckBox StimulusName_1 = new JCheckBox("Stimulus Name");
-        StimulusName_1.setSelected(true);
-        GroupLayout gl_Stimulus_1 = new GroupLayout(Stimulus_1);
-        gl_Stimulus_1.setHorizontalGroup(
-            gl_Stimulus_1.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Stimulus_1.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StimulusName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Stimulus_1.setVerticalGroup(
-            gl_Stimulus_1.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Stimulus_1.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(StimulusName_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Stimulus_1.setLayout(gl_Stimulus_1);
-        GroupLayout gl_StimuliListContent = new GroupLayout(StimuliListContent);
-        gl_StimuliListContent.setHorizontalGroup(
-            gl_StimuliListContent.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 305, Short.MAX_VALUE)
-                .addGroup(gl_StimuliListContent.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(gl_StimuliListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Stimulus_0, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Stimulus_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        gl_StimuliListContent.setVerticalGroup(
-            gl_StimuliListContent.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 618, Short.MAX_VALUE)
-                .addGroup(gl_StimuliListContent.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(Stimulus_0, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(Stimulus_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(529, Short.MAX_VALUE))
-        );
-        StimuliListContent.setLayout(gl_StimuliListContent);
-        
-        JPanel Subjects = new JPanel();
-        AxisTabs.addTab("Subjects", null, Subjects, null);
-        AxisTabs.setEnabledAt(2, true);
-        Subjects.setLayout(new BorderLayout(0, 0));
-        
-        JScrollPane SubjectList = new JScrollPane();
-        SubjectList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        SubjectList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        Subjects.add(SubjectList, BorderLayout.CENTER);
-        
-        JPanel SubjectListContent = new JPanel();
-        SubjectList.setViewportView(SubjectListContent);
-        
-        JPanel Subject_0 = new JPanel();
-        
-        JCheckBox SubjectName_0 = new JCheckBox("Subject Name");
-        SubjectName_0.setSelected(true);
-        GroupLayout gl_Subject_0 = new GroupLayout(Subject_0);
-        gl_Subject_0.setHorizontalGroup(
-            gl_Subject_0.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Subject_0.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(SubjectName_0, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Subject_0.setVerticalGroup(
-            gl_Subject_0.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Subject_0.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(SubjectName_0, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Subject_0.setLayout(gl_Subject_0);
-        
-        JPanel Subject_1 = new JPanel();
-        
-        JCheckBox SubjectName_1 = new JCheckBox("Subject Name");
-        SubjectName_1.setSelected(true);
-        GroupLayout gl_Subject_1 = new GroupLayout(Subject_1);
-        gl_Subject_1.setHorizontalGroup(
-            gl_Subject_1.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGap(0, 285, Short.MAX_VALUE)
-                .addGroup(gl_Subject_1.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(SubjectName_1, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addContainerGap())
-        );
-        gl_Subject_1.setVerticalGroup(
-            gl_Subject_1.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGap(0, 36, Short.MAX_VALUE)
-                .addGroup(gl_Subject_1.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(SubjectName_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(40))
-        );
-        Subject_1.setLayout(gl_Subject_1);
-        GroupLayout gl_SubjectListContent = new GroupLayout(SubjectListContent);
-        gl_SubjectListContent.setHorizontalGroup(
-            gl_SubjectListContent.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 305, Short.MAX_VALUE)
-                .addGroup(gl_SubjectListContent.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(gl_SubjectListContent.createParallelGroup(Alignment.LEADING)
-                        .addComponent(Subject_0, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Subject_1, GroupLayout.PREFERRED_SIZE, 285, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        gl_SubjectListContent.setVerticalGroup(
-            gl_SubjectListContent.createParallelGroup(Alignment.LEADING)
-                .addGap(0, 618, Short.MAX_VALUE)
-                .addGroup(gl_SubjectListContent.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(Subject_0, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(Subject_1, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(529, Short.MAX_VALUE))
-        );
-        SubjectListContent.setLayout(gl_SubjectListContent);
-        
-        JPanel AxisFooter = new JPanel();
-        AxisMemberPanel.add(AxisFooter, BorderLayout.SOUTH);
-        
-        JPanel OutputPanel = new JPanel();
-        frame.getContentPane().add(OutputPanel);
-        OutputPanel.setLayout(new BorderLayout(0, 0));
-        
-        JPanel OutputHeader = new JPanel();
-        OutputPanel.add(OutputHeader, BorderLayout.NORTH);
-        
-        JLabel OutputHeaderText = new JLabel("Output Format");
-        OutputHeader.add(OutputHeaderText);
-        
         JPanel OutputWrapper = new JPanel();
-        OutputPanel.add(OutputWrapper, BorderLayout.CENTER);
+        FilePanel.add(OutputWrapper, BorderLayout.SOUTH);
         OutputWrapper.setLayout(new BorderLayout(0, 0));
         
-        JPanel AxisConfigurationWrapper = new JPanel();
-        OutputWrapper.add(AxisConfigurationWrapper);
+        JPanel OutputSpacer = new JPanel();
+        OutputWrapper.add(OutputSpacer, BorderLayout.CENTER);
+        
+        JPanel OutputContainer = new JPanel();
+        OutputWrapper.add(OutputContainer, BorderLayout.SOUTH);
+        OutputContainer.setLayout(new BorderLayout(0, 0));
+        
+        JPanel OutputFormat = new JPanel();
+        OutputContainer.add(OutputFormat, BorderLayout.NORTH);
+        
+        JLabel OutputHeaderText = new JLabel("Output Format");
+        OutputFormat.add(OutputHeaderText);
+        
+        JPanel TableContainer = new JPanel();
+        OutputContainer.add(TableContainer, BorderLayout.CENTER);
         
         JPanel MockTable = new JPanel();
-        MockTable.setLayout(new BorderLayout(0, 0));
-        
-        JPanel TableHeader = new JPanel();
-        MockTable.add(TableHeader, BorderLayout.NORTH);
-        TableHeader.setLayout(new BorderLayout(0, 0));
+        MockTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        TableContainer.add(MockTable);
+        MockTable.setLayout(new GridLayout(4, 4, 0, 0));
         
         JPanel SwapContainer = new JPanel();
-        TableHeader.add(SwapContainer, BorderLayout.WEST);
+        MockTable.add(SwapContainer);
         
-        JButton btnSwap = new JButton("Swap");
-        SwapContainer.add(btnSwap);
+        JButton SwapAxisButton = new JButton("Swap");
+        SwapContainer.add(SwapAxisButton);
         
-        JPanel ColumnTitles = new JPanel();
-        TableHeader.add(ColumnTitles, BorderLayout.CENTER);
+        JPanel ColHead1 = new JPanel();
+        MockTable.add(ColHead1);
         
-        JLabel ColumnTitleLabel = new JLabel("Axis Label");
-        ColumnTitles.add(ColumnTitleLabel);
+        JLabel lblVerticleAxisName = new JLabel("Stimulus");
+        ColHead1.add(lblVerticleAxisName);
         
-        JPanel Data = new JPanel();
-        MockTable.add(Data, BorderLayout.CENTER);
+        JPanel ColHead2 = new JPanel();
+        MockTable.add(ColHead2);
         
-        JLabel label_1 = new JLabel("- - - - - - - - -");
-        Data.add(label_1);
+        JLabel label_1 = new JLabel("Stimulus");
+        ColHead2.add(label_1);
         
-        JPanel RowTitles = new JPanel();
-        MockTable.add(RowTitles, BorderLayout.WEST);
+        JPanel ColHead3 = new JPanel();
+        MockTable.add(ColHead3);
         
-        JLabel lblVerticleAxisName = new JLabel("Axis Label");
-        RowTitles.add(lblVerticleAxisName);
+        JLabel label_10 = new JLabel("Stimulus");
+        ColHead3.add(label_10);
         
-        JPanel Tab = new JPanel();
+        JPanel RowHead1 = new JPanel();
+        MockTable.add(RowHead1);
+        
+        JLabel lblSubject = new JLabel("Subject");
+        RowHead1.add(lblSubject);
+        
+        JPanel DataCell1 = new JPanel();
+        MockTable.add(DataCell1);
+        
+        JLabel label = new JLabel("- - - - - - - -");
+        DataCell1.add(label);
+        
+        JPanel DataCell2 = new JPanel();
+        MockTable.add(DataCell2);
+        
+        JLabel label_2 = new JLabel("- - - - - - - -");
+        DataCell2.add(label_2);
+        
+        JPanel DataCell3 = new JPanel();
+        MockTable.add(DataCell3);
+        
+        JLabel label_3 = new JLabel("- - - - - - - -");
+        DataCell3.add(label_3);
+        
+        JPanel RowHead2 = new JPanel();
+        MockTable.add(RowHead2);
+        
+        JLabel label_11 = new JLabel("Subject");
+        RowHead2.add(label_11);
+        
+        JPanel DataCell4 = new JPanel();
+        MockTable.add(DataCell4);
+        
+        JLabel label_6 = new JLabel("- - - - - - - -");
+        DataCell4.add(label_6);
+        
+        JPanel DataCell5 = new JPanel();
+        MockTable.add(DataCell5);
+        
+        JLabel label_5 = new JLabel("- - - - - - - -");
+        DataCell5.add(label_5);
+        
+        JPanel DataCell6 = new JPanel();
+        MockTable.add(DataCell6);
+        
+        JLabel label_4 = new JLabel("- - - - - - - -");
+        DataCell6.add(label_4);
+        
+        JPanel RowHead3 = new JPanel();
+        MockTable.add(RowHead3);
+        
+        JLabel label_12 = new JLabel("Subject");
+        RowHead3.add(label_12);
+        
+        JPanel DataCell7 = new JPanel();
+        MockTable.add(DataCell7);
+        
+        JLabel label_7 = new JLabel("- - - - - - - -");
+        DataCell7.add(label_7);
+        
+        JPanel DataCell8 = new JPanel();
+        MockTable.add(DataCell8);
+        
+        JLabel label_8 = new JLabel("- - - - - - - -");
+        DataCell8.add(label_8);
+        
+        JPanel DataCell9 = new JPanel();
+        MockTable.add(DataCell9);
+        
+        JLabel label_9 = new JLabel("- - - - - - - -");
+        DataCell9.add(label_9);
+        
+        JPanel TabContainer = new JPanel();
+        OutputContainer.add(TabContainer, BorderLayout.SOUTH);
         
         JComboBox comboBox = new JComboBox();
+        TabContainer.add(comboBox);
         comboBox.setModel(new DefaultComboBoxModel(new String[] {"Statistic", "Stimuli", "Subject"}));
         comboBox.setSelectedIndex(0);
         comboBox.setMaximumRowCount(3);
-        Tab.add(comboBox);
-        GroupLayout gl_AxisConfigurationWrapper = new GroupLayout(AxisConfigurationWrapper);
-        gl_AxisConfigurationWrapper.setHorizontalGroup(
-            gl_AxisConfigurationWrapper.createParallelGroup(Alignment.LEADING)
-                .addGroup(Alignment.TRAILING, gl_AxisConfigurationWrapper.createSequentialGroup()
-                    .addGap(102)
-                    .addComponent(MockTable, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(89))
-                .addGroup(Alignment.TRAILING, gl_AxisConfigurationWrapper.createSequentialGroup()
-                    .addGap(129)
-                    .addComponent(Tab, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(117))
-        );
-        gl_AxisConfigurationWrapper.setVerticalGroup(
-            gl_AxisConfigurationWrapper.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_AxisConfigurationWrapper.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(MockTable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(Tab, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(521, Short.MAX_VALUE))
-        );
-        AxisConfigurationWrapper.setLayout(gl_AxisConfigurationWrapper);
         
-        JPanel OutputFooter = new JPanel();
-        OutputPanel.add(OutputFooter, BorderLayout.SOUTH);
+        JPanel Footer = new JPanel();
+        frame.getContentPane().add(Footer, BorderLayout.SOUTH);
         
-        JButton btnExport = new JButton("Export");
-        OutputFooter.add(btnExport);
+        JPanel LeftSpacer = new JPanel();
+        frame.getContentPane().add(LeftSpacer, BorderLayout.WEST);
         
         JPanel RightSpacer = new JPanel();
-        OutputPanel.add(RightSpacer, BorderLayout.EAST);
+        frame.getContentPane().add(RightSpacer, BorderLayout.EAST);
     }
 }
