@@ -85,33 +85,33 @@ public class GuiView {
         frame.setBounds(0, 0, 1024, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
-        JPanel Header = new JPanel();
-        frame.getContentPane().add(Header, BorderLayout.NORTH);
-        JPanel Center = new JPanel();
-        frame.getContentPane().add(Center, BorderLayout.CENTER);
+        JPanel header = new JPanel();
+        frame.getContentPane().add(header, BorderLayout.NORTH);
+        JPanel center = new JPanel();
+        frame.getContentPane().add(center, BorderLayout.CENTER);
         GridBagLayout gbl_Center = new GridBagLayout();
         gbl_Center.columnWidths = new int[] {400, 600};
         gbl_Center.rowHeights = new int[] {0};
         gbl_Center.columnWeights = new double[]{1.0, 0.0};
         gbl_Center.rowWeights = new double[]{1.0};
-        Center.setLayout(gbl_Center);
-        JPanel AxisMemberPanel = new JPanel();
+        center.setLayout(gbl_Center);
+        JPanel axisMemberPanel = new JPanel();
         GridBagConstraints gbc_AxisMemberPanel = new GridBagConstraints();
         gbc_AxisMemberPanel.insets = new Insets(0, 0, 5, 0);
         gbc_AxisMemberPanel.fill = GridBagConstraints.BOTH;
         gbc_AxisMemberPanel.gridx = 1;
         gbc_AxisMemberPanel.gridy = 0;
-        Center.add(AxisMemberPanel, gbc_AxisMemberPanel);
-        AxisMemberPanel.setLayout(new BorderLayout(0, 0));
+        center.add(axisMemberPanel, gbc_AxisMemberPanel);
+        axisMemberPanel.setLayout(new BorderLayout(0, 0));
         
         
         JPanel axisHeader = new JPanel();
-        AxisMemberPanel.add(axisHeader, BorderLayout.NORTH);
+        axisMemberPanel.add(axisHeader, BorderLayout.NORTH);
         axisHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         
-        JPanel AxisList = new JPanel();
-        AxisMemberPanel.add(AxisList, BorderLayout.CENTER);
-        AxisList.setLayout(new BorderLayout(0, 0));
+        JPanel axislist = new JPanel();
+        axisMemberPanel.add(axislist, BorderLayout.CENTER);
+        axislist.setLayout(new BorderLayout(0, 0));
 
 
         ButtonGroup lookZoneOrSlideMetric = new ButtonGroup();
@@ -147,12 +147,12 @@ public class GuiView {
         // set default value;
         this.dataGroupType = DataGroupType.SLIDEMETRIC;
 
-        JTabbedPane AxisTabs = new JTabbedPane(JTabbedPane.TOP);
-        AxisList.add(AxisTabs, BorderLayout.CENTER);
+        JTabbedPane axistabs = new JTabbedPane(JTabbedPane.TOP);
+        axislist.add(axistabs, BorderLayout.CENTER);
 
         JPanel statisticsTab = new JPanel();
-        AxisTabs.addTab("Statistics", null, statisticsTab, null);
-        AxisTabs.setEnabledAt(0, true);
+        axistabs.addTab("Statistics", null, statisticsTab, null);
+        axistabs.setEnabledAt(0, true);
         statisticsTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane statisticsScrollPane = new JScrollPane();
@@ -170,8 +170,8 @@ public class GuiView {
         statisticsScrollPane.setViewportView(statisticListContent);
 
         JPanel stimuliTab = new JPanel();
-        AxisTabs.addTab("Stimuli", null, stimuliTab, null);
-        AxisTabs.setEnabledAt(1, true);
+        axistabs.addTab("Stimuli", null, stimuliTab, null);
+        axistabs.setEnabledAt(1, true);
         stimuliTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane stimuliScrollPane = new JScrollPane();
@@ -188,8 +188,8 @@ public class GuiView {
         stimuliScrollPane.setViewportView(stimulusListContent);
 
         JPanel subjectsTab = new JPanel();
-        AxisTabs.addTab("Subjects", null, subjectsTab, null);
-        AxisTabs.setEnabledAt(2, true);
+        axistabs.addTab("Subjects", null, subjectsTab, null);
+        axistabs.setEnabledAt(2, true);
         subjectsTab.setLayout(new BorderLayout(0, 0));
 
         JScrollPane subjectScrollPane = new JScrollPane();
@@ -207,7 +207,7 @@ public class GuiView {
         
         JPanel axisFooter = new JPanel();
         axisFooter.setLayout(new BorderLayout(0, 0));
-        AxisMemberPanel.add(axisFooter, BorderLayout.SOUTH);
+        axisMemberPanel.add(axisFooter, BorderLayout.SOUTH);
 
         JButton btnExport = new JButton("Export");
         btnExport.addActionListener(new ActionListener() {
@@ -229,14 +229,14 @@ public class GuiView {
         exportProgressBar.setStringPainted(true);
         axisFooter.add(exportProgressBar, BorderLayout.WEST);
         
-        JPanel Separator = new JPanel();
-        AxisMemberPanel.add(Separator, BorderLayout.WEST);
+        JPanel separator = new JPanel();
+        axisMemberPanel.add(separator, BorderLayout.WEST);
         JPanel filePanel = new JPanel();
         GridBagConstraints gbc_filePanel = new GridBagConstraints();
         gbc_filePanel.fill = GridBagConstraints.BOTH;
         gbc_filePanel.gridx = 0;
         gbc_filePanel.gridy = 0;
-        Center.add(filePanel, gbc_filePanel);
+        center.add(filePanel, gbc_filePanel);
         filePanel.setLayout(new BorderLayout(0, 0));
         JPanel fileHeader = new JPanel();
         fileHeader.setLayout(new BorderLayout(0, 0));
@@ -272,26 +272,26 @@ public class GuiView {
         fileListContent = new JPanel();
         fileListContent.setLayout(new GridLayout(0, 1, 0, 0));
         fileList.setViewportView(fileListContent);
-        JPanel OutputWrapper = new JPanel();
-        filePanel.add(OutputWrapper, BorderLayout.SOUTH);
-        OutputWrapper.setLayout(new BorderLayout(0, 0));
-        JPanel OutputSpacer = new JPanel();
-        OutputWrapper.add(OutputSpacer, BorderLayout.CENTER);
-        JPanel OutputContainer = new JPanel();
-        OutputWrapper.add(OutputContainer, BorderLayout.SOUTH);
-        OutputContainer.setLayout(new BorderLayout(0, 0));
-        JPanel OutputFormat = new JPanel();
-        OutputContainer.add(OutputFormat, BorderLayout.NORTH);
-        JLabel OutputHeaderText = new JLabel("Output Format");
-        OutputFormat.add(OutputHeaderText);
-        JPanel TableContainer = new JPanel();
-        OutputContainer.add(TableContainer, BorderLayout.CENTER);
+        JPanel outputWrapper = new JPanel();
+        filePanel.add(outputWrapper, BorderLayout.SOUTH);
+        outputWrapper.setLayout(new BorderLayout(0, 0));
+        JPanel outputSpacer = new JPanel();
+        outputWrapper.add(outputSpacer, BorderLayout.CENTER);
+        JPanel outputContainer = new JPanel();
+        outputWrapper.add(outputContainer, BorderLayout.SOUTH);
+        outputContainer.setLayout(new BorderLayout(0, 0));
+        JPanel outputFormat = new JPanel();
+        outputContainer.add(outputFormat, BorderLayout.NORTH);
+        JLabel outputHeaderText = new JLabel("Output Format");
+        outputFormat.add(outputHeaderText);
+        JPanel tableContainer = new JPanel();
+        outputContainer.add(tableContainer, BorderLayout.CENTER);
         JPanel mockTable = new JPanel();
         mockTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        TableContainer.add(mockTable);
+        tableContainer.add(mockTable);
         mockTable.setLayout(new GridLayout(4, 4, 0, 0));
-        JPanel SwapContainer = new JPanel();
-        mockTable.add(SwapContainer);
+        JPanel swapContainer = new JPanel();
+        mockTable.add(swapContainer);
         JButton swapAxisButton = new JButton("Swap");
         swapAxisButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -301,7 +301,7 @@ public class GuiView {
                 frame.repaint();
             }
         });
-        SwapContainer.add(swapAxisButton);
+        swapContainer.add(swapAxisButton);
 
         for (JPanel p: columnHeads) {
             mockTable.add(p);
@@ -313,10 +313,10 @@ public class GuiView {
             mockTable.add(new JPanel());
         }
 
-        JPanel TabContainer = new JPanel();
-        OutputContainer.add(TabContainer, BorderLayout.SOUTH);
+        JPanel tabContainer = new JPanel();
+        outputContainer.add(tabContainer, BorderLayout.SOUTH);
         JComboBox comboBox = new JComboBox();
-        TabContainer.add(comboBox);
+        tabContainer.add(comboBox);
         comboBox.setModel(new DefaultComboBoxModel(new DataType[]{DataType.STATISTIC, DataType.STIMULUS, DataType.SUBJECT}));
         comboBox.setSelectedIndex(0);
         comboBox.setMaximumRowCount(3);
@@ -331,12 +331,12 @@ public class GuiView {
                 }
             }
         });
-        JPanel Footer = new JPanel();
-        frame.getContentPane().add(Footer, BorderLayout.SOUTH);
-        JPanel LeftSpacer = new JPanel();
-        frame.getContentPane().add(LeftSpacer, BorderLayout.WEST);
-        JPanel RightSpacer = new JPanel();
-        frame.getContentPane().add(RightSpacer, BorderLayout.EAST);
+        JPanel footer = new JPanel();
+        frame.getContentPane().add(footer, BorderLayout.SOUTH);
+        JPanel leftSpacer = new JPanel();
+        frame.getContentPane().add(leftSpacer, BorderLayout.WEST);
+        JPanel rightSpacer = new JPanel();
+        frame.getContentPane().add(rightSpacer, BorderLayout.EAST);
 
         frame.setVisible(true);
     }
