@@ -64,6 +64,16 @@ public class GuiModel {
         rowType = tmp;
     }
 
+    void updateSheetType(DataType d) {
+        DataType tmp = tabType;
+        tabType = d;
+        if (rowType.equals(tabType)) {
+            rowType = tmp;
+        } else {
+            columnType = tmp;
+        }
+    }
+
     void addFiles(File[] files) throws IOException {
         for (File f: files) {
             if (f.isDirectory()) {

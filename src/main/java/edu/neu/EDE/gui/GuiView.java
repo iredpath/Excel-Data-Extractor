@@ -13,6 +13,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -285,85 +287,32 @@ public class GuiView {
 
         for (JPanel p: columnHeads) {
             mockTable.add(p);
-        }/*
-        JPanel ColHead1 = new JPanel();
-        mockTable.add(ColHead1);
-        JLabel lblVerticleAxisName = new JLabel("Stimulus");
-        ColHead1.add(lblVerticleAxisName);
-        JPanel ColHead2 = new JPanel();
-        mockTable.add(ColHead2);
-        JLabel label_1 = new JLabel("Stimulus");
-        ColHead2.add(label_1);
-        JPanel ColHead3 = new JPanel();
-        mockTable.add(ColHead3);
-        JLabel label_10 = new JLabel("Stimulus");
-        ColHead3.add(label_10);
-        */
-        JPanel dataPanel = new JPanel();
-        dataPanel.add(new JLabel("- - - - - - - -"));
+        }
         for (JPanel p: rowHeads) {
             mockTable.add(p);
             mockTable.add(new JPanel());
             mockTable.add(new JPanel());
             mockTable.add(new JPanel());
         }
-        /*
-        JPanel RowHead1 = new JPanel();
-        mockTable.add(RowHead1);
-        JLabel lblSubject = new JLabel("Subject");
-        RowHead1.add(lblSubject);
-        JPanel DataCell1 = new JPanel();
-        mockTable.add(DataCell1);
-        JLabel label = new JLabel("- - - - - - - -");
-        DataCell1.add(label);
-        JPanel DataCell2 = new JPanel();
-        mockTable.add(DataCell2);
-        JLabel label_2 = new JLabel("- - - - - - - -");
-        DataCell2.add(label_2);
-        JPanel DataCell3 = new JPanel();
-        mockTable.add(DataCell3);
-        JLabel label_3 = new JLabel("- - - - - - - -");
-        DataCell3.add(label_3);
-        JPanel RowHead2 = new JPanel();
-        mockTable.add(RowHead2);
-        JLabel label_11 = new JLabel("Subject");
-        RowHead2.add(label_11);
-        JPanel DataCell4 = new JPanel();
-        mockTable.add(DataCell4);
-        JLabel label_6 = new JLabel("- - - - - - - -");
-        DataCell4.add(label_6);
-        JPanel DataCell5 = new JPanel();
-        mockTable.add(DataCell5);
-        JLabel label_5 = new JLabel("- - - - - - - -");
-        DataCell5.add(label_5);
-        JPanel DataCell6 = new JPanel();
-        mockTable.add(DataCell6);
-        JLabel label_4 = new JLabel("- - - - - - - -");
-        DataCell6.add(label_4);
-        JPanel RowHead3 = new JPanel();
-        mockTable.add(RowHead3);
-        JLabel label_12 = new JLabel("Subject");
-        RowHead3.add(label_12);
-        JPanel DataCell7 = new JPanel();
-        mockTable.add(DataCell7);
-        JLabel label_7 = new JLabel("- - - - - - - -");
-        DataCell7.add(label_7);
-        JPanel DataCell8 = new JPanel();
-        mockTable.add(DataCell8);
-        JLabel label_8 = new JLabel("- - - - - - - -");
-        DataCell8.add(label_8);
-        JPanel DataCell9 = new JPanel();
-        mockTable.add(DataCell9);
-        JLabel label_9 = new JLabel("- - - - - - - -");
-        DataCell9.add(label_9);
-        */
+
         JPanel TabContainer = new JPanel();
         OutputContainer.add(TabContainer, BorderLayout.SOUTH);
         JComboBox comboBox = new JComboBox();
         TabContainer.add(comboBox);
-        comboBox.setModel(new DefaultComboBoxModel(new DataType[] {DataType.STATISTIC, DataType.STIMULUS, DataType.SUBJECT}));
+        comboBox.setModel(new DefaultComboBoxModel(new DataType[]{DataType.STATISTIC, DataType.STIMULUS, DataType.SUBJECT}));
         comboBox.setSelectedIndex(0);
         comboBox.setMaximumRowCount(3);
+        comboBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    DataType d = (DataType) e.getItem();
+                    model.updateSheetType(d);
+                    updateOutputTable();
+                    frame.revalidate();
+                    frame.repaint();
+                }
+            }
+        });
         JPanel Footer = new JPanel();
         frame.getContentPane().add(Footer, BorderLayout.SOUTH);
         JPanel LeftSpacer = new JPanel();
