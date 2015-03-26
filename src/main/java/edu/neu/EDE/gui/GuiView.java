@@ -321,9 +321,7 @@ public class GuiView {
         frame.getContentPane().add(RightSpacer, BorderLayout.EAST);
 
         frame.setVisible(true);
-
     }
-
 
     JPanel makeNewfilePanel(Map.Entry<String, String> pair) {
         JPanel panel = new JPanel();
@@ -392,9 +390,14 @@ public class GuiView {
                 File[] files = fc.getSelectedFiles();
                 try {
                     model.addFiles(files);
-                    update();
-                    frame.revalidate();
-                    frame.repaint();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            update();
+                            frame.revalidate();
+                            frame.repaint();
+                            addFileProgressBar.setVisible(false);
+                        }
+                    });
                 } catch (IOException ex) {
                     // TODO: is this the right way to do it?
                     System.out.println(ex);
@@ -403,16 +406,9 @@ public class GuiView {
             }
             return null;
         }
-
-        protected void done() {
-            //TODO: THIS IS BAD BAD BAD BAD BAD.  PLEASE FIND A WAY TO DO IT RIGHT
-            // turn off progress bar
-            addFileProgressBar.setVisible(false);
-        }
     }
 
     class ExportWorker extends SwingWorker {
-
         final JFileChooser fc;
 
         ExportWorker(JFileChooser fc) {
@@ -421,13 +417,12 @@ public class GuiView {
 
         protected Object doInBackground() {
             model.export(dataGroupType, fc.getSelectedFile());
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    exportProgressBar.setVisible(false);
+                }
+            });
             return null;
-        }
-
-        protected void done() {
-            //TODO: THIS IS BAD BAD BAD BAD BAD.  PLEASE FIND A WAY TO DO IT RIGHT
-            // turn off progress bar
-            exportProgressBar.setVisible(false);
         }
     }
 }
