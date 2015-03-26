@@ -33,7 +33,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.neu.EDE.ExcelDataExtractor</mainClass>
+              <mainClass>edu.neu.EDE.gui.GuiController</mainClass>
             </manifest>
           </archive>
         </configuration>
