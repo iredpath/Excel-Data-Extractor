@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 /**
- * Created by Ian on 3/25/15.
+ * Created by Teddy on 3/25/15.
  */
 public class CheckboxListRenderer extends JCheckBox implements ListCellRenderer {
 

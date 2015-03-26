@@ -3,7 +3,7 @@ package edu.neu.EDE.gui.checkboxList;
 import java.awt.Component;
 
 /**
- * Created by Ian on 3/25/15.
+ * Created by Teddy on 3/25/15.
  */
 public class CheckboxListItem extends Component {
 

@@ -3,7 +3,7 @@ package edu.neu.EDE.gui.checkboxList;
 import javax.swing.DefaultListModel;
 
 /**
- * Created by Ian on 3/26/15.
+ * Created by Teddy on 3/25/15.
  */
 public class CheckboxListModel extends DefaultListModel<CheckboxListItem> {
 

@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Created by Ian on 3/26/15.
+ * Created by Teddy on 3/26/15.
  */
 public class CheckboxListItemMoveHandler extends MouseAdapter {
 
