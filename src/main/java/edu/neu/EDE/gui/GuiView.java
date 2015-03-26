@@ -2,8 +2,29 @@ package edu.neu.EDE.gui;
 
 import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
+import edu.neu.EDE.gui.checkboxList.CheckboxListItemClickHandler;
+import edu.neu.EDE.gui.checkboxList.CheckboxListItemMoveHandler;
+import edu.neu.EDE.gui.checkboxList.CheckboxListRenderer;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.BevelBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -16,7 +37,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,24 +60,12 @@ public class GuiView {
     private JProgressBar exportProgressBar;
     private DataGroupType dataGroupType;
     private MouseAdapter checkboxListItemClickHandler;
-    private JPanel mockTable;
     private List<JPanel> columnHeads;
     private List<JPanel> rowHeads;
 
     public GuiView(GuiModel m) {
         this.model = m;
-        this.checkboxListItemClickHandler = new MouseAdapter() {
-            public void mouseClicked(MouseEvent event) {
-                JList list = (JList) event.getSource();
-                // Get index of item clicked
-                int index = list.locationToIndex(event.getPoint());
-                CheckboxListItem item = (CheckboxListItem) list.getModel().getElementAt(index);
-                // Toggle selected state
-                item.setSelected(!item.isSelected());
-                // Repaint cell
-                list.repaint(list.getCellBounds(index, index));
-            }
-        };
+        this.checkboxListItemClickHandler = new CheckboxListItemClickHandler();
         this.columnHeads = new ArrayList<JPanel>();
         this.rowHeads = new ArrayList<JPanel>();
         for (int i = 0; i < 3; i++) {
@@ -151,10 +159,14 @@ public class GuiView {
         statisticsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         statisticsTab.add(statisticsScrollPane, BorderLayout.CENTER);
 
-        statisticListContent = new JList();
+        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
+        statisticListContent = new JList(new DefaultListModel());
         statisticListContent.setCellRenderer(new CheckboxListRenderer());
         statisticListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         statisticListContent.addMouseListener(checkboxListItemClickHandler);
+        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(statisticListContent);
+        statisticListContent.addMouseListener(statisticMoveHandler);
+        statisticListContent.addMouseMotionListener(statisticMoveHandler);
         statisticsScrollPane.setViewportView(statisticListContent);
 
         JPanel stimuliTab = new JPanel();
@@ -166,10 +178,13 @@ public class GuiView {
         stimuliScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         stimuliTab.add(stimuliScrollPane, BorderLayout.CENTER);
 
-        stimulusListContent = new JList();
+        stimulusListContent = new JList(new DefaultListModel());
         stimulusListContent.setCellRenderer(new CheckboxListRenderer());
         stimulusListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stimulusListContent.addMouseListener(checkboxListItemClickHandler);
+        CheckboxListItemMoveHandler stimulusMoveHandler = new CheckboxListItemMoveHandler(stimulusListContent);
+        stimulusListContent.addMouseListener(stimulusMoveHandler);
+        stimulusListContent.addMouseMotionListener(stimulusMoveHandler);
         stimuliScrollPane.setViewportView(stimulusListContent);
 
         JPanel subjectsTab = new JPanel();
@@ -181,10 +196,13 @@ public class GuiView {
         subjectScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         subjectsTab.add(subjectScrollPane, BorderLayout.CENTER);
 
-        subjectListContent = new JList();
+        subjectListContent = new JList(new DefaultListModel());
         subjectListContent.setCellRenderer(new CheckboxListRenderer());
         subjectListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         subjectListContent.addMouseListener(checkboxListItemClickHandler);
+        CheckboxListItemMoveHandler subjectMoveHandler = new CheckboxListItemMoveHandler(subjectListContent);
+        subjectListContent.addMouseListener(subjectMoveHandler);
+        subjectListContent.addMouseMotionListener(subjectMoveHandler);
         subjectScrollPane.setViewportView(subjectListContent);
         
         JPanel axisFooter = new JPanel();

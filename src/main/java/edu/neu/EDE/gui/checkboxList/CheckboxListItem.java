@@ -1,4 +1,4 @@
-package edu.neu.EDE.gui;
+package edu.neu.EDE.gui.checkboxList;
 
 import java.awt.Component;
 

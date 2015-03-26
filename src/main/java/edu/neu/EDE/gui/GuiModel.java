@@ -4,6 +4,8 @@ import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.data_structs.OutputConfiguration;
+import edu.neu.EDE.gui.checkboxList.CheckboxListItem;
+import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
 import edu.neu.EDE.io.WorkbookReader;
 import edu.neu.EDE.io.WorkbookWriter;
 
