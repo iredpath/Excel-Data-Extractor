@@ -13,7 +13,6 @@ public class GuiController {
     public static void main(String[] args) {
         GuiController controller = new GuiController();
         controller.initialize();
-
     }
 
     void initialize() {

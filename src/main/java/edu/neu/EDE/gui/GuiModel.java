@@ -58,6 +58,12 @@ public class GuiModel {
         reader.setSlideMetricData(slideMetricData);
     }
 
+    void swapAxes() {
+        DataType tmp = columnType;
+        columnType = rowType;
+        rowType = tmp;
+    }
+
     void addFiles(File[] files) throws IOException {
         for (File f: files) {
             if (f.isDirectory()) {
@@ -197,5 +203,9 @@ public class GuiModel {
         }
         return retVal;
     }
+
+    public DataType getColumnType() { return columnType; }
+
+    public DataType getRowType() { return rowType; }
 
 }
