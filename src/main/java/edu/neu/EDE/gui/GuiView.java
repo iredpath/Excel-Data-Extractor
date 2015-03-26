@@ -56,6 +56,8 @@ public class GuiView {
     private List<JPanel> columnHeads;
     private List<JPanel> rowHeads;
     private JComboBox dataGroupDropdown;
+    private JButton removeSelectedFilesButton;
+    private JButton addFilesButton;
 
     public GuiView(GuiModel m) {
         this.model = m;
@@ -265,6 +267,8 @@ public class GuiView {
                 if (retVal == JFileChooser.APPROVE_OPTION) {
                     ExportWorker exportWorker = new ExportWorker(saveDialog);
                     exportWorker.execute();
+                } else {
+                    exportProgressBar.setVisible(false);
                 }
             }
         });
@@ -286,15 +290,19 @@ public class GuiView {
         fileHeader.setLayout(new BorderLayout(0, 0));
         filePanel.add(fileHeader, BorderLayout.NORTH);
 
-        fileHeader.add(initializeAddFileButton(), BorderLayout.WEST);
+        JPanel headerButtonPanel = new JPanel();
+        headerButtonPanel.setLayout(new FlowLayout());
+        headerButtonPanel.add(initializeAddFileButton());
 
         addFileProgressBar = new JProgressBar();
         addFileProgressBar.setIndeterminate(true);
         addFileProgressBar.setVisible(false);
         addFileProgressBar.setStringPainted(true);
-        fileHeader.add(addFileProgressBar, BorderLayout.CENTER);
+        headerButtonPanel.add(addFileProgressBar);
 
-        fileHeader.add(initializeRemoveSelectedFilesButton(), BorderLayout.EAST);
+        headerButtonPanel.add(initializeRemoveSelectedFilesButton());
+        fileHeader.add(headerButtonPanel, BorderLayout.NORTH);
+        fileHeader.add(new JPanel(), BorderLayout.SOUTH);
 
         JPanel fileListWrapper = initializeFileListWrapper();
         filePanel.add(fileListWrapper, BorderLayout.CENTER);
@@ -306,21 +314,26 @@ public class GuiView {
     }
 
     JButton initializeRemoveSelectedFilesButton() {
-        JButton remove = new JButton("Remove Selected Files");
-        remove.addActionListener(new ActionListener() {
+        removeSelectedFilesButton = new JButton("Remove Selected Files");
+        removeSelectedFilesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                addFilesButton.setVisible(false);
+                removeSelectedFilesButton.setVisible(false);
                 addFileProgressBar.setVisible(true);
+
                 FileDeleter deleter = new FileDeleter();
                 deleter.execute();
             }
         });
-        return remove;
+        return removeSelectedFilesButton;
     }
 
     JButton initializeAddFileButton() {
-        JButton addFilesButton = new JButton("Add Files");
+        addFilesButton = new JButton("Add Files");
         addFilesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                addFilesButton.setVisible(false);
+                removeSelectedFilesButton.setVisible(false);
                 addFileProgressBar.setVisible(true);
                 JFileChooser fc = new JFileChooser();
                 fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -479,9 +492,11 @@ public class GuiView {
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             update();
+                            addFileProgressBar.setVisible(false);
+                            addFilesButton.setVisible(true);
+                            removeSelectedFilesButton.setVisible(true);
                             frame.revalidate();
                             frame.repaint();
-                            addFileProgressBar.setVisible(false);
                         }
                     });
                 } catch (IOException ex) {
@@ -489,6 +504,14 @@ public class GuiView {
                     System.out.println(ex);
                     System.exit(1);
                 }
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        addFileProgressBar.setVisible(false);
+                        addFilesButton.setVisible(true);
+                        removeSelectedFilesButton.setVisible(true);
+                    }
+                });
             }
             return null;
         }
@@ -526,6 +549,8 @@ public class GuiView {
                 public void run() {
                     update();
                     addFileProgressBar.setVisible(false);
+                    addFilesButton.setVisible(true);
+                    removeSelectedFilesButton.setVisible(true);
                     frame.revalidate();
                     frame.repaint();
                     frame.requestFocus();

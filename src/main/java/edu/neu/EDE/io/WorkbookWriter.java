@@ -4,6 +4,7 @@ import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.data_structs.OutputConfiguration;
 import edu.neu.EDE.data_structs.SheetConfiguration;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.WorkbookUtil;
@@ -85,6 +86,10 @@ public class WorkbookWriter {
         }
         FileOutputStream fileOut;
         try {
+            String extension = FilenameUtils.getExtension(outputFile.getName());
+            if (!extension.equals("xlsx")) {
+                outputFile = new File(outputFile + ".xlsx");
+            }
             fileOut = new FileOutputStream(outputFile);
             workbook.write(fileOut);
             fileOut.close();
