@@ -1,7 +1,5 @@
 package edu.neu.EDE.gui.checkboxList;
 
-import com.sun.tools.javac.comp.Check;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
