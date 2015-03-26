@@ -1,4 +1,6 @@
-package edu.neu.EDE.gui;
+package edu.neu.EDE.gui.buttonList;
+
+import edu.neu.EDE.gui.GuiView;
 
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;

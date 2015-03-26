@@ -1,4 +1,4 @@
-package edu.neu.EDE.gui;
+package edu.neu.EDE.gui.buttonList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;

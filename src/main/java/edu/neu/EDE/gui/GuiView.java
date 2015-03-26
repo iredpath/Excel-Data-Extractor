@@ -2,6 +2,9 @@ package edu.neu.EDE.gui;
 
 import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
+import edu.neu.EDE.gui.buttonList.ButtonListItem;
+import edu.neu.EDE.gui.buttonList.ButtonListItemClickHandler;
+import edu.neu.EDE.gui.buttonList.ButtonListRenderer;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemClickHandler;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemMoveHandler;
 import edu.neu.EDE.gui.checkboxList.CheckboxListRenderer;
@@ -368,7 +371,7 @@ public class GuiView {
         return panel;
     }
 
-    void remove(ButtonListItem b) {
+    public void remove(ButtonListItem b) {
         //model.remove(b.getFilename(), b.getSubject());
         update();
         frame.revalidate();
