@@ -74,9 +74,9 @@ public class WorkbookWriter {
     /**
      * write the file
      * @param config the configuration object (contains sheet/column/row names)
-     * @param name the name of the output file
+     * @param outputFile the outputFile to write to
      */
-    public void write(OutputConfiguration config, String name) {
+    public void write(OutputConfiguration config, File outputFile) {
         List<String> sheetNames = config.getTabs();
         List<String> columnHeaders = config.getColumns();
         List<String> rowHeaders = config.getRows();
@@ -85,11 +85,7 @@ public class WorkbookWriter {
         }
         FileOutputStream fileOut;
         try {
-            String workingDir = System.getProperty("user.dir");
-            File outputDir = new File(workingDir + "/output");
-            outputDir.mkdir();
-            // TODO: with gui, we probably want to require an output name
-            fileOut = new FileOutputStream(workingDir + "/output/" + name + ".xlsx");
+            fileOut = new FileOutputStream(outputFile);
             workbook.write(fileOut);
             fileOut.close();
         }

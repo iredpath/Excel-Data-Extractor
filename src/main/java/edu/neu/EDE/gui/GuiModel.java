@@ -140,7 +140,7 @@ public class GuiModel {
         }
     }
 
-    void export(DataGroupType groupType) {
+    void export(DataGroupType groupType, File outputFile) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
         FourDimArray data = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
@@ -159,7 +159,7 @@ public class GuiModel {
         config.setRow(rowType);
         config.setColumn(columnType);
         config.setTab(tabType);
-        writer.write(config, "test-output");
+        writer.write(config, outputFile);
     }
 
     // How too slow is this?

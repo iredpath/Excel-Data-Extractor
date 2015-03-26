@@ -288,8 +288,12 @@ public class GuiView {
         btnExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 exportProgressBar.setVisible(true);
-                ExportWorker exportWorker = new ExportWorker();
-                exportWorker.execute();
+                JFileChooser saveDialog = new JFileChooser();
+                int retval = saveDialog.showSaveDialog(new JFrame());
+                if (retval == JFileChooser.APPROVE_OPTION) {
+                    ExportWorker exportWorker = new ExportWorker(saveDialog);
+                    exportWorker.execute();
+                }
             }
         });
         OutputFooter.add(btnExport, BorderLayout.EAST);
@@ -418,8 +422,14 @@ public class GuiView {
 
     class ExportWorker extends SwingWorker {
 
+        final JFileChooser fc;
+
+        ExportWorker(JFileChooser fc) {
+            this.fc = fc;
+        }
+
         protected Object doInBackground() {
-            model.export(dataGroupType);
+            model.export(dataGroupType, fc.getSelectedFile());
             return null;
         }
 
