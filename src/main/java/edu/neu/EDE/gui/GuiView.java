@@ -343,40 +343,13 @@ public class GuiView {
         JPanel rightSpacer = new JPanel();
         frame.getContentPane().add(rightSpacer, BorderLayout.EAST);
 
+        frame.requestFocus();
         frame.setVisible(true);
     }
 
-    JPanel makeNewfilePanel(Map.Entry<String, String> pair) {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel();
-        final String filename = pair.getKey();
-        final String subject = pair.getValue();
-        label.setText(filename);
-        panel.add(label, BorderLayout.CENTER);
-        final JButton deleteButton = new JButton();
-        deleteButton.setText("x");
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //TODO: consider putting this work in separate thread, add loading bar
-                //TODO: actually support this on backend
-                /*
-                model.remove(filename, subject);
-                update();
-                frame.revalidate();
-                frame.repaint();
-                */
-            }
-        });
-        panel.add(deleteButton, BorderLayout.EAST);
-        return panel;
-    }
-
     public void remove(ButtonListItem b) {
-        //model.remove(b.getFilename(), b.getSubject());
-        update();
-        frame.revalidate();
-        frame.repaint();
-        frame.requestFocus();
+        FileDeleter fileDeleter = new FileDeleter(b);
+        fileDeleter.execute();
     }
 
     void update() {
@@ -445,6 +418,26 @@ public class GuiView {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     exportProgressBar.setVisible(false);
+                }
+            });
+            return null;
+        }
+    }
+
+    class FileDeleter extends SwingWorker {
+        final ButtonListItem buttonListItem;
+
+        FileDeleter(ButtonListItem b) {
+            buttonListItem = b;
+        }
+        protected Object doInBackground() {
+            //model.remove(buttonListItem.getFilename(), buttonListItem.getSubject());
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    update();
+                    frame.revalidate();
+                    frame.repaint();
+                    frame.requestFocus();
                 }
             });
             return null;
