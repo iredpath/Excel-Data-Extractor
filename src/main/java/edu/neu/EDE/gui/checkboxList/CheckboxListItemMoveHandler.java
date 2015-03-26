@@ -1,5 +1,7 @@
 package edu.neu.EDE.gui.checkboxList;
 
+import com.sun.tools.javac.comp.Check;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
@@ -24,16 +26,24 @@ public class CheckboxListItemMoveHandler extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         pressIndex = list.locationToIndex(e.getPoint());
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
+        // TODO: this is potentially bad.  Somebody please research downsides of requestFocus()
+        list.getParent().requestFocus();
+    }
+
+    void checkForReorder(MouseEvent e) {
         releaseIndex = list.locationToIndex(e.getPoint());
         if (releaseIndex != pressIndex && releaseIndex != -1) {
             reorder();
         }
     }
+
     @Override
     public void mouseDragged(MouseEvent e) {
-        mouseReleased(e);
+        //mouseReleased(e);
+        checkForReorder(e);
         pressIndex = releaseIndex;
     }
     private void reorder() {
