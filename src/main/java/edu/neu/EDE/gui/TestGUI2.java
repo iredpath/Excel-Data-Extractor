@@ -118,6 +118,15 @@ public class TestGUI2 {
         AxisTabs.setEnabledAt(0, true);
         Statistics.setLayout(new BorderLayout(0, 0));
         
+        JPanel StatisticToggleContainer = new JPanel();
+        Statistics.add(StatisticToggleContainer, BorderLayout.NORTH);
+        
+        JButton btnNewButton = new JButton("Select All");
+        StatisticToggleContainer.add(btnNewButton);
+        
+        JButton btnNewButton_1 = new JButton("Deselect All");
+        StatisticToggleContainer.add(btnNewButton_1);
+        
         JScrollPane StatisticScrollPane = new JScrollPane();
         StatisticScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         Statistics.add(StatisticScrollPane, BorderLayout.CENTER);
