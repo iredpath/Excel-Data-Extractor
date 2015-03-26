@@ -91,6 +91,9 @@ public class TestGUI2 {
         
         JPanel AxisMemberPanel = new JPanel();
         GridBagConstraints gbc_AxisMemberPanel = new GridBagConstraints();
+        gbc_AxisMemberPanel.weighty = 1.0;
+        gbc_AxisMemberPanel.weightx = 0.6;
+        gbc_AxisMemberPanel.anchor = GridBagConstraints.EAST;
         gbc_AxisMemberPanel.insets = new Insets(0, 0, 5, 0);
         gbc_AxisMemberPanel.fill = GridBagConstraints.BOTH;
         gbc_AxisMemberPanel.gridx = 1;
@@ -181,6 +184,9 @@ public class TestGUI2 {
         
         JPanel FilePanel = new JPanel();
         GridBagConstraints gbc_FilePanel = new GridBagConstraints();
+        gbc_FilePanel.weighty = 1.0;
+        gbc_FilePanel.weightx = 0.4;
+        gbc_FilePanel.anchor = GridBagConstraints.WEST;
         gbc_FilePanel.fill = GridBagConstraints.BOTH;
         gbc_FilePanel.gridx = 0;
         gbc_FilePanel.gridy = 0;
