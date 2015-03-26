@@ -91,7 +91,7 @@ public class TestWorkbookReader extends Assert {
         assertEquals(numStats, 8);
     }
 
-    @Test
+    /*@Test
     public void getStimulusName() {
         WorkbookReader reader = new WorkbookReader();
         reader.media = "foo";
@@ -104,5 +104,5 @@ public class TestWorkbookReader extends Assert {
         row.removeCell(cell);
         name = reader.getStimulusName(sheet, Arrays.asList(0), 1);
         assertEquals(name, "foo-LZ1");
-    }
+    }*/
 }
