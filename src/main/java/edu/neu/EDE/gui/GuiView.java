@@ -50,7 +50,7 @@ public class GuiView {
 
     private GuiModel model;
     private JFrame frame;
-    private JPanel fileListContent;
+    private JList fileListContent;
     private JList subjectListContent;
     private JList stimulusListContent;
     private JList statisticListContent;
@@ -58,7 +58,6 @@ public class GuiView {
     private JRadioButton slideMetricButton;
     private JProgressBar addFileProgressBar;
     private JProgressBar exportProgressBar;
-    private DataGroupType dataGroupType;
     private MouseAdapter checkboxListItemClickHandler;
     private List<JPanel> columnHeads;
     private List<JPanel> rowHeads;
@@ -120,8 +119,8 @@ public class GuiView {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    dataGroupType = DataGroupType.LOOKZONE;
-                    updateData();
+                    model.updateDataGroupType(DataGroupType.LOOKZONE);
+                    update();
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -132,8 +131,8 @@ public class GuiView {
             public void actionPerformed(ActionEvent e) {
                 AbstractButton b = (AbstractButton) e.getSource();
                 if (b.isSelected()) {
-                    dataGroupType = DataGroupType.SLIDEMETRIC;
-                    updateData();
+                    model.updateDataGroupType(DataGroupType.SLIDEMETRIC);
+                    update();
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -145,7 +144,6 @@ public class GuiView {
         axisHeader.add(slideMetricButton, BorderLayout.CENTER);
         axisHeader.add(lookZoneButton, BorderLayout.CENTER);
         // set default value;
-        this.dataGroupType = DataGroupType.SLIDEMETRIC;
 
         JTabbedPane axistabs = new JTabbedPane(JTabbedPane.TOP);
         axislist.add(axistabs, BorderLayout.CENTER);
@@ -269,8 +267,12 @@ public class GuiView {
         fileList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         fileList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         fileListWrapper.add(fileList);
-        fileListContent = new JPanel();
-        fileListContent.setLayout(new GridLayout(0, 1, 0, 0));
+        fileListContent = new JList();
+        fileListContent.setCellRenderer(new ButtonListRenderer());
+        fileListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        fileListContent.addMouseListener(new ButtonListItemClickHandler(this));
+        fileListContent.setModel(model.getFileListModel());
+        //fileListContent.setLayout(new GridLayout(0, 1, 0, 0));
         fileList.setViewportView(fileListContent);
         JPanel outputWrapper = new JPanel();
         filePanel.add(outputWrapper, BorderLayout.SOUTH);
@@ -366,18 +368,19 @@ public class GuiView {
         return panel;
     }
 
-    void update() {
-        fileListContent.removeAll();
-        for (Map.Entry<String, String> pair: model.getFiles().entrySet()) {
-            fileListContent.add(makeNewfilePanel(pair), BorderLayout.NORTH);
-        }
-        updateData();
+    void remove(ButtonListItem b) {
+        //model.remove(b.getFilename(), b.getSubject());
+        update();
+        frame.revalidate();
+        frame.repaint();
+        frame.requestFocus();
     }
 
-    void updateData() {
-        subjectListContent.setModel(model.getListModel(dataGroupType, DataType.SUBJECT));
-        stimulusListContent.setModel(model.getListModel(dataGroupType, DataType.STIMULUS));
-        statisticListContent.setModel(model.getListModel(dataGroupType, DataType.STATISTIC));
+    void update() {
+        //TODO: Maybe find a way around this
+        subjectListContent.setModel(model.getListModel(DataType.SUBJECT));
+        stimulusListContent.setModel(model.getListModel(DataType.STIMULUS));
+        statisticListContent.setModel(model.getListModel(DataType.STATISTIC));
     }
 
     void updateOutputTable() {
@@ -408,6 +411,7 @@ public class GuiView {
                 File[] files = fc.getSelectedFiles();
                 try {
                     model.addFiles(files);
+                    model.updateJListModels();
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             update();
@@ -434,7 +438,7 @@ public class GuiView {
         }
 
         protected Object doInBackground() {
-            model.export(dataGroupType, fc.getSelectedFile());
+            model.export(fc.getSelectedFile());
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     exportProgressBar.setVisible(false);

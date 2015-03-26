@@ -28,18 +28,18 @@ public class GuiModel {
     private FourDimArray lookZoneData;
     private FourDimArray slideMetricData;
     private Set<String> invalidFiles;
-    private Map<String, String> validFiles;
+    private ButtonListModel fileListModel;
     private Map<DataType, CheckboxListModel> lookZoneDataType2Excluded;
     private Map<DataType, CheckboxListModel> slideMetricDataType2Excluded;
     private DataType tabType;
     private DataType columnType;
     private DataType rowType;
+    private DataGroupType dataGroupType;
 
     public GuiModel() {
         this.reader = new WorkbookReader();
         this.lookZoneData = new FourDimArray();
         this.slideMetricData = new FourDimArray();
-        this.validFiles = new HashMap<String, String>();
         this.invalidFiles = new HashSet<String>();
 
         this.lookZoneDataType2Excluded = new HashMap<DataType, CheckboxListModel>();
@@ -52,12 +52,20 @@ public class GuiModel {
         this.slideMetricDataType2Excluded.put(DataType.STIMULUS, new CheckboxListModel());
         this.slideMetricDataType2Excluded.put(DataType.STATISTIC, new CheckboxListModel());
 
+        this.fileListModel = new ButtonListModel();
+
         this.tabType = DataType.STATISTIC;
         this.columnType = DataType.STIMULUS;
         this.rowType = DataType.SUBJECT;
+        this.dataGroupType = DataGroupType.SLIDEMETRIC;
 
         reader.setLookZoneData(lookZoneData);
         reader.setSlideMetricData(slideMetricData);
+    }
+
+
+    void updateDataGroupType(DataGroupType d) {
+        dataGroupType = d;
     }
 
     void swapAxes() {
@@ -87,7 +95,12 @@ public class GuiModel {
                 invalidFiles.add(f.getAbsolutePath());
             }
         }
-        updateJListModels();
+    }
+
+    void addToFileListModel(String filename, String subject) {
+        if (!fileListModel.contains(filename)) {
+            fileListModel.addElement(new ButtonListItem(filename, subject));
+        }
     }
 
     void addNewItemsToModel(List<String> items, CheckboxListModel model) {
@@ -125,8 +138,8 @@ public class GuiModel {
         addNewItemsToModel(list, listModel);
     }
 
-    DefaultListModel<CheckboxListItem> getListModel(DataGroupType groupType, DataType dataType) {
-        if (groupType.equals(DataGroupType.LOOKZONE)) {
+    DefaultListModel<CheckboxListItem> getListModel(DataType dataType) {
+        if (dataGroupType.equals(DataGroupType.LOOKZONE)) {
             return lookZoneDataType2Excluded.get(dataType);
         } else {
             return slideMetricDataType2Excluded.get(dataType);
@@ -136,11 +149,11 @@ public class GuiModel {
     void addFile(File f) throws IOException {
         reader.readFile(f);
         String subjectName = reader.getSubject();
-        validFiles.put(f.getName(), subjectName);
+        addToFileListModel(f.getName(), subjectName);
     }
 
-    Map<String, String> getFiles() {
-        return validFiles;
+    ButtonListModel getFileListModel() {
+        return fileListModel;
     }
 
     void remove(String filename, String subject) {
@@ -152,17 +165,17 @@ public class GuiModel {
     }
 
     void removeFile(String filename) {
-        validFiles.remove(filename);
+        fileListModel.remove(filename);
     }
 
-    void export(DataGroupType groupType, File outputFile) {
+    void export(File outputFile) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
-        Map<DataType, CheckboxListModel> map = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneDataType2Excluded : slideMetricDataType2Excluded;
+        Map<DataType, CheckboxListModel> map = dataGroupType.equals(DataGroupType.LOOKZONE) ? lookZoneDataType2Excluded : slideMetricDataType2Excluded;
         List<String> statistics = getSelectedData(map.get(DataType.STATISTIC));
         List<String> stimuli = getSelectedData(map.get(DataType.STIMULUS));
         List<String> subjects = getSelectedData(map.get(DataType.SUBJECT));
-        FourDimArray data = groupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
+        FourDimArray data = dataGroupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
         writer.setData(data);
         writer.setRowType(rowType);
         writer.setSheetType(tabType);

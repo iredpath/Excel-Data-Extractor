@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Teddy on 3/25/15.
  */
-public class CheckboxListItemClickHandler extends MouseAdapter{
+public class CheckboxListItemClickHandler extends MouseAdapter {
     public void mouseClicked(MouseEvent event) {
         JList list = (JList) event.getSource();
         // Get index of item clicked
