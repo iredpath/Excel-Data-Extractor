@@ -295,7 +295,6 @@ public class GuiView {
         JPanel axisFooter = new JPanel();
         axisFooter.setLayout(new BorderLayout(0, 0));
 
-        //axisFooter.add(new JPanel(), BorderLayout.NORTH);
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new FlowLayout());
         axisFooter.add(contentPanel, BorderLayout.CENTER);
@@ -492,14 +491,14 @@ public class GuiView {
         // may not be possible
 
         //CHECKS TEMPORARY FIX FOR AWFUL BUG
-        if (model.getListModel(DataType.SUBJECT).size() > 0 || subjectListContent.getModel().getSize() > 0) {
-            subjectListContent.setModel(model.getListModel(DataType.SUBJECT));
+        if (model.getActiveModel(DataType.SUBJECT).size() > 0 || subjectListContent.getModel().getSize() > 0) {
+            subjectListContent.setModel(model.getActiveModel(DataType.SUBJECT));
         }
-        if (model.getListModel(DataType.STIMULUS).size() > 0 || stimulusListContent.getModel().getSize() > 0) {
-            stimulusListContent.setModel(model.getListModel(DataType.STIMULUS));
+        if (model.getActiveModel(DataType.STIMULUS).size() > 0 || stimulusListContent.getModel().getSize() > 0) {
+            stimulusListContent.setModel(model.getActiveModel(DataType.STIMULUS));
         }
-        if (model.getListModel(DataType.STATISTIC).size() > 0 || statisticListContent.getModel().getSize() > 0) {
-            statisticListContent.setModel(model.getListModel(DataType.STATISTIC));
+        if (model.getActiveModel(DataType.STATISTIC).size() > 0 || statisticListContent.getModel().getSize() > 0) {
+            statisticListContent.setModel(model.getActiveModel(DataType.STATISTIC));
         }
     }
 
