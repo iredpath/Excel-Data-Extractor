@@ -224,7 +224,6 @@ public class WorkbookReader {
      *  or just the name if no description exists
      */
     String getStimulusName(XSSFSheet sheet, List<Integer> nullIndices, int lookZoneIndex) {
-        // TODO: lookZoneIndex may not be correct; look zones can be out of order
         String stimulus = media;
 
         Row startRow = sheet.getRow(nullIndices.get(lookZoneIndex - 1) + 1); // row is null, +1 is LZ name

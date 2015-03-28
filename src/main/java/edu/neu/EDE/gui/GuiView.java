@@ -41,6 +41,7 @@ import java.util.List;
 
 /**
  * Created by Ian on 3/24/15.
+ * GUI framework/layout code written by Teddy
  */
 public class GuiView {
 
@@ -118,7 +119,7 @@ public class GuiView {
     }
 
     JFrame initializeFrame() {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Excel Data Extractor");
         frame.setBounds(0, 0, 1024, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -581,7 +582,6 @@ public class GuiView {
     class FileDeleter extends SwingWorker {
 
         protected Object doInBackground() {
-            //TODO: support remove on back end
             try {
                 model.removeSelectedFiles();
             } catch(IOException e) {
