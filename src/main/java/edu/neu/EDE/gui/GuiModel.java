@@ -182,16 +182,28 @@ public class GuiModel {
         return fileListModel;
     }
 
-    void remove(String filename, String subject) {
-        removeFile(filename);
-        removeSubject(subject);
-    }
-    void removeSubject(String subject) {
-        //TODO: remove subject data
+    void selectAll(DataType which) {
+        setAllItemsAs(true, which);
     }
 
-    void removeFile(String filename) {
-        fileListModel.remove(filename);
+    void deselectAll(DataType which) {
+        setAllItemsAs(false, which);
+    }
+
+    void setAllItemsAs(boolean what, DataType which) {
+        CheckboxListModel model = getActiveModel(which);
+        for (int i = 0; i < model.getSize(); i++) {
+            CheckboxListItem item = model.get(i);
+            item.setSelected(what);
+        }
+    }
+
+    CheckboxListModel getActiveModel(DataType which) {
+        if (dataGroupType.equals(DataGroupType.LOOKZONE)) {
+            return lookZoneDataType2Excluded.get(which);
+        } else {
+            return slideMetricDataType2Excluded.get(which);
+        }
     }
 
     void export(File outputFile) {

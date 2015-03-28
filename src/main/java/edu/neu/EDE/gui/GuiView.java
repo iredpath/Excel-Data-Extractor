@@ -182,6 +182,7 @@ public class GuiView {
         });
     }
 
+    //TODO: can we refactor this to one method we do three times?
     JTabbedPane initializeTabPane() {
         JTabbedPane axisTabs = new JTabbedPane(JTabbedPane.TOP);
 
@@ -189,6 +190,9 @@ public class GuiView {
         axisTabs.addTab("Statistics", null, statisticsTab, null);
         axisTabs.setEnabledAt(0, true);
         statisticsTab.setLayout(new BorderLayout(0, 0));
+
+        JPanel statisticsButtonsPanel = initializeDataTypeButtons(DataType.STATISTIC);
+        statisticsTab.add(statisticsButtonsPanel, BorderLayout.NORTH);
 
         JScrollPane statisticsScrollPane = new JScrollPane();
         statisticsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -202,6 +206,9 @@ public class GuiView {
         axisTabs.setEnabledAt(1, true);
         stimuliTab.setLayout(new BorderLayout(0, 0));
 
+        JPanel stimuliButtonsPanel = initializeDataTypeButtons(DataType.STIMULUS);
+        stimuliTab.add(stimuliButtonsPanel, BorderLayout.NORTH);
+
         JScrollPane stimuliScrollPane = new JScrollPane();
         stimuliScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         stimuliTab.add(stimuliScrollPane, BorderLayout.CENTER);
@@ -214,6 +221,9 @@ public class GuiView {
         axisTabs.setEnabledAt(2, true);
         subjectsTab.setLayout(new BorderLayout(0, 0));
 
+        JPanel subjectsButtonsPanel = initializeDataTypeButtons(DataType.SUBJECT);
+        subjectsTab.add(subjectsButtonsPanel, BorderLayout.NORTH);
+
         JScrollPane subjectScrollPane = new JScrollPane();
         subjectScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         subjectsTab.add(subjectScrollPane, BorderLayout.CENTER);
@@ -222,6 +232,32 @@ public class GuiView {
         subjectScrollPane.setViewportView(subjectListContent);
 
         return axisTabs;
+    }
+
+    JPanel initializeDataTypeButtons(final DataType type) {
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout());
+
+        JButton selectAll = new JButton("Select All");
+        buttonsPanel.add(selectAll);
+        selectAll.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                model.selectAll(type);
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+
+        JButton deselectAll = new JButton("Deselect All");
+        buttonsPanel.add(deselectAll);
+        deselectAll.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                model.deselectAll(type);
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+        return buttonsPanel;
     }
 
     void initializeSubjectListContent() {
@@ -552,7 +588,6 @@ public class GuiView {
             } catch(IOException e) {
 
             }
-            //model.remove(buttonListItem.getFilename(), buttonListItem.getSubject());
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     update();
