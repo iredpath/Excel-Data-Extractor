@@ -536,6 +536,7 @@ public class GuiView {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     exportProgressBar.setVisible(false);
+                    exportDataButton.setVisible(true);
                 }
             });
             return null;
