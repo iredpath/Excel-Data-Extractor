@@ -40,10 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Ian on 3/24/15.
- * GUI framework/layout code written by Teddy
+ * GuiView - maintain the GUI
  */
 public class GuiView {
+    /**
+     * @authors Ian Redpath, Teddy Stoddard
+     * @version 3/24/2015
+     */
 
     private GuiModel model;
     private JFrame frame;
@@ -61,24 +64,19 @@ public class GuiView {
     private JButton addFilesButton;
     private JButton exportDataButton;
 
+    /**
+     * basic constructor
+     * @param m the model backing this view
+     */
     public GuiView(GuiModel m) {
         this.model = m;
-        this.checkboxListItemClickHandler = new CheckboxListItemClickHandler();
-        this.columnHeads = new ArrayList<JPanel>();
-        this.rowHeads = new ArrayList<JPanel>();
-        for (int i = 0; i < 3; i++) {
-            JPanel col = new JPanel();
-            col.add(new JLabel(model.getColumnType().toString()));
-            columnHeads.add(col);
-
-            JPanel row = new JPanel();
-            row.add(new JLabel(model.getRowType().toString()));
-            rowHeads.add(row);
-        }
     }
 
     /**
      * START OF INITIALIZATION
+     */
+    /**
+     * setup the initial gui settings and display
      */
     void initialize() {
 
@@ -118,6 +116,10 @@ public class GuiView {
         frame.setVisible(true);
     }
 
+    /**
+     * initialize the basic parent window
+     * @return the parent window
+     */
     JFrame initializeFrame() {
         JFrame frame = new JFrame("Excel Data Extractor");
         frame.setBounds(0, 0, 1024, 720);
@@ -128,6 +130,10 @@ public class GuiView {
         return frame;
     }
 
+    /**
+     * initialize the central panel of the GUI
+     * @return the central panel
+     */
     JPanel initializeCentralPanel() {
         JPanel center = new JPanel();
         GridBagLayout gbl_Center = new GridBagLayout();
@@ -139,6 +145,10 @@ public class GuiView {
         return center;
     }
 
+    /**
+     * initialize the main panel for data type item manipulation
+     * @return the initialized panel
+     */
     JPanel initializeAxisMemberPanel() {
         JPanel axisMemberPanel = new JPanel();
         axisMemberPanel.setLayout(new BorderLayout(0, 0));
@@ -165,6 +175,10 @@ public class GuiView {
         return axisMemberPanel;
     }
 
+    /**
+     * create the drop down for selecting the data group type
+     * (slide metric vs lookzone)
+     */
     void initializeDataGroupDropdown() {
         dataGroupDropdown = new JComboBox();
         dataGroupDropdown.setModel(new DefaultComboBoxModel(new DataGroupType[]{DataGroupType.SLIDEMETRIC, DataGroupType.LOOKZONE}));
@@ -183,9 +197,14 @@ public class GuiView {
         });
     }
 
-    //TODO: can we refactor this to one method we do three times?
+    /**
+     * initialize the tab panel for data type items
+     * @return the initialized tab panel
+     */
     JTabbedPane initializeTabPane() {
+        //TODO: can we refactor this to one method we do three times?
         JTabbedPane axisTabs = new JTabbedPane(JTabbedPane.TOP);
+        checkboxListItemClickHandler = new CheckboxListItemClickHandler();
 
         JPanel statisticsTab = new JPanel();
         axisTabs.addTab("Statistics", null, statisticsTab, null);
@@ -199,7 +218,7 @@ public class GuiView {
         statisticsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         statisticsTab.add(statisticsScrollPane, BorderLayout.CENTER);
 
-        initializeStatisticListContent();
+        statisticListContent = initializeDataTypeListContent(DataType.STATISTIC);
         statisticsScrollPane.setViewportView(statisticListContent);
 
         JPanel stimuliTab = new JPanel();
@@ -214,7 +233,7 @@ public class GuiView {
         stimuliScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         stimuliTab.add(stimuliScrollPane, BorderLayout.CENTER);
 
-        initializeStimulusListContent();
+        stimulusListContent = initializeDataTypeListContent(DataType.STIMULUS);
         stimuliScrollPane.setViewportView(stimulusListContent);
 
         JPanel subjectsTab = new JPanel();
@@ -229,12 +248,17 @@ public class GuiView {
         subjectScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         subjectsTab.add(subjectScrollPane, BorderLayout.CENTER);
 
-        initializeSubjectListContent();
+        subjectListContent = initializeDataTypeListContent(DataType.SUBJECT);
         subjectScrollPane.setViewportView(subjectListContent);
 
         return axisTabs;
     }
 
+    /**
+     * initialize the button panel for data type item pane
+     * @param type the data type of this pane
+     * @return the initialized panel
+     */
     JPanel initializeDataTypeButtons(final DataType type) {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout());
@@ -261,37 +285,25 @@ public class GuiView {
         return buttonsPanel;
     }
 
-    void initializeSubjectListContent() {
-        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        subjectListContent = new JList(new CheckboxListModel());
-        subjectListContent.setCellRenderer(new CheckboxListRenderer());
-        subjectListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        subjectListContent.addMouseListener(checkboxListItemClickHandler);
-        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(subjectListContent);
-        subjectListContent.addMouseListener(statisticMoveHandler);
-        subjectListContent.addMouseMotionListener(statisticMoveHandler);
-    }
-    void initializeStimulusListContent() {
-        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        stimulusListContent = new JList(new CheckboxListModel());
-        stimulusListContent.setCellRenderer(new CheckboxListRenderer());
-        stimulusListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        stimulusListContent.addMouseListener(checkboxListItemClickHandler);
-        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(stimulusListContent);
-        stimulusListContent.addMouseListener(statisticMoveHandler);
-        stimulusListContent.addMouseMotionListener(statisticMoveHandler);
-    }
-    void initializeStatisticListContent() {
-        // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        statisticListContent = new JList(new CheckboxListModel());
-        statisticListContent.setCellRenderer(new CheckboxListRenderer());
-        statisticListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        statisticListContent.addMouseListener(checkboxListItemClickHandler);
-        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(statisticListContent);
-        statisticListContent.addMouseListener(statisticMoveHandler);
-        statisticListContent.addMouseMotionListener(statisticMoveHandler);
+    /**
+     * initialize the list for the given data type
+     * @param type the type of the list
+     */
+    JList initializeDataTypeListContent(DataType type) {
+        JList content = new JList(model.getActiveModel(type));
+        content.setCellRenderer(new CheckboxListRenderer());
+        content.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        content.addMouseListener(checkboxListItemClickHandler);
+        CheckboxListItemMoveHandler statisticMoveHandler = new CheckboxListItemMoveHandler(content);
+        content.addMouseListener(statisticMoveHandler);
+        content.addMouseMotionListener(statisticMoveHandler);
+        return content;
     }
 
+    /**
+     * initialize the footer for the central panel
+     * @return the initialized footer
+     */
     JPanel initializeAxisFooter() {
         JPanel axisFooter = new JPanel();
         axisFooter.setLayout(new BorderLayout(0, 0));
@@ -326,6 +338,10 @@ public class GuiView {
         return axisFooter;
     }
 
+    /**
+     * initialize the panel for the list of added files
+     * @return the initialized panel
+     */
     JPanel initializeFilePanel() {
         JPanel filePanel = new JPanel();
         filePanel.setLayout(new BorderLayout(0, 0));
@@ -356,6 +372,10 @@ public class GuiView {
         return filePanel;
     }
 
+    /**
+     * initialize the button to remove selected files
+     * @return the initialized button
+     */
     JButton initializeRemoveSelectedFilesButton() {
         removeSelectedFilesButton = new JButton("Remove Selected Files");
         removeSelectedFilesButton.addActionListener(new ActionListener() {
@@ -371,6 +391,10 @@ public class GuiView {
         return removeSelectedFilesButton;
     }
 
+    /**
+     * initialize the button to add new files
+     * @return the initialized button
+     */
     JButton initializeAddFileButton() {
         addFilesButton = new JButton("Add Files");
         addFilesButton.addActionListener(new ActionListener() {
@@ -389,6 +413,10 @@ public class GuiView {
         return addFilesButton;
     }
 
+    /**
+     * initialize the wrapper panel for the file list
+     * @return the initialized panel
+     */
     JPanel initializeFileListWrapper() {
         JPanel fileListWrapper = new JPanel();
         fileListWrapper.setLayout(new GridLayout(0, 1, 0, 0));
@@ -405,6 +433,10 @@ public class GuiView {
         return fileListWrapper;
     }
 
+    /**
+     * initialize the panel for the output format
+     * @return the initialized panel
+     */
     JPanel initializeOutputWrapper() {
         JPanel outputWrapper = new JPanel();
         outputWrapper.setLayout(new BorderLayout(0, 0));
@@ -431,6 +463,10 @@ public class GuiView {
         return outputWrapper;
     }
 
+    /**
+     * initialize the table displaying the output format
+     * @return the initialized table
+     */
     JPanel initializeMockTable() {
         JPanel mockTable = new JPanel();
         mockTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -448,6 +484,18 @@ public class GuiView {
         });
         swapContainer.add(swapAxisButton);
 
+        columnHeads = new ArrayList<JPanel>();
+        rowHeads = new ArrayList<JPanel>();
+        for (int i = 0; i < 3; i++) {
+            JPanel col = new JPanel();
+            col.add(new JLabel(model.getColumnType().toString()));
+            columnHeads.add(col);
+
+            JPanel row = new JPanel();
+            row.add(new JLabel(model.getRowType().toString()));
+            rowHeads.add(row);
+        }
+
         for (JPanel p: columnHeads) {
             mockTable.add(p);
         }
@@ -461,6 +509,10 @@ public class GuiView {
         return mockTable;
     }
 
+    /**
+     * initialize the dropdown for selecting the tab data type
+     * @return the initialized dropdown
+     */
     JComboBox initializeDataTypeComboBox() {
         JComboBox comboBox = new JComboBox();
         comboBox.setModel(new DefaultComboBoxModel(new DataType[]{DataType.STATISTIC, DataType.STIMULUS, DataType.SUBJECT}));
@@ -483,7 +535,9 @@ public class GuiView {
      * END OF INITIALIZATION
      */
 
-
+    /**
+     * update the subject/stimulus/statistic models
+     */
     void update() {
         //TODO: Maybe find a way around this
         // there should be a way to edit the model instead of constantly setting
@@ -503,6 +557,9 @@ public class GuiView {
         }
     }
 
+    /**
+     * update the output format table
+     */
     void updateOutputTable() {
         DataType rowType = model.getRowType();
         DataType columnType = model.getColumnType();
@@ -516,7 +573,10 @@ public class GuiView {
         }
     }
 
-    // this may have to be abstracted to also handle model.remove(), or we just make another class
+    /**
+     * a helper class
+     * creates a new thread to execute file adding logic
+     */
     class FileAdder extends SwingWorker {
         final JFileChooser fc;
         final int retVal;
@@ -560,6 +620,10 @@ public class GuiView {
         }
     }
 
+    /**
+     * a helper class
+     * creates a new thread to handle exporting logic
+     */
     class ExportWorker extends SwingWorker {
         final JFileChooser fc;
 
@@ -579,6 +643,10 @@ public class GuiView {
         }
     }
 
+    /**
+     * a helper class
+     * creates a new thread to handle file deletion logic
+     */
     class FileDeleter extends SwingWorker {
 
         protected Object doInBackground() {
