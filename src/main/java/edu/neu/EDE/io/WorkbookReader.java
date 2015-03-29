@@ -27,7 +27,6 @@ public class WorkbookReader {
     final int STATISTIC_VALUE_CELL = 5;
     final int LOOKZONE_NAME_CELL = 1;
     final String SLIDE_METRIC_SUFFIX = "-SM";
-    final String LOOK_ZONE_SUFFIX = "-LZ";
     final String LOOK_ZONE_OUT_SUFFIX = "-OUT";
     final String FILE_EXTENSION = ".xlsx";
     final String F_SHEET_END = " - F";

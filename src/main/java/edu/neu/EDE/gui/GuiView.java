@@ -4,10 +4,10 @@ import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemClickHandler;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemMoveHandler;
+import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
 import edu.neu.EDE.gui.checkboxList.CheckboxListRenderer;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -263,7 +263,7 @@ public class GuiView {
 
     void initializeSubjectListContent() {
         // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        subjectListContent = new JList(new DefaultListModel());
+        subjectListContent = new JList(new CheckboxListModel());
         subjectListContent.setCellRenderer(new CheckboxListRenderer());
         subjectListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         subjectListContent.addMouseListener(checkboxListItemClickHandler);
@@ -273,7 +273,7 @@ public class GuiView {
     }
     void initializeStimulusListContent() {
         // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        stimulusListContent = new JList(new DefaultListModel());
+        stimulusListContent = new JList(new CheckboxListModel());
         stimulusListContent.setCellRenderer(new CheckboxListRenderer());
         stimulusListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stimulusListContent.addMouseListener(checkboxListItemClickHandler);
@@ -283,7 +283,7 @@ public class GuiView {
     }
     void initializeStatisticListContent() {
         // NOTE: MODEL IS NOT USED.  PURELY TO ALLOW FOR MOVEMENT LISTENER
-        statisticListContent = new JList(new DefaultListModel());
+        statisticListContent = new JList(new CheckboxListModel());
         statisticListContent.setCellRenderer(new CheckboxListRenderer());
         statisticListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         statisticListContent.addMouseListener(checkboxListItemClickHandler);
@@ -396,11 +396,10 @@ public class GuiView {
         fileList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         fileList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         fileListWrapper.add(fileList);
-        fileListContent = new JList();
+        fileListContent = new JList(model.getFileListModel());
         fileListContent.setCellRenderer(new CheckboxListRenderer());
         fileListContent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileListContent.addMouseListener(new CheckboxListItemClickHandler());
-        fileListContent.setModel(model.getFileListModel());
         fileList.setViewportView(fileListContent);
 
         return fileListWrapper;
@@ -492,6 +491,7 @@ public class GuiView {
         // may not be possible
 
         //CHECKS TEMPORARY FIX FOR AWFUL BUG
+        //THESE MAY NOT BE NECESSARY ANYMORE, I'LL TRY TO TEST A FEW TIMES
         if (model.getActiveModel(DataType.SUBJECT).size() > 0 || subjectListContent.getModel().getSize() > 0) {
             subjectListContent.setModel(model.getActiveModel(DataType.SUBJECT));
         }

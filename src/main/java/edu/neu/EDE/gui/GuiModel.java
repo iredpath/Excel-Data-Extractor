@@ -10,7 +10,6 @@ import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
 import edu.neu.EDE.io.WorkbookReader;
 import edu.neu.EDE.io.WorkbookWriter;
 
-import javax.swing.DefaultListModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,9 +18,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Ian on 3/24/15.
+ * GuiModel - model for GuiView
+ * maintain/manipulate/access data to be displayed
+ * and later exported
  */
 public class GuiModel {
+    /**
+     * @author Ian Redpath
+     * @version 3/24/2015
+     */
 
     private WorkbookReader reader;
     private FourDimArray lookZoneData;
@@ -34,6 +39,10 @@ public class GuiModel {
     private DataType rowType;
     private DataGroupType dataGroupType;
 
+    /**
+     * basic constructor
+     * initialize necessary fields, set default values
+     */
     public GuiModel() {
         this.reader = new WorkbookReader();
         this.lookZoneData = new FourDimArray();
@@ -53,16 +62,27 @@ public class GuiModel {
         reader.setSlideMetricData(slideMetricData);
     }
 
+    /**
+     * set the data group type (lookzone/slide metric)
+     * @param d the new data group type
+     */
     void updateDataGroupType(DataGroupType d) {
         dataGroupType = d;
     }
 
+    /**
+     * swap the column and row data types
+     */
     void swapAxes() {
         DataType tmp = columnType;
         columnType = rowType;
         rowType = tmp;
     }
 
+    /**
+     * set the data type to be used per sheet
+     * @param d the new sheet data type
+     */
     void updateSheetType(DataType d) {
         DataType tmp = tabType;
         tabType = d;
@@ -73,6 +93,11 @@ public class GuiModel {
         }
     }
 
+    /**
+     * add data from excel files to data structures
+     * @param files the files to add
+     * @throws IOException if POI can't read the file
+     */
     void addFiles(File[] files) throws IOException {
         for (File f: files) {
             if (f.isDirectory()) {
@@ -86,6 +111,12 @@ public class GuiModel {
         }
     }
 
+    /**
+     * add information relevant to this file
+     * to the model backing the list of files
+     * @param f the file
+     * @param subject the subject of the file
+     */
     void addToFileListModel(File f, String subject) {
         if (!fileListModel.contains(f.getName())) {
             CheckboxListItem i = new CheckboxListItem(f.getName());
@@ -95,6 +126,12 @@ public class GuiModel {
         }
     }
 
+    /**
+     * removes files marked as selected from the data structure
+     * internally, removes all files first,
+     * then adds files that were not marked for removal
+     * @throws IOException if POI can't re-add the unmarked file(s)
+     */
     void removeSelectedFiles() throws IOException {
         CheckboxListItem[] allFiles = new CheckboxListItem[fileListModel.getSize()];
         fileListModel.copyInto(allFiles);
@@ -108,6 +145,11 @@ public class GuiModel {
         updateJListModels();
     }
 
+    /**
+     * adds new data items to their relevant model
+     * @param items all items for a given data type
+     * @param model the model for these items
+     */
     void addNewItemsToModel(List<String> items, CheckboxListModel model) {
         for (String s: items) {
             if (!model.contains(s)) {
@@ -118,12 +160,19 @@ public class GuiModel {
         }
     }
 
+    /**
+     * removes all items from every data type model
+     */
     void clearModels() {
         for (CheckboxListModel m: dataTypeModelManager.getAllModels()) {
             m.removeAllElements();
         }
     }
-    
+
+    /**
+     * updates all data type models
+     * adds all data items not previously part of the models
+     */
     void updateJListModels() {
         CheckboxListModel listModel = dataTypeModelManager.get(DataGroupType.SLIDEMETRIC, DataType.SUBJECT);
         List<String> list = slideMetricData.getSubjects();
@@ -150,24 +199,46 @@ public class GuiModel {
         addNewItemsToModel(list, listModel);
     }
 
+    /**
+     * add a specific file
+     * @param f the file
+     * @throws IOException if POI can't read the file
+     */
     void addFile(File f) throws IOException {
         reader.readFile(f);
         String subjectName = reader.getSubject();
         addToFileListModel(f, subjectName);
     }
 
+    /**
+     * get the model backing the list of added files
+     * @return the model backing the list of added files
+     */
     CheckboxListModel getFileListModel() {
         return fileListModel;
     }
 
+    /**
+     * set all data items as selected
+     * @param which the type of data
+     */
     void selectAll(DataType which) {
         setAllItemsAs(true, which);
     }
 
+    /**
+     * set all data items as deselected
+     * @param which the type of data
+     */
     void deselectAll(DataType which) {
         setAllItemsAs(false, which);
     }
 
+    /**
+     * set all data items as selected or deselected
+     * @param what state to set items to (true = selected)
+     * @param which which type of data to set
+     */
     void setAllItemsAs(boolean what, DataType which) {
         CheckboxListModel model = getActiveModel(which);
         for (int i = 0; i < model.getSize(); i++) {
@@ -176,10 +247,19 @@ public class GuiModel {
         }
     }
 
+    /**
+     * gets the model backing the currently selected data group type
+     * @param dataType the data type of the desired model
+     * @return the model backing that data type
+     */
     CheckboxListModel getActiveModel(DataType dataType) {
         return dataTypeModelManager.get(dataGroupType, dataType);
     }
 
+    /**
+     * writes the desired data to the specified output file
+     * @param outputFile the output file to write to
+     */
     void export(File outputFile) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
@@ -201,8 +281,13 @@ public class GuiModel {
         writer.write(config, outputFile);
     }
 
-    // How too slow is this?
-    List<String> getSelectedData(DefaultListModel<CheckboxListItem> model) {
+    /**
+     * get all selected data items from the given model
+     * @param model the model containing the data items
+     * @return the list of selected data items
+     */
+    List<String> getSelectedData(CheckboxListModel model) {
+        // How too slow is this?
         List<String> retVal = new ArrayList<String>();
         for (int i = 0; i < model.getSize(); i++) {
             CheckboxListItem item = model.get(i);
@@ -213,8 +298,16 @@ public class GuiModel {
         return retVal;
     }
 
+    /**
+     * get the current data type for columns
+     * @return the column data type
+     */
     public DataType getColumnType() { return columnType; }
 
+    /**
+     * get the current data type for rows
+     * @return the row data type
+     */
     public DataType getRowType() { return rowType; }
 
 }
