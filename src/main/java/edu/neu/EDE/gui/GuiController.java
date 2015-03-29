@@ -4,11 +4,12 @@ package edu.neu.EDE.gui;
  * GuiController - basic main class
  * serving as entry point into jar
  */
+
+/**
+ * @author Ian Redpath
+ * @version 3/24/2015
+ */
 public class GuiController {
-    /**
-     * @author Ian Redpath
-     * @version 3/24/2015
-     */
 
     private GuiView view;
 

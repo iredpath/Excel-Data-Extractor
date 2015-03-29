@@ -1,12 +1,22 @@
 package edu.neu.EDE.gui.checkboxList;
 
+/**
+ * a model to back lists of checkboxes
+ */
+
 import javax.swing.DefaultListModel;
 
 /**
- * Created by Teddy on 3/25/15.
+ * @author Teddy Stoddard
+ * @version 3/25/2015
  */
 public class CheckboxListModel extends DefaultListModel<CheckboxListItem> {
 
+    /**
+     * does this model contain the provided string
+     * @param s the string to check for
+     * @return the result of the check
+     */
     public boolean contains(String s) {
         for (int i = 0; i < getSize(); i++) {
             CheckboxListItem item = get(i);
@@ -15,14 +25,5 @@ public class CheckboxListModel extends DefaultListModel<CheckboxListItem> {
             }
         }
         return false;
-    }
-
-    public void remove(String s) {
-        for (int i = 0; i < getSize(); i++) {
-            CheckboxListItem item = get(i);
-            if (item.toString().equals(s)) {
-                remove(i);
-            }
-        }
     }
 }

@@ -22,11 +22,12 @@ import java.util.Set;
  * maintain/manipulate/access data to be displayed
  * and later exported
  */
+
+/**
+ * @author Ian Redpath
+ * @version 3/24/2015
+ */
 public class GuiModel {
-    /**
-     * @author Ian Redpath
-     * @version 3/24/2015
-     */
 
     private WorkbookReader reader;
     private FourDimArray lookZoneData;

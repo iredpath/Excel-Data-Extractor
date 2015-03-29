@@ -1,13 +1,22 @@
 package edu.neu.EDE.gui.checkboxList;
 
+/**
+ * click handler for CheckboxListItems
+ */
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Created by Teddy on 3/25/15.
+ * @author Teddy Stoddard
+ * @version 3/25/2015
  */
 public class CheckboxListItemClickHandler extends MouseAdapter {
+
+    /**
+     * responds to click events
+     * @param event the click event
+     */
     public void mouseClicked(MouseEvent event) {
         JList list = (JList) event.getSource();
         // Get index of item clicked

@@ -1,10 +1,13 @@
 package edu.neu.EDE.gui;
 
+/**
+ * GuiView - maintain the GUI
+ */
+
 import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemClickHandler;
 import edu.neu.EDE.gui.checkboxList.CheckboxListItemMoveHandler;
-import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
 import edu.neu.EDE.gui.checkboxList.CheckboxListRenderer;
 
 import javax.swing.DefaultComboBoxModel;
@@ -40,13 +43,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * GuiView - maintain the GUI
+ * @authors Ian Redpath, Teddy Stoddard
+ * @version 3/24/2015
  */
 public class GuiView {
-    /**
-     * @authors Ian Redpath, Teddy Stoddard
-     * @version 3/24/2015
-     */
 
     private GuiModel model;
     private JFrame frame;
