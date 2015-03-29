@@ -2,7 +2,9 @@ package edu.neu.EDE.io;
 
 import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.FourDimArray;
+import edu.neu.EDE.data_structs.OutputConfiguration;
 import edu.neu.EDE.data_structs.SheetConfiguration;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.WorkbookUtil;
@@ -72,22 +74,23 @@ public class WorkbookWriter {
 
     /**
      * write the file
-     * @param sheetNames the list of sheet names
-     * @param columnHeaders the list of column headers for each sheet
-     * @param rowHeaders the list of row headers for each sheet
-     * @param name the name of the output file
+     * @param config the configuration object (contains sheet/column/row names)
+     * @param outputFile the outputFile to write to
      */
-    public void write(List<String> sheetNames, List<String> columnHeaders, List<String> rowHeaders, String name) {
+    public void write(OutputConfiguration config, File outputFile) {
+        List<String> sheetNames = config.getTabs();
+        List<String> columnHeaders = config.getColumns();
+        List<String> rowHeaders = config.getRows();
         for (String sheetName: sheetNames) {
             addSheet(sheetName, columnHeaders, rowHeaders);
         }
         FileOutputStream fileOut;
         try {
-            String workingDir = System.getProperty("user.dir");
-            File outputDir = new File(workingDir + "/output");
-            outputDir.mkdir();
-            // TODO: with gui, we probably want to require an output name
-            fileOut = new FileOutputStream(workingDir + "/output/" + name + ".xlsx");
+            String extension = FilenameUtils.getExtension(outputFile.getName());
+            if (!extension.equals("xlsx")) {
+                outputFile = new File(outputFile + ".xlsx");
+            }
+            fileOut = new FileOutputStream(outputFile);
             workbook.write(fileOut);
             fileOut.close();
         }

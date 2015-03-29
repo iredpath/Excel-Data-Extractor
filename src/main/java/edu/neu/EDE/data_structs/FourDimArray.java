@@ -18,8 +18,7 @@ public class FourDimArray {
     private ArrayList<ArrayList<String>> stimuli;
     private ArrayList<String> statistics;
     private ArrayList<ArrayList<ArrayList<ArrayList<Double>>>> data;
-    
-    
+
     /**
      * Constructor for the FourDimArray
      * Initializes Subjects, Medias, Stimuli, Statistics, and Data
