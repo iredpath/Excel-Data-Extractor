@@ -176,6 +176,7 @@ public class FourDimArray {
                     found = true;
                     mediaIndex = stimuli.indexOf(listOfStim);
                     stimuliIndex = listOfStim.indexOf(stimulus);
+                    break;
                 }
             }
         }
