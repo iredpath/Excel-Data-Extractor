@@ -6,9 +6,9 @@ package edu.neu.EDE.gui;
 
 import edu.neu.EDE.data_structs.DataGroupType;
 import edu.neu.EDE.data_structs.DataType;
-import edu.neu.EDE.gui.checkboxList.CheckboxListItemClickHandler;
-import edu.neu.EDE.gui.checkboxList.CheckboxListItemMoveHandler;
-import edu.neu.EDE.gui.checkboxList.CheckboxListRenderer;
+import edu.neu.EDE.gui.checkbox_list.CheckboxListItemClickHandler;
+import edu.neu.EDE.gui.checkbox_list.CheckboxListItemMoveHandler;
+import edu.neu.EDE.gui.checkbox_list.CheckboxListRenderer;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;

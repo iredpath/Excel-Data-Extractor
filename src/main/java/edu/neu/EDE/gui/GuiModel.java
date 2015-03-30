@@ -5,8 +5,8 @@ import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.DataTypeModelManager;
 import edu.neu.EDE.data_structs.FourDimArray;
 import edu.neu.EDE.data_structs.OutputConfiguration;
-import edu.neu.EDE.gui.checkboxList.CheckboxListItem;
-import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
+import edu.neu.EDE.gui.checkbox_list.CheckboxListItem;
+import edu.neu.EDE.gui.checkbox_list.CheckboxListModel;
 import edu.neu.EDE.io.WorkbookReader;
 import edu.neu.EDE.io.WorkbookWriter;
 
@@ -89,7 +89,7 @@ public class GuiModel {
         tabType = d;
         if (rowType.equals(tabType)) {
             rowType = tmp;
-        } else {
+        } else if (columnType.equals(tabType)) {
             columnType = tmp;
         }
     }
@@ -311,4 +311,21 @@ public class GuiModel {
      */
     public DataType getRowType() { return rowType; }
 
+    /**
+     * get the current data type for tabs
+     * @return the tab data type
+     */
+    public DataType getTabType() { return tabType; }
+
+    /**
+     * return the current data group type
+     * @return the data group type
+     */
+    public DataGroupType getDataGroupType() { return dataGroupType; }
+
+    /**
+     * return the set of invalid files that user tried to add
+     * @return the set of invalid files
+     */
+    public Set<String> getInvalidFiles() { return invalidFiles; }
 }

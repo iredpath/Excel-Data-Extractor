@@ -4,7 +4,7 @@ package edu.neu.EDE.data_structs;
  * data structure to manage CheckboxListModels
  */
 
-import edu.neu.EDE.gui.checkboxList.CheckboxListModel;
+import edu.neu.EDE.gui.checkbox_list.CheckboxListModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
