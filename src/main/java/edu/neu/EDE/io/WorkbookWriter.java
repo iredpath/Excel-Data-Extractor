@@ -41,14 +41,6 @@ public class WorkbookWriter {
     }
 
     /**
-     * resets writer to write a new file
-     */
-    public void reset() {
-        sheetIndex = 0;
-        workbook = new XSSFWorkbook();
-    }
-
-    /**
      * sets which data type is being used for sheets
      * @param type the data type for sheets
      */
@@ -168,7 +160,7 @@ public class WorkbookWriter {
      * @param columnName the name of the column
      * @return the value specified from the data struct
      */
-    private Double getValue(String sheetName, String rowName, String columnName) {
+    Double getValue(String sheetName, String rowName, String columnName) {
         SheetConfiguration config = new SheetConfiguration();
         config.set(sheetType, sheetName);
         config.set(rowType, rowName);
