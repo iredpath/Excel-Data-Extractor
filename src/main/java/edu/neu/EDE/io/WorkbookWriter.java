@@ -113,7 +113,7 @@ public class WorkbookWriter {
      * @param sheetName the name of the sheet
      * @param columnHeaders the name of each column
      */
-    private void createHeaderRow(XSSFSheet sheet, String sheetName, List<String> columnHeaders) {
+    void createHeaderRow(XSSFSheet sheet, String sheetName, List<String> columnHeaders) {
         Cell cell;
         int cellIndex = 0;
         Row row = sheet.createRow(HEADER_ROW_INDEX);
@@ -132,7 +132,7 @@ public class WorkbookWriter {
      * @param columnHeaders the name of each column
      * @param rowHeaders the name of each row
      */
-    private void addData2Sheet(XSSFSheet sheet, String sheetName, List<String> columnHeaders, List<String> rowHeaders) {
+    void addData2Sheet(XSSFSheet sheet, String sheetName, List<String> columnHeaders, List<String> rowHeaders) {
         int rowIndex = DATA_ROW_START_INDEX;
         int cellIndex = 0;
         Row row;
