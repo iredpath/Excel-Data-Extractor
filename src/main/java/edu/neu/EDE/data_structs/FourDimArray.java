@@ -6,6 +6,7 @@ package edu.neu.EDE.data_structs;
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Teddy Stoddard
@@ -15,9 +16,9 @@ public class FourDimArray {
     
     private ArrayList<String> subjects;
     private ArrayList<String> medias;
-    private ArrayList<ArrayList<String>> stimuli;
+    private ArrayList<List<String>> stimuli;
     private ArrayList<String> statistics;
-    private ArrayList<ArrayList<ArrayList<ArrayList<Double>>>> data;
+    private ArrayList<List<List<List<Double>>>> data;
 
     /**
      * Constructor for the FourDimArray
@@ -26,9 +27,9 @@ public class FourDimArray {
     public FourDimArray() {
         subjects = new ArrayList<String>();
         medias = new ArrayList<String>();
-        stimuli = new ArrayList<ArrayList<String>>();
+        stimuli = new ArrayList<List<String>>();
         statistics = new ArrayList<String>();
-        data = new ArrayList<ArrayList<ArrayList<ArrayList<Double>>>>();
+        data = new ArrayList<List<List<List<Double>>>>();
     }
     
     /**
@@ -64,7 +65,7 @@ public class FourDimArray {
      */
     public ArrayList<String> getStimuli() {
         ArrayList<String> tempStimuliArray = new ArrayList<String>();
-        for (ArrayList<String> stimuliArray: stimuli) { // 2d to 1d
+        for (List<String> stimuliArray: stimuli) { // 2d to 1d
             tempStimuliArray.addAll(stimuliArray);
         }
         return tempStimuliArray;
@@ -97,10 +98,10 @@ public class FourDimArray {
             mediaIndex = medias.size() - 1;
         }
         while (data.size() <= subjectIndex) {
-            data.add(new ArrayList<ArrayList<ArrayList<Double>>>());
+            data.add(new ArrayList<List<List<Double>>>());
         }
         while (data.get(subjectIndex).size() <= mediaIndex) {
-            data.get(subjectIndex).add(new ArrayList<ArrayList<Double>>());
+            data.get(subjectIndex).add(new ArrayList<List<Double>>());
         }
     }
 
@@ -136,10 +137,10 @@ public class FourDimArray {
             statisticIndex = statistics.size() - 1;
         }
         while (data.size() <= subjectIndex) { // if there are blanks that are not stored in the data structure append as necessary to align indices
-            data.add(new ArrayList<ArrayList<ArrayList<Double>>>());
+            data.add(new ArrayList<List<List<Double>>>());
         }
         while (data.get(subjectIndex).size() <= mediaIndex) {
-            data.get(subjectIndex).add(new ArrayList<ArrayList<Double>>());
+            data.get(subjectIndex).add(new ArrayList<List<Double>>());
         }
         while (data.get(subjectIndex).get(mediaIndex).size() <= stimuliIndex) {
             data.get(subjectIndex).get(mediaIndex).add(new ArrayList<Double>());
@@ -169,12 +170,13 @@ public class FourDimArray {
             return null; // if out of bounds or not found
         }
         boolean found = false;
-        for (ArrayList<String> listOfStim: stimuli) { // get the index of the media and stimuli
+        for (List<String> listOfStim: stimuli) { // get the index of the media and stimuli
             for (String stim: listOfStim) {
                 if (stim.equals(stimulus)) {
                     found = true;
                     mediaIndex = stimuli.indexOf(listOfStim);
                     stimuliIndex = listOfStim.indexOf(stimulus);
+                    break;
                 }
             }
         }

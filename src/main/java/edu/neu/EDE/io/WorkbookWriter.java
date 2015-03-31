@@ -41,14 +41,6 @@ public class WorkbookWriter {
     }
 
     /**
-     * resets writer to write a new file
-     */
-    public void reset() {
-        sheetIndex = 0;
-        workbook = new XSSFWorkbook();
-    }
-
-    /**
      * sets which data type is being used for sheets
      * @param type the data type for sheets
      */
@@ -121,7 +113,7 @@ public class WorkbookWriter {
      * @param sheetName the name of the sheet
      * @param columnHeaders the name of each column
      */
-    private void createHeaderRow(XSSFSheet sheet, String sheetName, List<String> columnHeaders) {
+    void createHeaderRow(XSSFSheet sheet, String sheetName, List<String> columnHeaders) {
         Cell cell;
         int cellIndex = 0;
         Row row = sheet.createRow(HEADER_ROW_INDEX);
@@ -140,7 +132,7 @@ public class WorkbookWriter {
      * @param columnHeaders the name of each column
      * @param rowHeaders the name of each row
      */
-    private void addData2Sheet(XSSFSheet sheet, String sheetName, List<String> columnHeaders, List<String> rowHeaders) {
+    void addData2Sheet(XSSFSheet sheet, String sheetName, List<String> columnHeaders, List<String> rowHeaders) {
         int rowIndex = DATA_ROW_START_INDEX;
         int cellIndex = 0;
         Row row;
@@ -168,7 +160,7 @@ public class WorkbookWriter {
      * @param columnName the name of the column
      * @return the value specified from the data struct
      */
-    private Double getValue(String sheetName, String rowName, String columnName) {
+    Double getValue(String sheetName, String rowName, String columnName) {
         SheetConfiguration config = new SheetConfiguration();
         config.set(sheetType, sheetName);
         config.set(rowType, rowName);

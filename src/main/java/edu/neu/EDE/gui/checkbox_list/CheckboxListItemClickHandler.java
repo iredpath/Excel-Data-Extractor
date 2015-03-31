@@ -1,4 +1,4 @@
-package edu.neu.EDE.gui.checkboxList;
+package edu.neu.EDE.gui.checkbox_list;
 
 /**
  * click handler for CheckboxListItems
