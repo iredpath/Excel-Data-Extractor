@@ -43,7 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @authors Ian Redpath, Teddy Stoddard
+ * @author Ian Redpath
+ * @author Teddy Stoddard
  * @version 3/24/2015
  */
 public class GuiView {
