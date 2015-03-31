@@ -137,6 +137,8 @@ public class GuiModel {
         CheckboxListItem[] allFiles = new CheckboxListItem[fileListModel.getSize()];
         fileListModel.copyInto(allFiles);
         fileListModel.removeAllElements();
+        lookZoneData.reset();
+        slideMetricData.reset();
         for (CheckboxListItem item: allFiles) {
            if (!item.isSelected()) {
                addFile(item.getFile());

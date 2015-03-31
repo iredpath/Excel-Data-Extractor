@@ -657,7 +657,6 @@ public class GuiView {
             }
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    update();
                     addFileProgressBar.setVisible(false);
                     addFilesButton.setVisible(true);
                     removeSelectedFilesButton.setVisible(true);
