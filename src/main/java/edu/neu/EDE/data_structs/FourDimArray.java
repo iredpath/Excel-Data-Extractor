@@ -189,4 +189,21 @@ public class FourDimArray {
         }
         return data.get(subjectIndex).get(mediaIndex).get(stimuliIndex).get(statisticIndex); // get and return the data
     }
+
+    /**
+     * gets the list of names for the given data type
+     * @param type the data type
+     * @return the list of names for that data type
+     */
+    public List<String> get(DataType type) {
+        if (type.equals(DataType.STATISTIC)) {
+            return getStatistics();
+        } else if (type.equals(DataType.STIMULUS)) {
+            return getStimuli();
+        } else if (type.equals(DataType.SUBJECT)) {
+            return getSubjects();
+        } else {
+            throw new IllegalArgumentException("Cannot resolve Data type " + type);
+        }
+    }
 }
