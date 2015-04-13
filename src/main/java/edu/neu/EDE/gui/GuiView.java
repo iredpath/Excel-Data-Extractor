@@ -10,21 +10,7 @@ import edu.neu.EDE.gui.checkbox_list.CheckboxListItemClickHandler;
 import edu.neu.EDE.gui.checkbox_list.CheckboxListItemMoveHandler;
 import edu.neu.EDE.gui.checkbox_list.CheckboxListRenderer;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -633,11 +619,12 @@ public class GuiView {
         }
 
         protected Object doInBackground() {
-            model.export(fc.getSelectedFile());
+            final String result = model.export(fc.getSelectedFile());
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     exportProgressBar.setVisible(false);
                     exportDataButton.setVisible(true);
+                    JOptionPane.showMessageDialog(frame, result);
                 }
             });
             return null;

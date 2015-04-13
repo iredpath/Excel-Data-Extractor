@@ -161,11 +161,9 @@ public class FourDimArray {
         String subject = config.getSubject();
         String stimulus = config.getStimulus();
         String statistic = config.getStatistic();
-        int subjectIndex = 0;
-        int mediaIndex = 0;
-        int stimuliIndex = 0;
-        int statisticIndex = 0;
-        subjectIndex = subjects.indexOf(subject);
+        int mediaIndex = -1;
+        int stimuliIndex = -1;
+        int subjectIndex = subjects.indexOf(subject);
         if ((subjectIndex == -1) || (data.size() <= subjectIndex)) {
             return null; // if out of bounds or not found
         }
@@ -183,7 +181,7 @@ public class FourDimArray {
         if (!found || (data.get(subjectIndex).size() <= mediaIndex) || (data.get(subjectIndex).get(mediaIndex).size() <= stimuliIndex)) {
             return null; // if out of bounds or not found
         }
-        statisticIndex = statistics.indexOf(statistic);
+        int statisticIndex = statistics.indexOf(statistic);
         if ((statisticIndex == -1) || (data.get(subjectIndex).get(mediaIndex).get(stimuliIndex).size() <= statisticIndex)) {
             return null; // if out of bounds or not found
         }

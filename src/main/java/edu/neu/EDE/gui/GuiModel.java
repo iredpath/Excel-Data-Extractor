@@ -254,15 +254,15 @@ public class GuiModel {
     /**
      * writes the desired data to the specified output file
      * @param outputFile the output file to write to
+     * @return the response from the writer
      */
-    void export(File outputFile) {
+    String export(File outputFile) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
         List<String> statistics = getSelectedData(dataTypeModelManager.get(dataGroupType, DataType.STATISTIC));
         List<String> stimuli = getSelectedData(dataTypeModelManager.get(dataGroupType, DataType.STIMULUS));
         List<String> subjects = getSelectedData(dataTypeModelManager.get(dataGroupType, DataType.SUBJECT));
-        FourDimArray data = reader.getData(dataGroupType);
-        writer.setData(data);
+        writer.setData(reader.getData(dataGroupType));
         writer.setRowType(rowType);
         writer.setSheetType(tabType);
         writer.setColumnType(columnType);
@@ -273,7 +273,7 @@ public class GuiModel {
         config.setRow(rowType);
         config.setColumn(columnType);
         config.setTab(tabType);
-        writer.write(config, outputFile);
+        return writer.write(config, outputFile);
     }
 
     /**

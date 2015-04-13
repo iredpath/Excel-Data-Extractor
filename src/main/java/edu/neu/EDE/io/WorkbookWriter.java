@@ -68,8 +68,9 @@ public class WorkbookWriter {
      * write the file
      * @param config the configuration object (contains sheet/column/row names)
      * @param outputFile the outputFile to write to
+     * @return the response string to show in the dialog
      */
-    public void write(OutputConfiguration config, File outputFile) {
+    public String write(OutputConfiguration config, File outputFile) {
         List<String> sheetNames = config.getTabs();
         List<String> columnHeaders = config.getColumns();
         List<String> rowHeaders = config.getRows();
@@ -85,12 +86,13 @@ public class WorkbookWriter {
             fileOut = new FileOutputStream(outputFile);
             workbook.write(fileOut);
             fileOut.close();
+            return "File successfully exported";
         }
         catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
     }
 
