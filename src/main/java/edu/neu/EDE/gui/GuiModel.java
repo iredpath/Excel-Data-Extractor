@@ -30,8 +30,6 @@ import java.util.Set;
 public class GuiModel {
 
     private WorkbookReader reader;
-    private FourDimArray lookZoneData;
-    private FourDimArray slideMetricData;
     private Set<String> invalidFiles;
     private CheckboxListModel fileListModel;
     private DataTypeModelManager dataTypeModelManager;
@@ -45,9 +43,7 @@ public class GuiModel {
      * initialize necessary fields, set default values
      */
     public GuiModel() {
-        this.reader = new WorkbookReader();
-        this.lookZoneData = new FourDimArray();
-        this.slideMetricData = new FourDimArray();
+        this.reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         this.invalidFiles = new HashSet<String>();
 
         this.dataTypeModelManager = new DataTypeModelManager();
@@ -58,9 +54,6 @@ public class GuiModel {
         this.columnType = DataType.STIMULUS;
         this.rowType = DataType.SUBJECT;
         this.dataGroupType = DataGroupType.SLIDEMETRIC;
-
-        reader.setLookZoneData(lookZoneData);
-        reader.setSlideMetricData(slideMetricData);
     }
 
     /**
@@ -137,8 +130,7 @@ public class GuiModel {
         CheckboxListItem[] allFiles = new CheckboxListItem[fileListModel.getSize()];
         fileListModel.copyInto(allFiles);
         fileListModel.removeAllElements();
-        lookZoneData.reset();
-        slideMetricData.reset();
+        reader.resetData();
         for (CheckboxListItem item: allFiles) {
            if (!item.isSelected()) {
                addFile(item.getFile());
@@ -178,27 +170,27 @@ public class GuiModel {
      */
     void updateJListModels() {
         CheckboxListModel listModel = dataTypeModelManager.get(DataGroupType.SLIDEMETRIC, DataType.SUBJECT);
-        List<String> list = slideMetricData.getSubjects();
+        List<String> list = reader.getDataTypeFor(DataGroupType.SLIDEMETRIC, DataType.SUBJECT);
         addNewItemsToModel(list, listModel);
 
         listModel = dataTypeModelManager.get(DataGroupType.SLIDEMETRIC, DataType.STIMULUS);
-        list = slideMetricData.getStimuli();
+        list = reader.getDataTypeFor(DataGroupType.SLIDEMETRIC, DataType.STIMULUS);
         addNewItemsToModel(list, listModel);
 
         listModel = dataTypeModelManager.get(DataGroupType.SLIDEMETRIC, DataType.STATISTIC);
-        list = slideMetricData.getStatistics();
+        list = reader.getDataTypeFor(DataGroupType.SLIDEMETRIC, DataType.STATISTIC);
         addNewItemsToModel(list, listModel);
 
         listModel = dataTypeModelManager.get(DataGroupType.LOOKZONE, DataType.SUBJECT);
-        list = lookZoneData.getSubjects();
+        list = reader.getDataTypeFor(DataGroupType.LOOKZONE, DataType.SUBJECT);
         addNewItemsToModel(list, listModel);
 
         listModel = dataTypeModelManager.get(DataGroupType.LOOKZONE, DataType.STIMULUS);
-        list = lookZoneData.getStimuli();
+        list = reader.getDataTypeFor(DataGroupType.LOOKZONE, DataType.STIMULUS);
         addNewItemsToModel(list, listModel);
 
         listModel = dataTypeModelManager.get(DataGroupType.LOOKZONE, DataType.STATISTIC);
-        list = lookZoneData.getStatistics();
+        list = reader.getDataTypeFor(DataGroupType.LOOKZONE, DataType.STATISTIC);
         addNewItemsToModel(list, listModel);
     }
 
@@ -262,15 +254,15 @@ public class GuiModel {
     /**
      * writes the desired data to the specified output file
      * @param outputFile the output file to write to
+     * @return the response from the writer
      */
-    void export(File outputFile) {
+    String export(File outputFile) {
         WorkbookWriter writer = new WorkbookWriter();
         writer.setColumnType(columnType);
         List<String> statistics = getSelectedData(dataTypeModelManager.get(dataGroupType, DataType.STATISTIC));
         List<String> stimuli = getSelectedData(dataTypeModelManager.get(dataGroupType, DataType.STIMULUS));
         List<String> subjects = getSelectedData(dataTypeModelManager.get(dataGroupType, DataType.SUBJECT));
-        FourDimArray data = dataGroupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
-        writer.setData(data);
+        writer.setData(reader.getData(dataGroupType));
         writer.setRowType(rowType);
         writer.setSheetType(tabType);
         writer.setColumnType(columnType);
@@ -281,7 +273,7 @@ public class GuiModel {
         config.setRow(rowType);
         config.setColumn(columnType);
         config.setTab(tabType);
-        writer.write(config, outputFile);
+        return writer.write(config, outputFile);
     }
 
     /**

@@ -26,7 +26,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void testExtractMediaNameVideo() {
-        WorkbookReader reader = new WorkbookReader();
+        WorkbookReader reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         Row row1 = sheet.createRow(0);
         Cell cell5 = row1.createCell(0);
@@ -37,7 +37,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void testExtractMediaNameImage() {
-        WorkbookReader reader = new WorkbookReader();
+        WorkbookReader reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         Row row1 = sheet.createRow(0);
         Cell cell5 = row1.createCell(0);
@@ -48,7 +48,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void testExtractSlideMetricDataFromSheet() {
-        WorkbookReader reader = new WorkbookReader();
+        WorkbookReader reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         Cell statCell, valCell;
         Row row1 = sheet.createRow(2);
@@ -71,7 +71,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void testGetNullRowIndices() {
-        WorkbookReader reader = new WorkbookReader();
+        WorkbookReader reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         sheet.createRow(1);
         sheet.createRow(2);
@@ -88,7 +88,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void getNumStats() {
-        WorkbookReader reader = new WorkbookReader();
+        WorkbookReader reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         Row row = sheet.createRow(1);
         row.createCell(1);
@@ -102,7 +102,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void getStimulusName() {
-        WorkbookReader reader = new WorkbookReader();
+        WorkbookReader reader = new WorkbookReader(new FourDimArray(), new FourDimArray());
         reader.media = "foo";
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         Row row = sheet.createRow(1);
@@ -120,7 +120,7 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void testReadFile() throws IOException {
-        WorkbookReader reader = Mockito.spy(new WorkbookReader());
+        WorkbookReader reader = Mockito.spy(new WorkbookReader(new FourDimArray(), new FourDimArray()));
         Mockito.doNothing().when(reader).extractData(Mockito.any(XSSFWorkbook.class));
         reader.readFile(new File("src/resources/empty-workbook.xlsx"));
         // test that subject is as expected
@@ -129,11 +129,10 @@ public class TestWorkbookReader extends Assert {
 
     @Test
     public void testAddLookZoneData() {
-        WorkbookReader reader = new WorkbookReader();
         List<Integer> indices = Lists.newArrayList(0, 6);
         int numStats = 3;
         FourDimArray data = Mockito.spy(new FourDimArray());
-        reader.setLookZoneData(data);
+        WorkbookReader reader = new WorkbookReader(data, data);
         XSSFSheet sheet = new XSSFWorkbook().createSheet();
         Row row = sheet.createRow(3);
         Cell cell = row.createCell(0);

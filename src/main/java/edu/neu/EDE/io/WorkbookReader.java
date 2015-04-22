@@ -5,6 +5,8 @@ package edu.neu.EDE.io;
  * and add their data to internal structure
 **/
 
+import edu.neu.EDE.data_structs.DataGroupType;
+import edu.neu.EDE.data_structs.DataType;
 import edu.neu.EDE.data_structs.SheetConfiguration;
 import edu.neu.EDE.data_structs.FourDimArray;
 import org.apache.poi.ss.usermodel.Cell;
@@ -38,6 +40,17 @@ public class WorkbookReader {
     Double value;
     FourDimArray slideMetricData;
     FourDimArray lookZoneData;
+
+    /**
+     * public constructor.  initializes the two data structures
+     * to the two structures provided
+     * @param sm the slide metric data
+     * @param lz the look zone data
+     */
+    public WorkbookReader(FourDimArray sm, FourDimArray lz) {
+        this.slideMetricData = sm;
+        this.lookZoneData = lz;
+    }
 
     /**
      * create POI workbook from file to later extract data
@@ -248,11 +261,39 @@ public class WorkbookReader {
      * initialize look zone metric data struct
      * @param data the data struct for look zone data
      */
-    public void setLookZoneData(FourDimArray data) { this.lookZoneData = data; }
+    //public void setLookZoneData(FourDimArray data) { this.lookZoneData = data; }
 
     /**
      * gets the current subject
      * @return the current subject
      */
     public String getSubject() { return this.subject; }
+
+    /**
+     * reset both the look zone and slide metric data
+     */
+    public void resetData() {
+        lookZoneData.reset();
+        slideMetricData.reset();
+    }
+
+    /**
+     * get the specified list of data
+     * @param dataGroupType the data group type
+     * @param dataType the data type
+     * @return the list of names for the given parameter combination
+     */
+    public List<String> getDataTypeFor(DataGroupType dataGroupType, DataType dataType) {
+        FourDimArray data = dataGroupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
+        return data.get(dataType);
+    }
+
+    /**
+     * get the data structure for the specified data group type
+     * @param dataGroupType the data group type
+     * @return the data for the specified data group type
+     */
+    public FourDimArray getData(DataGroupType dataGroupType) {
+        return dataGroupType.equals(DataGroupType.LOOKZONE) ? lookZoneData : slideMetricData;
+    }
 }
