@@ -50,6 +50,7 @@ public class GuiView {
     private JButton removeSelectedFilesButton;
     private JButton addFilesButton;
     private JButton exportDataButton;
+    private File defaultOutput;
 
     /**
      * basic constructor
@@ -304,6 +305,9 @@ public class GuiView {
                 exportProgressBar.setVisible(true);
                 exportDataButton.setVisible(false);
                 JFileChooser saveDialog = new JFileChooser();
+                if (defaultOutput != null) {
+                    saveDialog.setCurrentDirectory(defaultOutput);
+                }
                 int retVal = saveDialog.showSaveDialog(new JFrame());
                 if (retVal == JFileChooser.APPROVE_OPTION) {
                     ExportWorker exportWorker = new ExportWorker(saveDialog);
@@ -625,6 +629,7 @@ public class GuiView {
                     exportProgressBar.setVisible(false);
                     exportDataButton.setVisible(true);
                     JOptionPane.showMessageDialog(frame, result);
+                    defaultOutput = fc.getCurrentDirectory();
                 }
             });
             return null;
