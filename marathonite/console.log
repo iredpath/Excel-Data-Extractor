@@ -1,0 +1,24 @@
+Apr 21, 2015 11:05:14 PM java.util.prefs.WindowsPreferences <init>
+WARNING: Could not open/create prefs root node Software\JavaSoft\Prefs at root 0x80000002. Windows RegCreateKeyEx(...) returned error code 5.
+Apr 21, 2015 11:11:36 PM java.util.prefs.WindowsPreferences <init>
+WARNING: Could not open/create prefs root node Software\JavaSoft\Prefs at root 0x80000002. Windows RegCreateKeyEx(...) returned error code 5.
+Apr 21, 2015 11:13:14 PM java.util.prefs.WindowsPreferences <init>
+WARNING: Could not open/create prefs root node Software\JavaSoft\Prefs at root 0x80000002. Windows RegCreateKeyEx(...) returned error code 5.
+Apr 21, 2015 11:25:44 PM java.util.prefs.WindowsPreferences <init>
+WARNING: Could not open/create prefs root node Software\JavaSoft\Prefs at root 0x80000002. Windows RegCreateKeyEx(...) returned error code 5.
+*****  Play C:\Users\Alex\Documents\GitHub\TestCases\FileExport.rb (4/21/15 11:31 PM) *****
+Script:
+$marathon.execTest($test)
+org.jruby.exceptions.RaiseException: (RuntimeError) Could not find list cell component matching given property list: {Text=false, Index=3}
+	at RUBY.handleFailure(file:/C:/Users/Alex/Downloads/marathonite/marathonite-3.3.8.9/marathon-rt-ruby.jar!/marathon/playback.rb:54)
+	at RUBY.select(file:/C:/Users/Alex/Downloads/marathonite/marathonite-3.3.8.9/marathon-rt-ruby.jar!/marathon/playback.rb:174)
+	at RUBY.test(C:\Users\Alex\Documents\GitHub\TestCases\FileExport.rb:17)
+	at RUBY.with_window(file:/C:/Users/Alex/Downloads/marathonite/marathonite-3.3.8.9/marathon-rt-ruby.jar!/marathon/playback.rb:64)
+	at RUBY.test(C:\Users\Alex\Documents\GitHub\TestCases\FileExport.rb:8)
+	at RUBY.(root)(<script>:1)
+	at org.jruby.RubyProc.call(org/jruby/RubyProc.java:290)
+	at org.jruby.RubyProc.call(org/jruby/RubyProc.java:271)
+	at RUBY.callprotected(file:/C:/Users/Alex/Downloads/marathonite/marathonite-3.3.8.9/marathon-rt-ruby.jar!/marathon/results.rb:14)
+	at RUBY.execTest(file:/C:/Users/Alex/Downloads/marathonite/marathonite-3.3.8.9/marathon-rt-ruby.jar!/marathon/playback.rb:25)
+	at RUBY.(root)(<script>:1)
+*****  Play C:\Users\Alex\Documents\GitHub\TestCases\FileExport.rb (4/21/15 11:36 PM) *****

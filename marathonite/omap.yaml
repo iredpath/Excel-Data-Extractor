@@ -1,0 +1,50 @@
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: component.class.simpleName, value: JFrame}
+    - {name: title, value: Excel Data Extractor}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JFrame}
+    - {name: accessibleContext.accessibleName, value: Excel Data Extractor}
+    - {name: size, value: '[width=1024,height=720]'}
+    - {name: name, value: frame0}
+    - {name: position, value: '[x=0,y=0]'}
+    - {name: component.class.name, value: javax.swing.JFrame}
+    containerRecognitionProperties:
+    - {method: equals, name: component.class.name, value: javax.swing.JFrame}
+    - {method: equals, name: title, value: Excel Data Extractor}
+    containerTitles: [Excel Data Extractor]
+    fileName: Excel Data Extractor_9040696926394284511.yaml
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: component.class.simpleName, value: JDialog}
+    - {name: title, value: Open}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JDialog}
+    - {name: accessibleContext.accessibleName, value: Open}
+    - {name: size, value: '[width=516,height=365]'}
+    - {name: oMapClassName, value: javax.swing.JFileChooser#Dialog}
+    - {name: name, value: dialog0}
+    - {name: position, value: '[x=254,y=177]'}
+    - {name: component.class.name, value: javax.swing.JDialog}
+    - {name: oMapClassSimpleName, value: JFileChooser#Dialog}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: javax.swing.JFileChooser#Dialog}
+    containerTitles: [Open, Save]
+    fileName: Open_2806046627431848795.yaml
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: component.class.simpleName, value: JDialog}
+    - {name: title, value: Message}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JDialog}
+    - {name: accessibleContext.accessibleName, value: Message}
+    - {name: size, value: '[width=268,height=119]'}
+    - {name: oMapClassName, value: javax.swing.JOptionPane#Dialog_1_-1}
+    - {name: name, value: dialog2}
+    - {name: position, value: '[x=378,y=300]'}
+    - {name: component.class.name, value: javax.swing.JDialog}
+    - {name: oMapClassSimpleName, value: JOptionPane#Dialog}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: javax.swing.JOptionPane#Dialog_1_-1}
+    containerTitles: [Message]
+    fileName: Message_3872520707581298512.yaml

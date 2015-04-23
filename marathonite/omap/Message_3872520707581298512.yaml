@@ -1,0 +1,19 @@
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: name, value: OptionPane.label}
+    - {method: equals, name: type, value: JLabel}
+    generalProperties:
+    - {name: labelText, value: 'lbl:File successfully exported'}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: type, value: JLabel}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '0'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: cText, value: File successfully exported}
+    - {name: accessibleContext.accessibleName, value: File successfully exported}
+    - {name: size, value: '[width=195,height=16]'}
+    - {name: name, value: OptionPane.label}
+    - {name: accessibleName, value: File successfully exported}
+    - {name: position, value: '[x=438,y=344]'}
+    name: lbl:File successfully exported

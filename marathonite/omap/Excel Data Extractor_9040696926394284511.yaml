@@ -1,0 +1,125 @@
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Swap}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '5'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: Swap}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: Swap}
+    - {name: cText, value: Swap}
+    - {name: accessibleContext.accessibleName, value: Swap}
+    - {name: size, value: '[width=66,height=26]'}
+    - {name: accessibleName, value: Swap}
+    - {name: position, value: '[x=67,y=521]'}
+    name: Swap
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: JLabel}
+    - {method: equals, name: indexOfType, value: '1'}
+    generalProperties:
+    - {name: labelText, value: 'lbl:Stimulus'}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: type, value: JLabel}
+    - {name: indexOfType, value: '1'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: cText, value: Stimulus}
+    - {name: accessibleContext.accessibleName, value: Stimulus}
+    - {name: size, value: '[width=50,height=16]'}
+    - {name: accessibleName, value: Stimulus}
+    - {name: position, value: '[x=151,y=521]'}
+    name: lbl:Stimulus
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: JPanel}
+    - {method: equals, name: indexOfType, value: '36'}
+    generalProperties:
+    - {name: component.class.simpleName, value: JPanel}
+    - {name: type, value: JPanel}
+    - {name: indexOfType, value: '36'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JPanel}
+    - {name: component.class.name, value: javax.swing.JPanel}
+    - {name: layoutData.y, value: '2.0'}
+    - {name: layoutData.x, value: '3.0'}
+    - {name: size, value: '[width=76,height=36]'}
+    - {name: precedingLabel, value: Subject}
+    - {name: position, value: '[x=214,y=624]'}
+    name: Subject
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Add Files}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '3'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: Add Files}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: Add Files}
+    - {name: cText, value: Add Files}
+    - {name: accessibleContext.accessibleName, value: Add Files}
+    - {name: size, value: '[width=85,height=26]'}
+    - {name: accessibleName, value: Add Files}
+    - {name: position, value: '[x=88,y=46]'}
+    name: Add Files
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Deselect All}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '1'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: Deselect All}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: Deselect All}
+    - {name: cText, value: Deselect All}
+    - {name: accessibleContext.accessibleName, value: Deselect All}
+    - {name: size, value: '[width=101,height=26]'}
+    - {name: accessibleName, value: Deselect All}
+    - {name: position, value: '[x=709,y=106]'}
+    name: Deselect All
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: type, value: JList}
+    - {method: equals, name: indexOfType, value: '0'}
+    generalProperties:
+    - {name: component.class.simpleName, value: JList}
+    - {name: type, value: JList}
+    - {name: indexOfType, value: '0'}
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JList}
+    - {name: component.class.name, value: javax.swing.JList}
+    - {name: size, value: '[width=563,height=518]'}
+    - {name: position, value: '[x=424,y=138]'}
+    name: JList_0
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: actionCommand, value: Export}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: component.class.simpleName, value: JButton}
+    - {name: type, value: JButton}
+    - {name: enabled, value: 'true'}
+    - {name: indexOfType, value: '2'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: actionCommand, value: Export}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: buttonText, value: Export}
+    - {name: cText, value: Export}
+    - {name: accessibleContext.accessibleName, value: Export}
+    - {name: size, value: '[width=71,height=26]'}
+    - {name: accessibleName, value: Export}
+    - {name: position, value: '[x=673,y=666]'}
+    name: Export
