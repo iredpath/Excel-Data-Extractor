@@ -15,4 +15,4 @@ Excel Data Extractor uses [Maven](https://maven.apache.org/) as a project manage
 The install plugin will create, among other things, the executable jar in the target/ directory of the project.  It can then be transferred to any java running computer (likely 1.6 and above, though this is not confirmed) and launched.
 
 ##How can I contribute?
-This project is no longer in active development by the core team.  However, anyone may freely fork the repository and make edits as they see fit.  Please [contact us](<iredpath@hotmail.com>) with any questions or issues.
+This project is no longer in active development by the core team.  However, anyone may freely fork the repository and make edits as they see fit.  Please [contact us](mailto:iredpath@hotmail.com) with any questions or issues.
