@@ -51,6 +51,7 @@ public class GuiView {
     private JButton addFilesButton;
     private JButton exportDataButton;
     private File defaultOutput;
+    private File defaultInput;
 
     /**
      * basic constructor
@@ -394,6 +395,9 @@ public class GuiView {
                 removeSelectedFilesButton.setVisible(false);
                 addFileProgressBar.setVisible(true);
                 JFileChooser fc = new JFileChooser();
+                if (defaultInput != null) {
+                    fc.setCurrentDirectory(defaultInput);
+                }
                 fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 fc.setMultiSelectionEnabled(true);
                 int retVal = fc.showOpenDialog(frame);
@@ -591,6 +595,7 @@ public class GuiView {
                             removeSelectedFilesButton.setVisible(true);
                             frame.revalidate();
                             frame.repaint();
+                            defaultInput = fc.getCurrentDirectory();
                         }
                     });
                 } catch (IOException ex) {
